@@ -1,0 +1,19 @@
+{
+  "browser": "Google Chrome",
+  "version": "156.0.8078.80",
+  "viewport": {
+    "width": 1260,
+    "height": 900
+  },
+  "workload": "same deterministic 1180x680 scene: 16 floor lines, one moving character, one enemy, telegraph circle, melee arc, animated form orbit; 9 seconds each, Canvas renderer first then Phaser in same tab",
+  "memory": {
+    "available": true,
+    "beforeBytes": 15245167,
+    "afterCanvasBytes": 16239592,
+    "afterPhaserBytes": 18276904,
+    "limitation": "Chrome performance.memory is an approximate JS heap reading and is not GPU/texture/process memory"
+  },
+  "canvas": "CANVAS · 2144 frame samples · startup 1.1 ms\nFrame interval median / p95: 4.2 / 4.3 ms\nMeasured render interval median / p95: 0 / 0.2 ms\nSingle local Chrome run. Frame interval includes browser scheduling; Phaser render interval measures PRE_RENDER→POST_RENDER, Canvas measures synchronous draw calls. Re-run both modes in the same foreground/viewport conditions; no engine win is inferred.",
+  "phaser": "PHASER · 2109 frame samples · startup 182.8 ms\nFrame interval median / p95: 4.2 / 7.1 ms\nMeasured render interval median / p95: 0.1 / 0.3 ms\nSingle local Chrome run. Frame interval includes browser scheduling; Phaser render interval measures PRE_RENDER→POST_RENDER, Canvas measures synchronous draw calls. Re-run both modes in the same foreground/viewport conditions; no engine win is inferred.",
+  "errors": []
+}

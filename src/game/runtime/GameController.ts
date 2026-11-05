@@ -3,6 +3,7 @@ import { InputController } from './InputController.js';
 import { CanvasRenderer } from '../render/CanvasRenderer.js';
 import { SoundBus } from '../audio/synth.js';
 import type { GameSnapshot } from '../core/types.js';
+import type { InputDevice } from './InputController.js';
 /** Runtime binding: Canvas implementation can be replaced without replacing game rules. */
 export class GameController {
  readonly session = new CombatSession();
@@ -14,9 +15,13 @@ export class GameController {
  private lastPublish = 0;
  private publishedMode = '';
  private destroyed = false;
- constructor(canvas: HTMLCanvasElement, private onSnapshot: (value:GameSnapshot)=>void){
+ constructor(canvas: HTMLCanvasElement, private onSnapshot: (value:GameSnapshot)=>void, onDeviceChange:(device:InputDevice)=>void=()=>undefined){
   this.renderer = new CanvasRenderer(canvas);
-  this.input = new InputController(canvas,this.session.width,this.session.height);
+  this.input = new InputController(canvas,this.session.width,this.session.height,onDeviceChange,()=>{
+   if(this.session.mode==='playing')this.session.pause();
+   this.publish();
+  });
+  this.sound.setVolumes(this.session.save.settings.masterVolume,this.session.save.settings.effectsVolume);
   this.renderer.render(this.session);
   this.publish();
  }

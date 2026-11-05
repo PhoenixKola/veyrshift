@@ -7,7 +7,7 @@ A clean, original, browser-first 2.5D fully manual anime-inspired action rogueli
 
 ## What is *actually playable now*
 
-- Original **Kairo Venn** placeholder silhouette and a hand-rendered, animated 2.5D laboratory room. This is **prototype geometry, not approved character art**.
+- Kairo's original generated visual proposal is integrated as separate single-pose images for title, hub and combat previews. It is **not an animation atlas or owner-approved character art**.
 - One hero, three short seeded encounter chambers, three enemy archetypes (wisp, striker, sentinel), enemy telegraphs, manual angled melee string, directional ranged projectile, dash and invulnerability, guard/parry, an area attack, an ultimate and a short experimental Ember Drive transformation.
 - Selection from three generated room-clear upgrades; full mini-loop with defeat/victory, shard banking, persistent local save (versioned schema), pause/retry/hub.
 - Prototype combat VFX/audio, damage feedback, seeded RNG, reusable core combat simulator, runtime/UI decoupling and a strong starting UI shell.
@@ -22,6 +22,14 @@ If your browser blocks local files, from the repository root run `python3 -m htt
 
 ## Standard React + Vite application
 
+### B01 player flow
+
+Install Node.js 22+, run `npm ci`, then run `npm run dev`. The title menu opens first. Choose **New Run**, then **Start Run** in the pre-run hub. WASD or arrow keys move; mouse aim + left click attacks; right click fires a ranged shot; Shift dodges; Q uses the special; hold E to guard; R triggers the brief Ember Drive prototype preview when Pulse is available; F uses the finisher when charged; Escape pauses. The pause screen can resume or abandon to the hub.
+
+Keyboard arrows/Tab/Enter navigate menus. Standard gamepad baseline: left stick moves, right stick aims, A attacks, B dodges, X special, Y interact, LB guard, RB ranged shot, LT finisher, RT form preview, Start pauses; d-pad/left stick navigates menus, A confirms, B backs out. PlayStation labels are shown when the device ID identifies PlayStation hardware. Fullscreen is available from the pre-run hub. Settings persist locally; music stays disabled because no music track is included.
+
+The generated art in this slice consists of one still per state, not an animation atlas. Ember Drive remains a prototype preview, and owner visual, renderer, and game-feel approval is pending. See `docs/qa/b01-evidence.md` for exact verification and limitations.
+
 Install Node.js 22+.
 
 ```bash
@@ -31,7 +39,7 @@ npm run dev
 
 Open the local address printed by Vite. This initializes the React + TypeScript frontend using **the exact same** game simulation and rendering code. `npm run build` runs the React/TypeScript production compilation and Vite bundle.
 
-**Verification limitation on scaffold creation:** npm registry was unreachable, so npm dependencies and the React/Vite production build were **not** available for testing here. The dependency-free TypeScript preview **was compiled**, 9 core tests passed, and a real Chromium render/input smoke passed. Claude/Codex **must** execute `npm install`, `npm run typecheck`, `npm run build` and browser checks in a connected environment before declaring B00/B01 done. An initial `package-lock.json` is not included because generating a valid one requires registry resolution; generate and commit it on first successful install.
+**Current B01 verification:** The project has a clean dependency lock and was checked with `npm ci`, `npm run typecheck`, `npm run build`, `npm test` (16/16) and `npm audit`. The actual Vite/React app was exercised in visible Google Chrome; details and current limitations are in `docs/qa/b01-evidence.md`.
 
 ## Controls (desktop keyboard and mouse)
 
@@ -62,7 +70,7 @@ python3 tests/browser-smoke.py
 ## Repository map
 
 ```
-src/app/                React UI shell, HUD and control panel
+src/app/                Title/hub/menu shell, gameplay overlays and development proof UI
 src/game/core/          Shared typed contracts, physics helpers, deterministic RNG
 src/game/data/          Heroes (6), form concepts (42), prototype encounters/upgrades
 src/game/runtime/       Frame-based simulation, combat rules, input and loop controller
@@ -71,7 +79,7 @@ src/game/storage/       Versioned local progress schema
 src/game/audio/         Original synthesized placeholder audio
 src/preview/            Dependency-free preview shell sharing all game logic
 dist-preview/           Built offline preview (standalone HTML and ES modules)
-public/assets/          Future ORIGINAL art, VFX, UI, enemy, audio and environment packs
+public/assets/          Proposed runtime art exports and future original art/VFX packs
 docs/                   Verbatim V2 bible, architecture, visuals, QA and status
 prompts/                Batch-specific Claude/Codex instructions
 tests/                  Deterministic core test suite and Chromium smoke
@@ -81,15 +89,15 @@ tests/                  Deterministic core test suite and Chromium smoke
 
 1. Open `AGENTS.md` or `CLAUDE.md`.
 2. Read the **V2 game vision**, `docs/technical/architecture.md` and `docs/technical/implementation-status.md`.
-3. Start with [`prompts/project-veyrshift-b00-originality-technology-visual-gate.md`](prompts/project-veyrshift-b00-originality-technology-visual-gate.md).
+3. Start with the next explicitly assigned batch prompt in `prompts/`.
 4. Do not rewrite the design bible or bulk-generate character art until the owner approves the master style. Document mismatches and request an explicit visual signoff where appropriate.
 
 ## Roadmap honesty
 
-- **B00**: original IP / design style / runtime feasibility gate — NEXT.
-- **B01**: foundation — structurally preseeded but needs full dependency install, typecheck, build, runtime assessment and correction.
-- **B02**: Kairo combat-feel vertical slice — **NOT DONE**, regardless of the basic combat visible in this scaffold.
-- **B03–B13**: production art, encounters, 4 full forms, multiple heroes, bosses, room paths, progression and exhaustive Chrome signoff — **NOT DONE**.
+- **B00**: original IP / design style / runtime feasibility gate - **DONE, owner approval pending**.
+- **B01**: premium game shell, input foundation and bounded renderer/art feasibility - **IMPLEMENTED, owner approval pending**.
+- **B02**: Kairo combat-feel vertical slice - **NOT DONE**; wait for owner visual/renderer/game-feel review.
+- **B03-B13**: production art, encounters, complete forms, multiple heroes, bosses, room paths and exhaustive signoff - **NOT DONE**.
 - **42 forms**: long-term design target, **not** an MVP deliverable. MVP ambition: two heroes, four mechanically complete premium forms.
 
 ## Originality and licensing

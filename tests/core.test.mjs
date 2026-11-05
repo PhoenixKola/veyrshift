@@ -6,6 +6,8 @@ import { FORMS } from '../dist-preview/src/game/data/forms.js';
 import { HEROES } from '../dist-preview/src/game/data/heroes.js';
 import { initialSave, parseSave } from '../dist-preview/src/game/storage/save.js';
 import { CombatSession } from '../dist-preview/src/game/runtime/CombatSession.js';
+import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/runtime/gamepadMapping.js';
+import { transitionScreen } from '../dist-preview/src/app/screenState.js';
 
 const action=(pressed=[], held=[], movement={x:0,y:0}, aim={x:1,y:0})=>({pressed:new Set(pressed),held:new Set(held),movement,aim});
 
@@ -32,6 +34,30 @@ test('invalid save data fails closed and safe schema v1 round-trips',()=>{
  const save=initialSave();save.shards=84;save.runs=3;
  assert.deepEqual(parseSave(JSON.stringify(save)),save);
 });
+test('version 1 saves migrate into version 2 settings without losing records',()=>{
+ const migrated=parseSave(JSON.stringify({version:1,shards:41,bestRoom:2,runs:7,totalDefeats:3,unlockedHeroes:['kairo'],unlockedForms:[]}));
+ assert.equal(migrated.version,2);assert.equal(migrated.shards,41);assert.equal(migrated.runs,7);assert.equal(migrated.settings.masterVolume,.75);assert.equal(migrated.settings.reducedMotion,false);
+});
+test('player navigation transitions guard title, hub, run, back, and locked pages',()=>{
+ assert.equal(transitionScreen('title',{type:'start-run'}),'title');assert.equal(transitionScreen('title',{type:'new-run'}),'hub');
+ assert.equal(transitionScreen('hub',{type:'start-run'}),'game');assert.equal(transitionScreen('game',{type:'back'}),'hub');
+ assert.equal(transitionScreen('settings',{type:'back'}),'hub');assert.equal(transitionScreen('hub',{type:'back'}),'title');
+});
+test('gamepad radial deadzone rejects drift and rescales a useful analog vector',()=>{
+ assert.deepEqual(radialDeadzone(.1,.1),{x:0,y:0});const moved=radialDeadzone(0,-1);assert.ok(moved.y<-.99);assert.equal(moved.x,0);
+});
+test('standard gamepad actions are edge-triggered, preserve aim at rest, and reset on disconnect',()=>{
+ const mapper=new StandardGamepadMapper();const pad=(buttons=[],axes=[0,0,0,0])=>({id:'Xbox Controller',axes,buttons:Array.from({length:16},(_,i)=>({pressed:buttons.includes(i),value:buttons.includes(i)?1:0}))});
+ const first=mapper.sample(pad([0]),100);assert.equal(first.actions.pressed.has('attack'),true);assert.equal(first.deviceLabel,'Xbox');
+ const held=mapper.sample(pad([0]),116);assert.equal(held.actions.pressed.has('attack'),false);assert.equal(held.actions.held.has('attack'),true);
+ const aimed=mapper.sample(pad([], [0,0,.8,-.2]),132);const resting=mapper.sample(pad(),148);assert.ok(aimed.actions.aim.x>.75);assert.deepEqual(resting.actions.aim,aimed.actions.aim);
+ mapper.sample(null,164);const reconnected=mapper.sample(pad([0]),180);assert.equal(reconnected.actions.pressed.has('attack'),true);
+});
+test('Xbox-style shoulder/trigger/start and d-pad baseline maps to distinct actions',()=>{
+ const mapper=new StandardGamepadMapper();const pressed=[1,2,3,4,5,6,7,9,13];const pad={id:'Xbox Wireless Controller',axes:[0,0,0,0],buttons:Array.from({length:16},(_,i)=>({pressed:pressed.includes(i),value:pressed.includes(i)?1:0}))};
+ const sample=mapper.sample(pad,1000);for(const actionName of ['dash','special','interact','guard','heavy','ultimate','transform','pause'])assert.ok(sample.actions.pressed.has(actionName),actionName);
+ assert.ok(sample.menuPressed.has('down'));assert.ok(sample.menuPressed.has('back'));assert.equal(sample.deviceLabel,'Xbox');
+});
 test('new run has seeded encounter, manual attack and successful enemy damage',()=>{
  const a=new CombatSession(initialSave());a.newRun(51);
  const b=new CombatSession(initialSave());b.newRun(51);
@@ -43,12 +69,24 @@ test('new run has seeded encounter, manual attack and successful enemy damage',(
  assert.ok(enemy.hp<before,`expected damage: hp now ${enemy.hp} from ${before}`);
  assert.ok(a.hero.pulse>0);
 });
+test('manual melee hitbox damages only enemies inside the facing arc',()=>{
+ const s=new CombatSession(initialSave());s.newRun(512);s.hero.face=0;s.hero.attackCooldown=0;
+ const front=s.enemies[0],behind=s.enemies[1];front.x=s.hero.x+55;front.y=s.hero.y;front.attackCooldown=9;const frontHp=front.hp;
+ behind.x=s.hero.x-55;behind.y=s.hero.y;behind.attackCooldown=9;const behindHp=behind.hp;
+ s.update(.016,action(['attack']));assert.ok(front.hp<frontHp);assert.equal(behind.hp,behindHp);
+});
 test('dash grants short invulnerability, ends safely inside arena',()=>{
  const s=new CombatSession(initialSave());s.newRun(71);
  s.update(.016,action(['dash'],[],{x:1,y:0}));
  assert.ok(s.hero.dashTime>0);assert.ok(s.hero.invuln>0);
  for(let i=0;i<90;i++)s.update(.016,action());
  assert.ok(s.hero.x<=1110&&s.hero.x>=70);
+});
+test('enemy telegraph cannot hit through dash iframes, then damages after the window',()=>{
+ const s=new CombatSession(initialSave());s.newRun(717);const e=s.enemies[0];s.hero.invuln=0;e.x=s.hero.x+e.radius+20;e.y=s.hero.y;e.telegraph=.01;e.attackCooldown=3;
+ s.update(.02,action(['dash'],[],{x:-1,y:0}));assert.equal(s.hero.hp,100);
+ s.hero.dashTime=0;s.hero.invuln=0;e.telegraph=.01;s.update(.02,action());assert.equal(s.hero.hp,88);
+ s.hero.hp=100;s.hero.invuln=.4;e.telegraph=.01;s.update(.02,action());assert.equal(s.hero.hp,100);
 });
 test('form prototype consumes Pulse, is time-limited and expires',()=>{
  const s=new CombatSession(initialSave());s.newRun(111);

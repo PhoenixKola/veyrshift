@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+import fs from 'node:fs/promises';
+const out='tests/evidence/b01/chrome';await fs.mkdir(out,{recursive:true});
+const browser=await chromium.launch({channel:'chrome',headless:false});const page=await browser.newPage({viewport:{width:1260,height:900},deviceScaleFactor:1});const errors=[];
+page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+await page.goto('http://127.0.0.1:5174/renderer-proof.html',{waitUntil:'domcontentloaded'});await page.waitForTimeout(500);
+const memoryBefore=await page.evaluate(()=>performance.memory?.usedJSHeapSize??null);
+const run=async(name)=>{await page.getByRole('button',{name:/RUN 9S SAMPLE/}).click();await page.waitForTimeout(600);await page.screenshot({path:`${out}/renderer-${name}-live.png`});await page.getByText(new RegExp(`${name.toUpperCase()} ·`)).waitFor({timeout:20000});const result=await page.locator('.proof-results').innerText();return result;};
+const canvas=await run('canvas');const canvasHeap=await page.evaluate(()=>performance.memory?.usedJSHeapSize??null);
+await page.getByRole('button',{name:'Phaser 3.90'}).click();await page.waitForTimeout(150);const phaser=await run('phaser');const phaserHeap=await page.evaluate(()=>performance.memory?.usedJSHeapSize??null);
+const results={browser:'Google Chrome',version:browser.version(),viewport:{width:1260,height:900},workload:'same deterministic 1180x680 scene: 16 floor lines, one moving character, one enemy, telegraph circle, melee arc, animated form orbit; 9 seconds each, Canvas renderer first then Phaser in same tab',memory:{available:memoryBefore!==null,beforeBytes:memoryBefore,afterCanvasBytes:canvasHeap,afterPhaserBytes:phaserHeap,limitation:'Chrome performance.memory is an approximate JS heap reading and is not GPU/texture/process memory'},canvas,phaser,errors};
+await fs.writeFile(`${out}/renderer-results.json`,JSON.stringify(results,null,2));console.log(JSON.stringify(results));await browser.close();if(errors.length)process.exitCode=1;

@@ -35,7 +35,7 @@ export class CombatSession {
   x:590,y:360,vx:0,vy:0,face:0,hp:100,maxHp:100,pulse:0,maxPulse:100,
   dashTime:0,dashCooldown:0,invuln:0,attackTime:0,attackCooldown:0,combo:0,comboWindow:0,
   guardTime:0,parryWindow:0,specialCooldown:0,ultimateCooldown:0,
-  formTime:0,formMaxTime:8,formCooldown:0,transformed:false,hitFlash:0,step:0
+  formTime:0,formMaxTime:8,formCooldown:0,transformVisualTime:0,transformed:false,hitFlash:0,step:0
  };}
  get snapshot(): GameSnapshot {return {mode:this.mode,room:this.room,roomsTotal:ROOM_COUNT,enemyCount:this.enemies.length,
   hp:Math.ceil(this.hero.hp),maxHp:this.hero.maxHp,pulse:Math.floor(this.hero.pulse),maxPulse:this.hero.maxPulse,
@@ -152,7 +152,7 @@ export class CombatSession {
   const h=this.hero;
   // PROTOTYPE ONLY: Ember Drive visualization and damage modifier, NOT a complete form-quality-contract implementation.
   if(h.pulse<40||h.transformed||h.formCooldown>0)return;
-  h.pulse-=40;h.formTime=h.formMaxTime;h.transformed=true;h.invuln=.45;h.formCooldown=11;
+  h.pulse-=40;h.formTime=h.formMaxTime;h.transformVisualTime=.92;h.transformed=true;h.invuln=.45;h.formCooldown=11;
   this.burst(h.x,h.y,'#ffba79',55,340);this.shake=11;this.message='EMBER DRIVE • Experimental form preview';
   this.notify('transform');
  }
@@ -178,6 +178,7 @@ export class CombatSession {
   h.attackCooldown=dec(h.attackCooldown);h.comboWindow=dec(h.comboWindow);
   h.specialCooldown=dec(h.specialCooldown);h.ultimateCooldown=dec(h.ultimateCooldown);
   h.formCooldown=dec(h.formCooldown);h.hitFlash=dec(h.hitFlash);
+  h.transformVisualTime=dec(h.transformVisualTime);
   if(h.comboWindow===0)h.combo=0;
   if(h.transformed){h.formTime=dec(h.formTime);h.pulse=clamp(h.pulse-dt*2,0,h.maxPulse);
    if(h.formTime===0||h.pulse===0){h.transformed=false;this.burst(h.x,h.y,'#e8b19b',14,160);this.notify('deform');}}

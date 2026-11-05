@@ -4,12 +4,21 @@ import type { CombatSession } from '../runtime/CombatSession.js';
 import { clamp } from '../core/math.js';
 export class CanvasRenderer {
  private ctx:CanvasRenderingContext2D;
+ private reducedMotion=false;
+ private reducedFlash=false;
+ private idle=this.load('/assets/characters/kairo/prototype/idle.png');
+ private punch=this.load('/assets/characters/kairo/prototype/punch-right.png');
+ private dodge=this.load('/assets/characters/kairo/prototype/dodge-right.png');
+ private ember=this.load('/assets/characters/kairo/prototype/ember-visual-only.png');
+ private wisp=this.load('/assets/enemies/prototype/rift-wisp.png');
  constructor(canvas:HTMLCanvasElement){
   canvas.width=ARENA.width;canvas.height=ARENA.height;
   const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D support is required');this.ctx=ctx;
  }
+ private load(src:string):HTMLImageElement {const image=new Image();image.src=src;return image;}
  render(game:CombatSession):void {
   const c=this.ctx,w=ARENA.width,h=ARENA.height;
+  this.reducedMotion=game.save.settings.reducedMotion;this.reducedFlash=game.save.settings.reducedFlash;
   c.clearRect(0,0,w,h);this.drawEnvironment(game.clock);
   if(game.mode==='hub'){
    this.drawHero(game.hero,0,false);this.decorativeTitle('THE WEAVE AWAITS','Activate a run from the control panel',w*.5,100);
@@ -19,7 +28,7 @@ export class CanvasRenderer {
   const s=game.save.settings.screenshake?game.shake:0;
   if(s>.2)c.translate(Math.sin(game.clock*79)*s*.55,Math.cos(game.clock*97)*s*.55);
   if(game.hero.transformed)this.drawFormAura(game.hero,game.clock);
-  for(const p of game.particles){const a=clamp(p.life/p.maxLife,0,1);c.globalAlpha=a;
+  for(const p of game.particles){if(!game.save.settings.particles)continue;const a=clamp(p.life/p.maxLife,0,1);c.globalAlpha=game.save.settings.reducedFlash?Math.min(.55,a):a;
    c.fillStyle=p.color;c.beginPath();c.arc(p.x,p.y,p.size*(1.2-a*.45),0,Math.PI*2);c.fill();}
   c.globalAlpha=1;
   for(const p of game.projectiles){c.save();c.shadowBlur=22;c.shadowColor=p.color;c.fillStyle=p.color;
@@ -69,11 +78,12 @@ export class CanvasRenderer {
   c.beginPath();c.ellipse(x,y+21,23*scale,9*scale,0,0,Math.PI*2);c.fill();c.restore();}
  private drawEnemy(e:Enemy,t:number):void {
   const c=this.ctx;c.save();this.drawShadow(e.x,e.y,e.radius/18);
-  c.translate(e.x,e.y);const bob=Math.sin(t*3+e.phase)*3;c.translate(0,bob-10);
-  if(e.telegraph>0){const strength=.3+.3*Math.sin(e.telegraph*34);
+  c.translate(e.x,e.y);const bob=this.reducedMotion?0:Math.sin(t*3+e.phase)*3;c.translate(0,bob-10);
+  if(e.telegraph>0){const strength=this.reducedFlash?.38:.3+.3*Math.sin(e.telegraph*34);
    c.strokeStyle=`rgba(255,88,136,${strength+.3})`;c.lineWidth=3;c.beginPath();c.arc(0,0,e.radius+18,0,Math.PI*2);c.stroke();
    c.fillStyle='rgba(240,65,112,.12)';c.beginPath();c.arc(0,0,e.radius+32,0,Math.PI*2);c.fill();}
-  if(e.kind==='wisp'){
+  if(e.kind==='wisp'&&this.wisp.complete&&this.wisp.naturalWidth>0){c.globalAlpha=e.flash>0?.72:1;c.drawImage(this.wisp,-e.radius*1.25,-e.radius*1.35,e.radius*2.5,e.radius*2.3);c.globalAlpha=1;
+  }else if(e.kind==='wisp'){
    c.fillStyle=e.flash>0?'#ffffff':'#6ea5c9';c.strokeStyle='#b0e7f1';c.lineWidth=2;
    c.beginPath();c.moveTo(0,-21);c.lineTo(18,-7);c.lineTo(10,16);c.lineTo(-14,16);c.lineTo(-18,-4);c.closePath();c.fill();c.stroke();
    c.fillStyle='#e0ffff';c.fillRect(-8,-5,5,4);c.fillRect(3,-5,5,4);
@@ -92,9 +102,16 @@ export class CanvasRenderer {
  }
  private drawHero(h:Hero,t:number,inBattle:boolean):void {
   const c=this.ctx;this.drawShadow(h.x,h.y,1.05);c.save();c.translate(h.x,h.y);
-  const move=Math.hypot(h.vx,h.vy)>70;const bob=Math.sin(h.step*.05)*2.6*(move?1:.25);
-  c.translate(0,bob-17);c.rotate(h.dashTime>0?-.27*Math.sin(h.face):0);
+  const move=Math.hypot(h.vx,h.vy)>70;const bob=this.reducedMotion?0:Math.sin(h.step*.05)*2.6*(move?1:.25);
+  c.translate(0,bob-17);
   if(h.invuln>0&&Math.sin(t*32)>0)c.globalAlpha=.62;
+  const pose=h.transformed&&h.transformVisualTime>0?this.ember:h.dashTime>0?this.dodge:h.attackTime>0?this.punch:this.idle;
+  if(pose.complete&&pose.naturalWidth>0){
+   const width=pose===this.punch?118:pose===this.dodge?112:74;const height=pose===this.punch?80:pose===this.dodge?66:112;
+   if(h.transformed){c.shadowColor='#ffb773';c.shadowBlur=14;}
+   c.drawImage(pose,-width/2,-height+32,width,height);c.restore();return;
+  }
+  c.rotate(h.dashTime>0?-.27*Math.sin(h.face):0);
   c.strokeStyle=h.transformed?'#ffd5a6':'#324455';c.lineWidth=6;c.lineCap='round';
   c.beginPath();c.moveTo(-8,13);c.lineTo(-12,31);c.moveTo(7,13);c.lineTo(11,31);c.stroke();
   // Cropped, split charcoal jacket and bronze cuff details: concept-only vector proxy.
@@ -114,9 +131,9 @@ export class CanvasRenderer {
  }
  private drawFormAura(h:Hero,t:number):void {
   const c=this.ctx;c.save();c.translate(h.x,h.y-15);
-  for(let i=0;i<3;i++){const r=44+i*12+Math.sin(t*7+i)*4;
+  for(let i=0;i<3;i++){const r=44+i*12+(this.reducedMotion?0:Math.sin(t*7+i)*4);
    c.strokeStyle=`rgba(255,${165+i*20},${104+i*26},${.26-i*.045})`;c.lineWidth=3-i*.4;
-   c.beginPath();c.ellipse(0,0,r,r*.75,t*.65+i,0,Math.PI*2);c.stroke();}
+   c.beginPath();c.ellipse(0,0,r,r*.75,(this.reducedMotion?0:t*.65)+i,0,Math.PI*2);c.stroke();}
   c.shadowColor='#ffb378';c.shadowBlur=32;c.fillStyle='rgba(255,169,108,.14)';
   c.beginPath();c.ellipse(0,0,46,58,0,0,Math.PI*2);c.fill();
   c.restore();

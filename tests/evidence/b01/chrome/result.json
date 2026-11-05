@@ -1,0 +1,131 @@
+{
+  "browser": "Google Chrome",
+  "browserVersion": "156.0.8078.80",
+  "title": "THE WEAVE\nAWAITS.",
+  "viewport": {
+    "width": 1480,
+    "height": 980
+  },
+  "smallViewport": {
+    "width": 1110,
+    "scrollWidth": 1110,
+    "height": 740,
+    "scrollHeight": 740,
+    "canvas": {
+      "x": 0,
+      "y": 50.171875,
+      "width": 1110,
+      "height": 639.65625,
+      "top": 50.171875,
+      "right": 1110,
+      "bottom": 689.828125,
+      "left": 0
+    }
+  },
+  "viewportMatrix": [
+    {
+      "name": "16-9",
+      "width": 1920,
+      "documentWidth": 1920,
+      "height": 1080,
+      "documentHeight": 1080,
+      "canvas": {
+        "x": 22.9453125,
+        "y": 0,
+        "width": 1874.109375,
+        "height": 1080,
+        "top": 0,
+        "right": 1897.0546875,
+        "bottom": 1080,
+        "left": 22.9453125
+      }
+    },
+    {
+      "name": "16-10",
+      "width": 1600,
+      "documentWidth": 1600,
+      "height": 1000,
+      "documentHeight": 1000,
+      "canvas": {
+        "x": 0,
+        "y": 38.984375,
+        "width": 1600,
+        "height": 922.03125,
+        "top": 38.984375,
+        "right": 1600,
+        "bottom": 961.015625,
+        "left": 0
+      }
+    },
+    {
+      "name": "ultrawide",
+      "width": 2560,
+      "documentWidth": 2560,
+      "height": 1080,
+      "documentHeight": 1080,
+      "canvas": {
+        "x": 342.9453125,
+        "y": 0,
+        "width": 1874.109375,
+        "height": 1080,
+        "top": 0,
+        "right": 2217.0546875,
+        "bottom": 1080,
+        "left": 342.9453125
+      }
+    },
+    {
+      "name": "reduced",
+      "width": 960,
+      "documentWidth": 960,
+      "height": 540,
+      "documentHeight": 540,
+      "canvas": {
+        "x": 11.4765625,
+        "y": 0,
+        "width": 937.046875,
+        "height": 540,
+        "top": 0,
+        "right": 948.5234375,
+        "bottom": 540,
+        "left": 11.4765625
+      }
+    }
+  ],
+  "fullscreenEntered": true,
+  "fullscreenExited": true,
+  "musicSliderDisabled": true,
+  "masterVolumeBeforeReload": "0.64",
+  "masterVolumeAfterReload": "0.64",
+  "saveSchema": 2,
+  "physicalGamepadCount": 0,
+  "syntheticGamepadMenu": "d-pad down x2 + A opened Character; device label switched to Xbox",
+  "performed": [
+    "title menu",
+    "character",
+    "forms prototype/locked honesty",
+    "records",
+    "credits",
+    "settings volume and accessibility persistence",
+    "new run",
+    "WASD movement",
+    "arrow movement",
+    "mouse aim and melee",
+    "right-click ranged shot",
+    "dash",
+    "guard",
+    "special",
+    "finisher",
+    "pause/resume",
+    "window blur clears held input and pauses",
+    "form visual-only activation in dev fixture",
+    "telegraph/reduced-flash/grayscale readability view",
+    "reward overlay and reward choice",
+    "three-room dev-fixture route to victory",
+    "run again and abandon to hub",
+    "75% viewport",
+    "16:9, 16:10, ultrawide, and reduced viewport fit"
+  ],
+  "errors": [],
+  "failed": []
+}

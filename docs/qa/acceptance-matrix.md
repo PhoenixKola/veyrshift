@@ -28,3 +28,21 @@
 | No scope creep | PASS | No other hero/form, boss, engine migration, or final release content was implemented. |
 
 **Gate:** B00 is **not approved**. Owner visual choice and a bounded Phaser (or supported alternative) comparison remain required before final renderer/style lock; B02/B03 production scope should wait for owner review.
+
+## B01 gate — 2026-11-05
+
+| B01 item | Status | Evidence / limitation |
+|---|---|---|
+| Player title and hub replace dashboard | PASS (prototype) | Actual Vite/React in Chrome; title/hub screenshots in `tests/evidence/b01/chrome/`. Owner presentation approval pending. |
+| Character, Forms, Records, Settings, Credits routes | PASS (honest prototype scope) | Actual menu interactions and screenshots; only Kairo is playable, other form content remains locked/catalog-only. |
+| Responsive full-viewport gameplay and overlays | PASS (technical fit); PARTIAL (visual approval) | Chrome at 1480×980 and 1110×740; no scroll overflow; reward/pause/victory screenshots. |
+| Arrow/WASD/mouse combat and pause | PASS (bounded browser input) | Chrome script exercised both movement maps, pointer attack/ranged, dash, guard, special, finisher and pause/resume; hitbox and iframe unit coverage added. Manual game-feel signoff pending. |
+| Gamepad mapping, menu navigation, disconnect semantics | PASS (synthetic mapping); NOT RUN (hardware) | Mapper unit test plus browser `navigator.getGamepads` mock for d-pad/A menu navigation. Physical controller unavailable. |
+| Settings and legacy save migration | PASS | Chrome values reloaded from localStorage; v1→v2 and volume/deadzone tests pass. Music is disabled because no music track exists. |
+| Generated Kairo art in live game | PARTIAL | Title/hub and generated single poses appear in Canvas combat. No generated loops, frame-by-frame hitbox validation, all-direction art, or approved master. |
+| Asset-source separation and provenance | PARTIAL | Source masters are outside `public/` with manifests and optimization script. Recorded prompt briefs are not verbatim provider transcripts; external IP/law review and owner approval are NOT RUN. |
+| Ember Drive full form quality | FAIL / PROTOTYPE | Brief visual-only form pose is demonstrated; mechanics still use prior simple modifier. Does not satisfy V2 form contract. |
+| Phaser vs Canvas comparison | PARTIAL / MEASURED SPIKE | Same small scene and one Chrome sample in `b01-renderer-evaluation.md`; instrumentation and workload differ by renderer. No final renderer choice. |
+| `npm ci`, typecheck, build, tests, audit | PASS | Exact B01 commands/outcomes in `b01-evidence.md`; 16/16 tests. |
+| Vision unchanged, no extra form/hero scope | PASS | Authoritative V2 file checksum unchanged; only one Kairo prototype and existing short three-room loop. |
+| Owner style, engine, menu and input feel signoff | NOT RUN / REQUIRED | Owner review requested; see evidence handoff and comparison screenshots. |

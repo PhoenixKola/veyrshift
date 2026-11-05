@@ -1,0 +1,15 @@
+{
+  "manifestVersion": 1,
+  "status": "PROPOSED_FEASIBILITY_SAMPLE_NOT_APPROVED",
+  "character": "Kairo Venn (provisional)",
+  "sourceMaster": "art-source/b01/kairo-master-direction-b.png",
+  "coordinateConvention": "pixel dimensions after alpha trim; origin top-left; anchor is foot-ground center",
+  "states": [
+    {"id":"idle","source":"art-source/b01/kairo-master-direction-b.png","sourceDimensions":[1024,1536],"runtime":"public/assets/characters/kairo/prototype/idle.png","atlasId":null,"dimensions":[319,480],"frames":1,"frameDurationMs":0,"loop":false,"facing":"front-three-quarter/right-side authored","pivot":[159.5,435],"groundAnchor":[159.5,452],"revision":"B01-generated-master"},
+    {"id":"punch-right","source":"art-source/b01/kairo-punch-right.png","sourceDimensions":[1536,1024],"runtime":"public/assets/characters/kairo/prototype/punch-right.png","atlasId":null,"dimensions":[640,430],"frames":1,"frameDurationMs":0,"loop":false,"facing":"right authored; do not mirror","pivot":[320,355],"groundAnchor":[320,416],"revision":"B01-generated-state-pose"},
+    {"id":"dodge-right","source":"art-source/b01/kairo-dodge-right.png","sourceDimensions":[1774,887],"runtime":"public/assets/characters/kairo/prototype/dodge-right.png","atlasId":null,"dimensions":[640,322],"frames":1,"frameDurationMs":0,"loop":false,"facing":"right authored; do not mirror","pivot":[320,236],"groundAnchor":[320,305],"revision":"B01-generated-state-pose"},
+    {"id":"ember-visual-only","source":"art-source/b01/kairo-ember-visual.png","sourceDimensions":[1024,1536],"runtime":"public/assets/characters/kairo/prototype/ember-visual-only.png","atlasId":null,"dimensions":[320,480],"frames":1,"frameDurationMs":0,"loop":false,"facing":"front-three-quarter/right-side authored","pivot":[160,434],"groundAnchor":[160,452],"revision":"B01-visual-only-form-preview"}
+  ],
+  "enemyProof": {"source":"art-source/b01/rift-wisp.png","sourceDimensions":[1536,1024],"runtime":"public/assets/enemies/prototype/rift-wisp.png","atlasId":null,"dimensions":[384,275],"facing":"front","anchor":[192,254],"telegraph":"separate magenta ring and filled radius; color-independent circular silhouette is not yet approved"},
+  "limitations": ["Every character state is a single independently generated pose, not a sequence or animation atlas.", "Idle movement and foot timing are currently interpolated procedurally; there is no generated locomotion loop.", "Punch is one right-authored image pose and is not a directional punch sequence; it is not mirrored.", "Dodge is one right-authored pose; hitbox/pose alignment is visual approximation only.", "Ember Drive image is a brief visual cue; current mechanics remain the prototype damage modifier.", "Frame bounds, feet anchors and silhouettes were checked by visual inspection only; automated hitbox, per-frame and alpha-edge validation is not implemented."]
+}

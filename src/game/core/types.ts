@@ -3,15 +3,24 @@ export type GameMode = 'hub' | 'playing' | 'reward' | 'victory' | 'defeat' | 'pa
 export type EnemyKind = 'wisp' | 'striker' | 'sentinel';
 export type FormDiscipline = 'fury' | 'precision' | 'anomaly' | 'mythic';
 export type KeyAction = 'up'|'down'|'left'|'right'|'attack'|'heavy'|'special'|'guard'|'dash'|'transform'|'ultimate'|'interact'|'pause';
+export type GameSettings = {
+  masterVolume: number;
+  musicVolume: number;
+  effectsVolume: number;
+  screenshake: boolean;
+  particles: boolean;
+  reducedFlash: boolean;
+  reducedMotion: boolean;
+};
 export type SaveData = {
-  version: 1;
+  version: 2;
   shards: number;
   bestRoom: number;
   runs: number;
   totalDefeats: number;
   unlockedHeroes: string[];
   unlockedForms: string[];
-  settings: { screenshake: boolean; particles: boolean; reducedFlash: boolean };
+  settings: GameSettings;
 };
 export interface Enemy {
   id: number; kind: EnemyKind; x: number; y: number; hp: number; maxHp: number;
@@ -26,7 +35,7 @@ export interface Hero {
   dashTime: number; dashCooldown: number; invuln: number;
   attackTime: number; attackCooldown: number; combo: number; comboWindow: number;
   guardTime: number; parryWindow: number; specialCooldown: number; ultimateCooldown: number;
-  formTime: number; formMaxTime: number; formCooldown: number; transformed: boolean;
+  formTime: number; formMaxTime: number; formCooldown: number; transformVisualTime: number; transformed: boolean;
   hitFlash: number; step: number;
 }
 export interface GameSnapshot {
