@@ -1,0 +1,31 @@
+{
+  "name": "project-veyrshift",
+  "private": true,
+  "version": "0.0.1-scaffold",
+  "type": "module",
+  "description": "Original browser-first 2.5D manual-combat roguelite. Internal codename only.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -p tsconfig.app.json --noEmit && vite build",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "preview:build": "tsc -p tsconfig.preview.json && node tools/copy-preview.mjs",
+    "preview:serve": "python3 -m http.server 4173 -d dist-preview",
+    "test": "tsc -p tsconfig.preview.json && node tools/copy-preview.mjs && node --test tests/core.test.mjs",
+    "verify:offline": "tsc -p tsconfig.preview.json && node tools/copy-preview.mjs && node --test tests/core.test.mjs",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "@vitejs/plugin-react": "4.7.0",
+    "typescript": "5.9.2",
+    "vite": "^6.4.5"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
