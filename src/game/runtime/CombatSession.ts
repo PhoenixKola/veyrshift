@@ -33,9 +33,11 @@ export class CombatSession {
  constructor(save: SaveData = loadSave()) { this.save = save; }
  static makeHero(): Hero {return {
   x:590,y:360,vx:0,vy:0,face:0,hp:100,maxHp:100,pulse:0,maxPulse:100,
-  dashTime:0,dashCooldown:0,invuln:0,attackTime:0,attackCooldown:0,combo:0,comboWindow:0,
+  dashTime:0,dashCooldown:0,invuln:0,attackTime:0,attackAnimTime:0,attackDuration:0,attackStartup:.075,
+  attackHitFired:false,attackCooldown:0,attackBuffer:0,combo:0,comboWindow:0,
   guardTime:0,parryWindow:0,specialCooldown:0,ultimateCooldown:0,
-  formTime:0,formMaxTime:8,formCooldown:0,transformVisualTime:0,transformed:false,hitFlash:0,step:0
+  formTime:0,formMaxTime:8,formCooldown:0,transformVisualTime:0,transformVisualDuration:.72,transformed:false,
+  hurtTime:0,ko:false,hitFlash:0,step:0
  };}
  get snapshot(): GameSnapshot {return {mode:this.mode,room:this.room,roomsTotal:ROOM_COUNT,enemyCount:this.enemies.length,
   hp:Math.ceil(this.hero.hp),maxHp:this.hero.maxHp,pulse:Math.floor(this.hero.pulse),maxPulse:this.hero.maxPulse,
@@ -96,12 +98,12 @@ export class CombatSession {
  }
  private damageEnemy(enemy:Enemy,amount:number,dx:number,dy:number):void {
   if(enemy.hp<=0)return;
-  enemy.hp-=amount;enemy.flash=.17;enemy.stagger=.25;
+  enemy.hp-=amount;enemy.flash=.22;enemy.stagger=.32;
   const v=normalize({x:dx,y:dy});enemy.vx+=v.x*145;enemy.vy+=v.y*145;
   this.burst(enemy.x,enemy.y,enemy.kind==='sentinel'?'#e9a6c8':'#8ddfef',10,175);
   this.pulse(this.hero.transformed?3:7);
-  this.shake=Math.min(12,this.shake+2.3);
-  this.hitstop=Math.min(.07,this.hitstop+.025);
+  this.shake=Math.min(13,this.shake+(this.hero.combo===3?4.2:3));
+  this.hitstop=Math.min(.085,this.hitstop+(this.hero.combo===3?.055:.038));
   this.notify('hit');
   if(enemy.hp<=0){this.runShards+=enemy.kind==='sentinel'?9:enemy.kind==='striker'?4:2;
    this.pulse(9);this.burst(enemy.x,enemy.y,'#f6cc83',18,220);this.notify('kill');}
@@ -111,17 +113,27 @@ export class CombatSession {
   if(h.attackCooldown>0||h.dashTime>0)return;
   h.combo=h.comboWindow>0&&!heavy?(h.combo%3)+1:1;
   if(heavy)h.combo=3;
-  h.comboWindow=.56;h.attackTime=heavy?.31:.18;
-  h.attackCooldown=heavy?.5:h.combo===3?.36:.22;
+  h.comboWindow=.68;
+  h.attackDuration=heavy?.48:h.combo===3?.48:.36;
+  h.attackTime=h.attackDuration;h.attackAnimTime=0;h.attackStartup=heavy?.11:.075;h.attackHitFired=false;
+  h.attackCooldown=h.attackDuration-.015;
+  this.notify(heavy?'heavy-start':`combo-${h.combo}`);
+ }
+ private resolveMelee():void {
+  const h=this.hero;
+  if(h.attackHitFired||h.ko)return;
+  h.attackHitFired=true;
+  const heavy=h.combo===3&&h.attackDuration>=.48;
   const reach=(heavy?112:83)+(h.transformed?18:0), arc=heavy?1.65:1.4;
   const multiplier=this.upgrades.includes('momentum')?1.3:1;
   const damage=(heavy?33: h.combo===3?25:15)*multiplier*(h.transformed?1.48:1);
   let hits=0;
   for(const e of this.enemies){if(e.hp>0&&inArc(P(h.x,h.y),h.face,e,reach+e.radius,arc)){
    this.damageEnemy(e,damage,Math.cos(h.face),Math.sin(h.face));hits++;}}
-  this.burst(h.x+Math.cos(h.face)*52,h.y+Math.sin(h.face)*52,h.transformed?'#ffd5a7':'#f9aa92',heavy?14:7,160);
+  const color=h.transformed?'#ffd5a7':h.combo===3?'#ffc177':h.combo===2?'#9fe6ec':'#c4d6ee';
+  this.burst(h.x+Math.cos(h.face)*56,h.y+Math.sin(h.face)*56,color,heavy?18:h.combo===3?15:10,heavy?210:175);
   if(hits===0)h.comboWindow=Math.min(h.comboWindow,.38);
-  this.notify(heavy?'heavy':'swing');
+  this.notify(hits?'hit-confirm':'swing');
  }
  private fireProjectile():void {
   const h=this.hero;if(h.specialCooldown>0||h.dashTime>0)return;
@@ -152,7 +164,7 @@ export class CombatSession {
   const h=this.hero;
   // PROTOTYPE ONLY: Ember Drive visualization and damage modifier, NOT a complete form-quality-contract implementation.
   if(h.pulse<40||h.transformed||h.formCooldown>0)return;
-  h.pulse-=40;h.formTime=h.formMaxTime;h.transformVisualTime=.92;h.transformed=true;h.invuln=.45;h.formCooldown=11;
+  h.pulse-=40;h.formTime=h.formMaxTime;h.transformVisualDuration=.72;h.transformVisualTime=h.transformVisualDuration;h.transformed=true;h.invuln=.45;h.formCooldown=11;
   this.burst(h.x,h.y,'#ffba79',55,340);this.shake=11;this.message='EMBER DRIVE • Experimental form preview';
   this.notify('transform');
  }
@@ -163,42 +175,46 @@ export class CombatSession {
     this.burst(h.x,h.y,'#9fffee',23,210);this.notify('parry');this.shake+=3;return;}
    amount*=.3;
   }
-  h.hp=Math.max(0,h.hp-amount);h.hitFlash=.28;h.invuln=.65;
+  h.hp=Math.max(0,h.hp-amount);h.hitFlash=.28;h.hurtTime=.34;h.invuln=.65;
   const push=normalize({x:h.x-origin.x,y:h.y-origin.y});h.vx+=push.x*185;h.vy+=push.y*185;
   this.burst(h.x,h.y,'#ff8697',18,160);this.notify('hurt');this.shake+=4;
-  if(h.hp<=0)this.finish('defeat');
+  if(h.hp<=0){h.ko=true;h.hurtTime=.8;this.finish('defeat');}
  }
  update(dt:number,input:ActionInput=EMPTY_INPUT):void {
   if(this.mode!=='playing')return;
   dt=clamp(dt,0,.05);this.clock+=dt;
-  if(this.hitstop>0){this.hitstop-=dt;this.tickParticles(dt);return;}
   const h=this.hero;
+  if(input.pressed.has('attack'))h.attackBuffer=.19;
+  if(this.hitstop>0){this.hitstop=Math.max(0,this.hitstop-dt);this.tickParticles(dt);return;}
   const dec=(v:number)=>Math.max(0,v-dt);
-  h.dashCooldown=dec(h.dashCooldown);h.invuln=dec(h.invuln);h.attackTime=dec(h.attackTime);
-  h.attackCooldown=dec(h.attackCooldown);h.comboWindow=dec(h.comboWindow);
+  h.dashCooldown=dec(h.dashCooldown);h.invuln=dec(h.invuln);h.hurtTime=dec(h.hurtTime);
+  const attacking=h.attackTime>0;
+  h.attackTime=dec(h.attackTime);h.attackCooldown=dec(h.attackCooldown);h.attackBuffer=dec(h.attackBuffer);h.comboWindow=dec(h.comboWindow);
+  if(attacking){h.attackAnimTime+=dt;if(!h.attackHitFired&&h.attackAnimTime>=h.attackStartup)this.resolveMelee();}
   h.specialCooldown=dec(h.specialCooldown);h.ultimateCooldown=dec(h.ultimateCooldown);
   h.formCooldown=dec(h.formCooldown);h.hitFlash=dec(h.hitFlash);
   h.transformVisualTime=dec(h.transformVisualTime);
   if(h.comboWindow===0)h.combo=0;
   if(h.transformed){h.formTime=dec(h.formTime);h.pulse=clamp(h.pulse-dt*2,0,h.maxPulse);
-   if(h.formTime===0||h.pulse===0){h.transformed=false;this.burst(h.x,h.y,'#e8b19b',14,160);this.notify('deform');}}
+   if(h.formTime===0||h.pulse===0){h.transformed=false;h.transformVisualTime=0;this.burst(h.x,h.y,'#e8b19b',18,190);this.notify('deform');}}
   const aim=normalize(input.aim);
   if(Math.hypot(aim.x,aim.y)>.001)h.face=Math.atan2(aim.y,aim.x);
   const move=normalize(input.movement);
   if(input.pressed.has('dash')&&h.dashCooldown===0){h.dashTime=.19;h.dashCooldown=this.upgrades.includes('echo')?.69:.92;
    h.invuln=.26;const d=Math.hypot(move.x,move.y)>.1?move:{x:Math.cos(h.face),y:Math.sin(h.face)};
-   h.vx=d.x*870;h.vy=d.y*870;this.burst(h.x,h.y,'#92d7ff',13,120);this.notify('dash');}
+   h.attackTime=0;h.attackCooldown=0;h.attackHitFired=true;
+   h.vx=d.x*870;h.vy=d.y*870;this.burst(h.x,h.y,'#92d7ff',16,155);this.notify('dash');}
   if(h.dashTime>0){h.dashTime=dec(h.dashTime);}
   else {
    const speed=h.transformed?322:277;
    h.vx=h.vx*.23+move.x*speed*.77;h.vy=h.vy*.23+move.y*speed*.77;
-   if(input.held.has('guard')){h.guardTime+=dt;h.parryWindow=Math.max(0,.22-h.guardTime);}else{h.guardTime=0;h.parryWindow=0;}
-   if(input.pressed.has('attack'))this.melee();
+   if(h.attackBuffer>0&&h.attackCooldown===0){h.attackBuffer=0;this.melee();}
    if(input.pressed.has('heavy'))this.fireProjectile();
    if(input.pressed.has('special'))this.triggerSpecial();
    if(input.pressed.has('transform'))this.transform();
    if(input.pressed.has('ultimate'))this.triggerUltimate();
   }
+  if(input.held.has('guard')){h.guardTime+=dt;h.parryWindow=Math.max(0,.22-h.guardTime);}else{h.guardTime=0;h.parryWindow=0;}
   h.x=clamp(h.x+h.vx*dt,ARENA.inset,ARENA.width-ARENA.inset);
   h.y=clamp(h.y+h.vy*dt,ARENA.inset,ARENA.height-ARENA.inset);
   h.step+=Math.hypot(h.vx,h.vy)*dt;

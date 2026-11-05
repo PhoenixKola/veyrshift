@@ -33,10 +33,11 @@ export interface Hero {
   x: number; y: number; vx: number; vy: number; face: number;
   hp: number; maxHp: number; pulse: number; maxPulse: number;
   dashTime: number; dashCooldown: number; invuln: number;
-  attackTime: number; attackCooldown: number; combo: number; comboWindow: number;
+  attackTime: number; attackAnimTime: number; attackDuration: number; attackStartup: number;
+  attackHitFired: boolean; attackCooldown: number; attackBuffer: number; combo: number; comboWindow: number;
   guardTime: number; parryWindow: number; specialCooldown: number; ultimateCooldown: number;
-  formTime: number; formMaxTime: number; formCooldown: number; transformVisualTime: number; transformed: boolean;
-  hitFlash: number; step: number;
+  formTime: number; formMaxTime: number; formCooldown: number; transformVisualTime: number; transformVisualDuration: number; transformed: boolean;
+  hurtTime: number; ko: boolean; hitFlash: number; step: number;
 }
 export interface GameSnapshot {
   mode: GameMode; room: number; roomsTotal: number; enemyCount: number;

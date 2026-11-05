@@ -1,0 +1,667 @@
+{
+  "status": "prototype animation feasibility; not owner-approved production art",
+  "date": "2026-11-05",
+  "pipeline": "Generated source strips are sliced into equal cells; alpha bounds are trimmed, proportionally downscaled, and bottom-center aligned into a uniform transparent atlas. No pose redraw, frame interpolation, or per-frame hitbox art is claimed.",
+  "cell": {
+    "width": 128,
+    "height": 160
+  },
+  "clips": {
+    "idle": {
+      "source": "art-source/b02/kairo-idle-source-sheet.png",
+      "runtime": "public/assets/characters/kairo/b02/idle.png",
+      "frameCount": 8,
+      "frameWidth": 128,
+      "frameHeight": 160,
+      "anchor": {
+        "x": 64,
+        "y": 154,
+        "method": "bottom-center after alpha trim"
+      },
+      "sourceFrameBounds": [
+        [
+          10,
+          47,
+          268,
+          674
+        ],
+        [
+          6,
+          43,
+          266,
+          674
+        ],
+        [
+          0,
+          35,
+          269,
+          674
+        ],
+        [
+          0,
+          32,
+          269,
+          674
+        ],
+        [
+          1,
+          45,
+          267,
+          674
+        ],
+        [
+          7,
+          47,
+          266,
+          674
+        ],
+        [
+          11,
+          49,
+          267,
+          674
+        ],
+        [
+          19,
+          49,
+          267,
+          674
+        ]
+      ],
+      "removedDisconnectedAlphaComponents": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          1,
+          5,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          2,
+          1,
+          1,
+          22,
+          1
+        ],
+        [
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          56
+        ],
+        [
+          1,
+          1,
+          3,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          4,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      "cleanupThreshold": "components below 0.6% of a source cell are removed; core silhouette preserved",
+      "bytes": 142403,
+      "loop": true,
+      "frameSeconds": 0.12
+    },
+    "run": {
+      "source": "art-source/b02/kairo-run-grid-source.png",
+      "runtime": "public/assets/characters/kairo/b02/run.png",
+      "frameCount": 8,
+      "frameWidth": 128,
+      "frameHeight": 160,
+      "anchor": {
+        "x": 64,
+        "y": 154,
+        "method": "bottom-center after alpha trim"
+      },
+      "sourceFrameBounds": [
+        [
+          50,
+          18,
+          337,
+          426
+        ],
+        [
+          46,
+          23,
+          363,
+          425
+        ],
+        [
+          46,
+          18,
+          357,
+          425
+        ],
+        [
+          46,
+          14,
+          367,
+          397
+        ],
+        [
+          49,
+          18,
+          354,
+          404
+        ],
+        [
+          47,
+          22,
+          348,
+          426
+        ],
+        [
+          39,
+          22,
+          331,
+          426
+        ],
+        [
+          49,
+          21,
+          367,
+          429
+        ]
+      ],
+      "removedDisconnectedAlphaComponents": [
+        [],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          1,
+          1,
+          1,
+          2
+        ],
+        [],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          2
+        ]
+      ],
+      "cleanupThreshold": "components below 0.6% of a source cell are removed; core silhouette preserved",
+      "bytes": 160558,
+      "loop": true,
+      "frameSeconds": 0.07
+    },
+    "combo": {
+      "source": "art-source/b02/kairo-combo-grid-source.png",
+      "runtime": "public/assets/characters/kairo/b02/combo.png",
+      "frameCount": 12,
+      "frameWidth": 128,
+      "frameHeight": 160,
+      "anchor": {
+        "x": 64,
+        "y": 154,
+        "method": "bottom-center after alpha trim"
+      },
+      "sourceFrameBounds": [
+        [
+          28,
+          50,
+          246,
+          417
+        ],
+        [
+          14,
+          53,
+          247,
+          417
+        ],
+        [
+          7,
+          52,
+          295,
+          417
+        ],
+        [
+          34,
+          50,
+          253,
+          416
+        ],
+        [
+          23,
+          65,
+          274,
+          410
+        ],
+        [
+          25,
+          51,
+          267,
+          409
+        ],
+        [
+          18,
+          48,
+          295,
+          410
+        ],
+        [
+          39,
+          49,
+          265,
+          410
+        ],
+        [
+          20,
+          130,
+          265,
+          418
+        ],
+        [
+          32,
+          66,
+          260,
+          418
+        ],
+        [
+          31,
+          10,
+          250,
+          418
+        ],
+        [
+          25,
+          66,
+          257,
+          417
+        ]
+      ],
+      "removedDisconnectedAlphaComponents": [
+        [
+          1,
+          1
+        ],
+        [],
+        [
+          2,
+          4,
+          3,
+          4,
+          1
+        ],
+        [
+          1,
+          2,
+          1,
+          343,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          67,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          1,
+          2,
+          1
+        ]
+      ],
+      "cleanupThreshold": "components below 0.6% of a source cell are removed; core silhouette preserved",
+      "bytes": 265451,
+      "loop": false,
+      "frameSeconds": 0.09
+    },
+    "dodge": {
+      "source": "art-source/b02/kairo-dodge-grid-source.png",
+      "runtime": "public/assets/characters/kairo/b02/dodge.png",
+      "frameCount": 6,
+      "frameWidth": 128,
+      "frameHeight": 160,
+      "anchor": {
+        "x": 64,
+        "y": 154,
+        "method": "bottom-center after alpha trim"
+      },
+      "sourceFrameBounds": [
+        [
+          35,
+          22,
+          469,
+          483
+        ],
+        [
+          11,
+          62,
+          374,
+          483
+        ],
+        [
+          0,
+          74,
+          475,
+          476
+        ],
+        [
+          27,
+          30,
+          423,
+          410
+        ],
+        [
+          19,
+          51,
+          439,
+          478
+        ],
+        [
+          35,
+          26,
+          481,
+          480
+        ]
+      ],
+      "removedDisconnectedAlphaComponents": [
+        [],
+        [
+          1,
+          5,
+          713
+        ],
+        [],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "cleanupThreshold": "components below 0.6% of a source cell are removed; core silhouette preserved",
+      "bytes": 109833,
+      "loop": false,
+      "frameSeconds": 0.032
+    },
+    "states": {
+      "source": "art-source/b02/kairo-states-grid-source.png",
+      "runtime": "public/assets/characters/kairo/b02/states.png",
+      "frameCount": 8,
+      "frameWidth": 128,
+      "frameHeight": 160,
+      "anchor": {
+        "x": 64,
+        "y": 154,
+        "method": "bottom-center after alpha trim"
+      },
+      "sourceFrameBounds": [
+        [
+          51,
+          17,
+          388,
+          431
+        ],
+        [
+          63,
+          34,
+          391,
+          430
+        ],
+        [
+          70,
+          24,
+          387,
+          430
+        ],
+        [
+          89,
+          48,
+          389,
+          430
+        ],
+        [
+          34,
+          128,
+          343,
+          431
+        ],
+        [
+          6,
+          134,
+          423,
+          434
+        ],
+        [
+          57,
+          67,
+          408,
+          433
+        ],
+        [
+          92,
+          7,
+          362,
+          433
+        ]
+      ],
+      "removedDisconnectedAlphaComponents": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [],
+        [
+          1,
+          1,
+          4
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          2,
+          1,
+          1,
+          1
+        ]
+      ],
+      "cleanupThreshold": "components below 0.6% of a source cell are removed; core silhouette preserved",
+      "bytes": 168600,
+      "loop": false,
+      "frameSeconds": 0.12
+    }
+  },
+  "stateRanges": {
+    "guard": [
+      0,
+      2
+    ],
+    "hurt": [
+      2,
+      4
+    ],
+    "ko": [
+      4,
+      6
+    ],
+    "emberActivation": [
+      6,
+      8
+    ]
+  },
+  "comboRanges": {
+    "hit1": [
+      0,
+      4
+    ],
+    "hit2": [
+      4,
+      8
+    ],
+    "hit3": [
+      8,
+      12
+    ]
+  }
+}

@@ -10,6 +10,7 @@ import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
 
 const action=(pressed=[], held=[], movement={x:0,y:0}, aim={x:1,y:0})=>({pressed:new Set(pressed),held:new Set(held),movement,aim});
+const advance=(session,frames,input=action())=>{for(let i=0;i<frames;i++)session.update(1/60,input);};
 
 test('seeded gameplay random is reproducible across runs',()=>{
  const a=new SeededRandom(117);const b=new SeededRandom(117);
@@ -65,7 +66,7 @@ test('new run has seeded encounter, manual attack and successful enemy damage',(
  assert.equal(a.mode,'playing');assert.equal(a.room,1);
  const enemy=a.enemies[0];enemy.x=a.hero.x+45;enemy.y=a.hero.y;enemy.attackCooldown=10;
  const before=enemy.hp;
- a.update(.016,action(['attack']));
+ a.update(.016,action(['attack']));advance(a,6);
  assert.ok(enemy.hp<before,`expected damage: hp now ${enemy.hp} from ${before}`);
  assert.ok(a.hero.pulse>0);
 });
@@ -73,7 +74,24 @@ test('manual melee hitbox damages only enemies inside the facing arc',()=>{
  const s=new CombatSession(initialSave());s.newRun(512);s.hero.face=0;s.hero.attackCooldown=0;
  const front=s.enemies[0],behind=s.enemies[1];front.x=s.hero.x+55;front.y=s.hero.y;front.attackCooldown=9;const frontHp=front.hp;
  behind.x=s.hero.x-55;behind.y=s.hero.y;behind.attackCooldown=9;const behindHp=behind.hp;
- s.update(.016,action(['attack']));assert.ok(front.hp<frontHp);assert.equal(behind.hp,behindHp);
+ s.update(.016,action(['attack']));advance(s,6);assert.ok(front.hp<frontHp);assert.equal(behind.hp,behindHp);
+});
+test('Kairo chains three distinct buffered combo hits with delayed active frames and hitstop',()=>{
+ const s=new CombatSession(initialSave());s.newRun(888);s.hero.face=0;
+ const target=s.enemies[0];target.x=s.hero.x+45;target.y=s.hero.y;target.hp=1000;target.maxHp=1000;target.attackCooldown=20;
+ for(const other of s.enemies.slice(1))other.hp=0;
+ const starting=target.hp;
+ s.update(1/60,action(['attack']));assert.equal(target.hp,starting);advance(s,5);assert.equal(s.hero.combo,1);assert.ok(target.hp<starting);assert.ok(s.hitstop>0);
+ advance(s,12);s.update(1/60,action(['attack']));advance(s,7);assert.equal(s.hero.combo,2);
+ advance(s,12);s.update(1/60,action(['attack']));advance(s,18);assert.equal(s.hero.combo,3);
+ assert.ok(target.hp<=starting-60);assert.ok(s.hero.attackDuration>=.48);
+});
+test('attack input buffers briefly through recovery and stays directional',()=>{
+ const s=new CombatSession(initialSave());s.newRun(889);s.hero.face=0;
+ const target=s.enemies[0];target.x=s.hero.x+45;target.y=s.hero.y;target.hp=1000;target.maxHp=1000;target.attackCooldown=20;
+ for(const other of s.enemies.slice(1))other.hp=0;
+ s.update(1/60,action(['attack']));advance(s,5);const once=target.hp;
+ advance(s,13);s.update(1/60,action(['attack']));advance(s,14);assert.equal(s.hero.combo,2);assert.ok(target.hp<once);
 });
 test('dash grants short invulnerability, ends safely inside arena',()=>{
  const s=new CombatSession(initialSave());s.newRun(71);
@@ -98,6 +116,11 @@ test('form prototype consumes Pulse, is time-limited and expires',()=>{
  s.enemies=[];s.hero.formTime=.025;
  s.update(.034,action());
  assert.equal(s.hero.transformed,false);
+});
+test('defeat records KO animation state after real incoming damage',()=>{
+ const s=new CombatSession(initialSave());s.newRun(333);const e=s.enemies[0];
+ s.hero.hp=10;s.hero.invuln=0;s.hero.dashTime=0;e.x=s.hero.x+e.radius+10;e.y=s.hero.y;e.telegraph=.01;e.attackCooldown=2;
+ s.update(.02,action());assert.equal(s.mode,'defeat');assert.equal(s.hero.ko,true);assert.ok(s.hero.hurtTime>0);
 });
 test('room clear displays seeded reward and selecting a reward advances a chamber',()=>{
  const s=new CombatSession(initialSave());s.newRun(444);

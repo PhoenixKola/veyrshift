@@ -1,0 +1,70 @@
+{
+  "browser": "Google Chrome",
+  "browserVersion": "156.0.8078.80",
+  "title": "THE WEAVE\nAWAITS.",
+  "actions": [
+    "title to hub to gameplay",
+    "locomotion",
+    "training-target three-hit combo",
+    "dodge",
+    "guard",
+    "Ember Drive activation and active state",
+    "pause and resume",
+    "reward selection and resume",
+    "16:9 and reduced viewport fit"
+  ],
+  "pauseResumed": true,
+  "rewardResumed": true,
+  "animationFrames": {
+    "samples": 431,
+    "medianFrameMs": 4.2,
+    "p95FrameMs": 4.3
+  },
+  "viewportMatrix": [
+    {
+      "name": "16-9",
+      "viewport": [
+        1280,
+        720
+      ],
+      "document": [
+        1280,
+        720
+      ],
+      "canvas": {
+        "x": 15.296875,
+        "y": 0,
+        "width": 1249.40625,
+        "height": 720,
+        "top": 0,
+        "right": 1264.703125,
+        "bottom": 720,
+        "left": 15.296875
+      }
+    },
+    {
+      "name": "reduced",
+      "viewport": [
+        960,
+        540
+      ],
+      "document": [
+        960,
+        540
+      ],
+      "canvas": {
+        "x": 11.4765625,
+        "y": 0,
+        "width": 937.046875,
+        "height": 540,
+        "top": 0,
+        "right": 948.5234375,
+        "bottom": 540,
+        "left": 11.4765625
+      }
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "note": "Combat dummy, form resource seed, and room-clear reward use the dev-only harness. Human owner art/game-feel signoff remains pending."
+}

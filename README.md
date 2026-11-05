@@ -7,7 +7,7 @@ A clean, original, browser-first 2.5D fully manual anime-inspired action rogueli
 
 ## What is *actually playable now*
 
-- Kairo's original generated visual proposal is integrated as separate single-pose images for title, hub and combat previews. It is **not an animation atlas or owner-approved character art**.
+- Kairo remains the only playable hero. B02 adds generated prototype animation atlases for idle, run, a 3-hit combo, dodge, guard, hurt, KO, and Ember activation. The art is still **unapproved feasibility work**, not a polished master or production animation set.
 - One hero, three short seeded encounter chambers, three enemy archetypes (wisp, striker, sentinel), enemy telegraphs, manual angled melee string, directional ranged projectile, dash and invulnerability, guard/parry, an area attack, an ultimate and a short experimental Ember Drive transformation.
 - Selection from three generated room-clear upgrades; full mini-loop with defeat/victory, shard banking, persistent local save (versioned schema), pause/retry/hub.
 - Prototype combat VFX/audio, damage feedback, seeded RNG, reusable core combat simulator, runtime/UI decoupling and a strong starting UI shell.
@@ -28,7 +28,7 @@ Install Node.js 22+, run `npm ci`, then run `npm run dev`. The title menu opens 
 
 Keyboard arrows/Tab/Enter navigate menus. Standard gamepad baseline: left stick moves, right stick aims, A attacks, B dodges, X special, Y interact, LB guard, RB ranged shot, LT finisher, RT form preview, Start pauses; d-pad/left stick navigates menus, A confirms, B backs out. PlayStation labels are shown when the device ID identifies PlayStation hardware. Fullscreen is available from the pre-run hub. Settings persist locally; music stays disabled because no music track is included.
 
-The generated art in this slice consists of one still per state, not an animation atlas. Ember Drive remains a prototype preview, and owner visual, renderer, and game-feel approval is pending. See `docs/qa/b01-evidence.md` for exact verification and limitations.
+The B01 shell flow remains. The B02 animation atlases are integrated in live Canvas combat; their animation, alpha cleanup, anchors, and state ranges are documented in `docs/art/b02-runtime-pipeline.md` and `docs/art/b02-animation-manifest.json`. Ember Drive is still a brief presentation/mechanical prototype and does not meet the full form contract. Owner visual and game-feel approval remains pending. See `docs/qa/b02-evidence.md` for verification and limitations.
 
 Install Node.js 22+.
 
@@ -56,7 +56,7 @@ Open the local address printed by Vite. This initializes the React + TypeScript 
 | F | Prototype finisher (75 Pulse) |
 | Esc | Pause / resume |
 
-This is a **first-pass input scheme**, not a finished combo/launcher system. Attack frames, cancel windows, guard timing and transformation mechanics will be redesigned and playtested in the appropriate batches.
+This is a **first-pass input scheme**, not a finished combo/launcher system. Light attacks now have startup/impact/recovery animation timing, a short press buffer, hitstop, and one directional arc check per swing. The third hit uses the launcher pose. There are no per-frame hitbox shapes or verified frame-by-frame hitbox alignment yet.
 
 ## Local verification (works without installing npm dependencies if global `tsc` is available)
 
@@ -96,7 +96,7 @@ tests/                  Deterministic core test suite and Chromium smoke
 
 - **B00**: original IP / design style / runtime feasibility gate - **DONE, owner approval pending**.
 - **B01**: premium game shell, input foundation and bounded renderer/art feasibility - **IMPLEMENTED, owner approval pending**.
-- **B02**: Kairo combat-feel vertical slice - **NOT DONE**; wait for owner visual/renderer/game-feel review.
+- **B02**: Kairo combat-feel vertical slice - **IMPLEMENTED AS A PROTOTYPE; owner visual/game-feel approval pending**.
 - **B03-B13**: production art, encounters, complete forms, multiple heroes, bosses, room paths and exhaustive signoff - **NOT DONE**.
 - **42 forms**: long-term design target, **not** an MVP deliverable. MVP ambition: two heroes, four mechanically complete premium forms.
 

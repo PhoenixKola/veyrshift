@@ -46,3 +46,22 @@
 | `npm ci`, typecheck, build, tests, audit | PASS | Exact B01 commands/outcomes in `b01-evidence.md`; 16/16 tests. |
 | Vision unchanged, no extra form/hero scope | PASS | Authoritative V2 file checksum unchanged; only one Kairo prototype and existing short three-room loop. |
 | Owner style, engine, menu and input feel signoff | NOT RUN / REQUIRED | Owner review requested; see evidence handoff and comparison screenshots. |
+
+
+## B02 Kairo animation and combat-feel gate ? 2026-11-05
+
+| B02 criterion | Status | Evidence / limitation |
+|---|---|---|
+| Idle and locomotion animation in live Canvas game | PASS (prototype), pending owner review | Eight-frame source-grid atlases, runtime contact sheet, visible Chrome capture/video. No authored eight-direction set. |
+| Three-hit grounded combo with distinct animation ranges | PASS (prototype) | 12 frames grouped by hit, 75 ms delayed directional arc, buffer and hitstop tests. Hitboxes are still one shared arc per strike. |
+| Dodge animation and invulnerability | PASS (bounded) | Six-frame clip plus streak, actual simulation iframe regression test, live Chrome evidence. One facing is mirrored horizontally. |
+| Guard, hurt and KO supporting states | PASS (prototype) | Runtime state atlas and simulation KO test; owner motion/pose quality review remains pending. |
+| Enemy impact feedback | PASS (prototype) | Knockback, stagger, squash/flash, impact particles and hitstop; no enemy animation atlas. |
+| Ember Drive anticipation/activation | PASS (bounded presentation only) | Two pose sequence, expanding ring, brief audio/VFX support; still fails full V2 form contract. |
+| Source/runtime separation, anchors and repeatable pipeline | PASS | Five original sheets in `art-source/b02/`, five runtime atlases, JSON frame/anchor manifest, deterministic optimizer. |
+| Detached partial hands/feet in exported frames | PASS after source-grid rebuild and alpha cleanup | B02 contact sheet inspected after cleanup; component areas recorded in manifest. Connected paint artifacts still need owner review. |
+| React typecheck, build, core tests and npm audit | PASS | `npm run typecheck`, `npm run build`, `npm test` (19/19), and `npm audit` (zero vulnerabilities); details in `docs/qa/b02-evidence.md`. |
+| Visible Chrome input/menu/combat/pause/reward/viewport pass | PASS (bounded dev fixture) | Google Chrome 156, visible headed pass and recording; no console/page errors or failed requests, two viewports fit; details in `docs/qa/b02-evidence.md`. |
+| Owner visual quality, animation scalability and tactile signoff | NOT RUN / REQUIRED | Generated art is proposed feasibility work. Approval must come from the owner after review. |
+
+**Gate:** B02 implementation is reviewable, but art quality and game-feel approval remain open. No production art or complete transformation claim is made.

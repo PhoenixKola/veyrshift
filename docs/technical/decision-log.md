@@ -11,3 +11,4 @@
 | ADR-006 | Locked process | Visual approval and real Chrome hands-on signoff | Automated test/screenshot sweeps cannot replace owner aesthetics and game-feel acceptance |
 | ADR-007 | Proposed / owner review | Continue Canvas2D as interim renderer | React/Vite and existing Canvas lab run in Chrome; Phaser comparison remains unmeasured. See [`adr-007-b00-renderer.md`](adr-007-b00-renderer.md). |
 | ADR-008 | Proposed / owner review | Keep Canvas2D interim after B01 same-scene spike | Both modes render the proof; measured data is insufficient to lock an engine. See [`adr-008-b01-renderer-proof.md`](adr-008-b01-renderer-proof.md). |
+| ADR-009 | Proposed / owner review | Keep Canvas2D as interim after B02 animation proof | Visible Chrome evidence covers five atlases and a bounded combat scene; performance scope is one local workload and does not lock the engine. See [ADR-009](adr-009-b02-canvas-animation-proof.md). |

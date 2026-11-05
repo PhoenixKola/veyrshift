@@ -1,4 +1,4 @@
-# Implementation status - current through B01 (2026-11-05)
+# Implementation status - current through B02 (2026-11-05)
 
 ## Scaffold baseline verification (historical - before B00)
 - `npm run preview:build`: passes using installed global TypeScript compiler (no registry packages needed).
@@ -38,3 +38,14 @@ The B00 handoff ran on 2026-11-05; B01 work and current evidence are recorded be
 - Added a dev-only same-scene Canvas2D vs Phaser 3.90.0 comparison page (`renderer-proof.html`) with frame-cadence and render-interval instrumentation. See ADR-008 and `docs/technical/b01-renderer-evaluation.md`; results support no final engine winner. Phaser does not ship in the production bundle.
 - Expanded tests to 16 deterministic checks including screen transitions, v1 save migration, gamepad dead zone/edge/aim/action indices, melee arc hitbox and telegraph/dash invulnerability. The separate dev fixture was used only to exercise reward/result overlays; it is not ordinary combat UAT.
 - B01 acceptance evidence, screenshots, browser action list, recorded asset prompt briefs/provenance and signoff gates are in [`docs/qa/b01-evidence.md`](../qa/b01-evidence.md). Verbatim generator prompts were not exposed for archival. Do not proceed into B02 production expansion until the owner reviews the art, renderer evidence and game feel.
+
+
+## B02 work log ? 2026-11-05 (prototype implemented; owner review pending)
+
+- Replaced in-game pose swapping with five source-grid-derived Canvas atlases: idle (8), run (8), combo (12: four phases for each of three hits), dodge (6), and supporting states (8: guard, hurt, KO, Ember anticipation/active). Source sheets are separate in `art-source/b02/`; runtime atlases are optimized to 128?160 cells under `public/assets/characters/kairo/b02/`.
+- Added a repeatable grid-slicing pipeline with per-frame alpha bounds, proportional downscale and bottom-center anchoring. It removes only disconnected alpha components below 0.6% of a source cell; the exact source grid and removed component areas are recorded in `docs/art/b02-animation-manifest.json`. Contact-sheet QA is in `tests/evidence/b02/kairo-animation-contact-sheet.png`.
+- Refined the live controller to advance combat at a bounded 60 Hz fixed step and retain button edges until a simulation step. Melee uses a 75 ms startup, delayed directional arc check, hitstop and a 190 ms attack press buffer. The three strikes use distinct animation ranges; the third is a stronger launcher. Dash cancels a pending swing, retains 260 ms of invulnerability, and has a six-pose cycle plus restrained streaks.
+- Added readable guard, hurt and KO poses, enemy recoil/squash, hit-confirm particles/audio, and a 720 ms Ember Drive anticipation/burst/ready presentation. Ember Drive remains a limited prototype and does not meet the full form quality contract.
+- Browser art remains a single three-quarter facing with horizontal mirroring; it does not yet contain authored eight-direction art. The generated run poses are keyframes, not rigged/interpolated animation. Frame-specific collision shapes, hitbox-to-pose alignment, art cleanup beyond disconnected alpha specks, production audio and physical-controller feel remain unproven.
+- `npm test` now includes 19 deterministic cases, including three-hit buffering, directional hit checks, hitstop, dash invulnerability, save/room flow and KO state. Full B02 command results, actual Chrome interactions, screenshots/video, and remaining gates are recorded in [`docs/qa/b02-evidence.md`](../qa/b02-evidence.md).
+- Visual style, art quality, combat feel, and animation scalability still require owner signoff. These generated assets are not approved master art.
