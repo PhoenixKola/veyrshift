@@ -69,10 +69,10 @@
             "columns": 4,
             "rows": 4,
             "columnOrder": [
-              "phase 1",
-              "phase 2",
-              "phase 3",
-              "phase 4"
+              "windup",
+              "contact",
+              "recovery",
+              "settle"
             ],
             "rowOrder": [
               "front",
@@ -93,10 +93,10 @@
             "columns": 4,
             "rows": 4,
             "columnOrder": [
-              "phase 1",
-              "phase 2",
-              "phase 3",
-              "phase 4"
+              "windup",
+              "anticipation",
+              "contact",
+              "recovery"
             ],
             "rowOrder": [
               "front",
@@ -117,10 +117,10 @@
             "columns": 4,
             "rows": 4,
             "columnOrder": [
-              "phase 1",
-              "phase 2",
-              "phase 3",
-              "phase 4"
+              "windup",
+              "anticipation",
+              "contact",
+              "recovery"
             ],
             "rowOrder": [
               "front",
@@ -144,11 +144,12 @@
           "columns": 4,
           "rows": 4,
           "columnOrder": [
-            "push-off",
-            "stride",
-            "pass",
-            "land"
+            "PUSH-OFF",
+            "STRIDE",
+            "PASS",
+            "LAND"
           ],
+          "rowCuts": null,
           "rowOrder": [
             "front",
             "right",
@@ -214,7 +215,8 @@
             "foregroundComponentAreas": [
               25959
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
           },
           {
             "direction": "front",
@@ -249,7 +251,8 @@
             "foregroundComponentAreas": [
               23751
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
           },
           {
             "direction": "front",
@@ -284,7 +287,8 @@
             "foregroundComponentAreas": [
               24497
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
           },
           {
             "direction": "front",
@@ -319,7 +323,8 @@
             "foregroundComponentAreas": [
               26045
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
           },
           {
             "direction": "right",
@@ -354,7 +359,8 @@
             "foregroundComponentAreas": [
               21853
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 13
           },
           {
             "direction": "right",
@@ -389,7 +395,8 @@
             "foregroundComponentAreas": [
               22529
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
           },
           {
             "direction": "right",
@@ -424,7 +431,8 @@
             "foregroundComponentAreas": [
               24092
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
           },
           {
             "direction": "right",
@@ -459,7 +467,8 @@
             "foregroundComponentAreas": [
               21251
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 13
           },
           {
             "direction": "back",
@@ -494,7 +503,8 @@
             "foregroundComponentAreas": [
               25790
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 13
           },
           {
             "direction": "back",
@@ -529,7 +539,8 @@
             "foregroundComponentAreas": [
               22837
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
           },
           {
             "direction": "back",
@@ -564,7 +575,8 @@
             "foregroundComponentAreas": [
               24104
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
           },
           {
             "direction": "back",
@@ -599,7 +611,8 @@
             "foregroundComponentAreas": [
               26340
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 13
           },
           {
             "direction": "left",
@@ -634,7 +647,8 @@
             "foregroundComponentAreas": [
               19941
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
           },
           {
             "direction": "left",
@@ -669,7 +683,8 @@
             "foregroundComponentAreas": [
               22608
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
           },
           {
             "direction": "left",
@@ -704,7 +719,8 @@
             "foregroundComponentAreas": [
               24161
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
           },
           {
             "direction": "left",
@@ -739,11 +755,2533 @@
             "foregroundComponentAreas": [
               20512
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
           }
         ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
         "contactSheet": "tests/evidence/b05/ember-drive-run-contact.jpg",
         "atSpeedPreview": "tests/evidence/b05/ember-drive-run-at-speed.gif"
+      },
+      "idle": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/ember-idle-grid-v2.png",
+          "size": [
+            1247,
+            1261
+          ],
+          "sha256": "2fa7753314eba4f76747724bdca771f0f6320c41ea4fb973fa623ce002056c71",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "READY",
+            "INHALE",
+            "SHIFT",
+            "SETTLE"
+          ],
+          "rowCuts": null,
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/ember-drive/idle.webp",
+        "runtimeBytes": 521330,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.781145,
+          "right": 0.773333,
+          "back": 0.797251,
+          "left": 0.781145
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              100,
+              31,
+              258,
+              304
+            ],
+            "trimBox": [
+              94,
+              25,
+              264,
+              310
+            ],
+            "clearedLowAlphaPixels": 6584,
+            "foregroundComponentAreas": [
+              22828
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              81,
+              24,
+              237,
+              304
+            ],
+            "trimBox": [
+              75,
+              18,
+              243,
+              310
+            ],
+            "clearedLowAlphaPixels": 6659,
+            "foregroundComponentAreas": [
+              22736
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 0,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              63,
+              20,
+              220,
+              305
+            ],
+            "trimBox": [
+              57,
+              14,
+              226,
+              311
+            ],
+            "clearedLowAlphaPixels": 6456,
+            "foregroundComponentAreas": [
+              22708
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              47,
+              31,
+              205,
+              305
+            ],
+            "trimBox": [
+              41,
+              25,
+              211,
+              311
+            ],
+            "clearedLowAlphaPixels": 7064,
+            "foregroundComponentAreas": [
+              22561
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              94,
+              30,
+              254,
+              304
+            ],
+            "trimBox": [
+              88,
+              24,
+              260,
+              310
+            ],
+            "clearedLowAlphaPixels": 5884,
+            "foregroundComponentAreas": [
+              20702
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              78,
+              19,
+              239,
+              304
+            ],
+            "trimBox": [
+              72,
+              13,
+              245,
+              310
+            ],
+            "clearedLowAlphaPixels": 6762,
+            "foregroundComponentAreas": [
+              21019
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 315,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              63,
+              16,
+              222,
+              304
+            ],
+            "trimBox": [
+              57,
+              10,
+              228,
+              310
+            ],
+            "clearedLowAlphaPixels": 5814,
+            "foregroundComponentAreas": [
+              20508
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              44,
+              31,
+              208,
+              304
+            ],
+            "trimBox": [
+              38,
+              25,
+              214,
+              310
+            ],
+            "clearedLowAlphaPixels": 6278,
+            "foregroundComponentAreas": [
+              20914
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              96,
+              29,
+              261,
+              292
+            ],
+            "trimBox": [
+              90,
+              23,
+              267,
+              298
+            ],
+            "clearedLowAlphaPixels": 6516,
+            "foregroundComponentAreas": [
+              21217
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 24
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              82,
+              19,
+              241,
+              292
+            ],
+            "trimBox": [
+              76,
+              13,
+              247,
+              298
+            ],
+            "clearedLowAlphaPixels": 6901,
+            "foregroundComponentAreas": [
+              21519
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 19
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 630,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              65,
+              14,
+              224,
+              293
+            ],
+            "trimBox": [
+              59,
+              8,
+              230,
+              299
+            ],
+            "clearedLowAlphaPixels": 6141,
+            "foregroundComponentAreas": [
+              21682
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              45,
+              30,
+              208,
+              293
+            ],
+            "trimBox": [
+              39,
+              24,
+              214,
+              299
+            ],
+            "clearedLowAlphaPixels": 5495,
+            "foregroundComponentAreas": [
+              21406
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 23
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              104,
+              26,
+              268,
+              293
+            ],
+            "trimBox": [
+              98,
+              20,
+              274,
+              299
+            ],
+            "clearedLowAlphaPixels": 6249,
+            "foregroundComponentAreas": [
+              19941
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 22
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              86,
+              14,
+              251,
+              293
+            ],
+            "trimBox": [
+              80,
+              8,
+              257,
+              299
+            ],
+            "clearedLowAlphaPixels": 6131,
+            "foregroundComponentAreas": [
+              19802
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 946,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              68,
+              8,
+              233,
+              293
+            ],
+            "trimBox": [
+              62,
+              2,
+              239,
+              299
+            ],
+            "clearedLowAlphaPixels": 5725,
+            "foregroundComponentAreas": [
+              19696
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              52,
+              30,
+              218,
+              293
+            ],
+            "trimBox": [
+              46,
+              24,
+              224,
+              299
+            ],
+            "clearedLowAlphaPixels": 6854,
+            "foregroundComponentAreas": [
+              19836
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 22
+          }
+        ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
+        "contactSheet": "tests/evidence/b05/ember-drive-idle-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/ember-drive-idle-at-speed.gif"
+      },
+      "dodge": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/ember-dodge-grid-v3.png",
+          "size": [
+            1261,
+            1247
+          ],
+          "sha256": "9502ce799eb5ceb831348aec0365412c5e4caafc3beeb09f4bf619b7ac97f980",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "GUARD",
+            "COIL",
+            "EVADE",
+            "RECOVER"
+          ],
+          "rowCuts": null,
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/ember-drive/dodge.webp",
+        "runtimeBytes": 578082,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.924303,
+          "right": 0.895833,
+          "back": 0.939891,
+          "left": 0.919786
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.924303,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              105,
+              61,
+              242,
+              300
+            ],
+            "trimBox": [
+              99,
+              55,
+              248,
+              306
+            ],
+            "clearedLowAlphaPixels": 6332,
+            "foregroundComponentAreas": [
+              18473
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.924303,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 315,
+              "y": 0,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              98,
+              82,
+              224,
+              296
+            ],
+            "trimBox": [
+              92,
+              76,
+              230,
+              302
+            ],
+            "clearedLowAlphaPixels": 5004,
+            "foregroundComponentAreas": [
+              16869
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.924303,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 630,
+              "y": 0,
+              "width": 316,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              66,
+              83,
+              230,
+              298
+            ],
+            "trimBox": [
+              60,
+              77,
+              236,
+              304
+            ],
+            "clearedLowAlphaPixels": 4797,
+            "foregroundComponentAreas": [
+              17903
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.924303,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 946,
+              "y": 0,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              78,
+              66,
+              216,
+              300
+            ],
+            "trimBox": [
+              72,
+              60,
+              222,
+              306
+            ],
+            "clearedLowAlphaPixels": 5116,
+            "foregroundComponentAreas": [
+              18601
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.895833,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 312,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              101,
+              48,
+              241,
+              283
+            ],
+            "trimBox": [
+              95,
+              42,
+              247,
+              289
+            ],
+            "clearedLowAlphaPixels": 5750,
+            "foregroundComponentAreas": [
+              17002
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 29
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.895833,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 315,
+              "y": 312,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              91,
+              62,
+              213,
+              282
+            ],
+            "trimBox": [
+              85,
+              56,
+              219,
+              288
+            ],
+            "clearedLowAlphaPixels": 4668,
+            "foregroundComponentAreas": [
+              16500
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 30
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.895833,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 630,
+              "y": 312,
+              "width": 316,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              59,
+              71,
+              239,
+              283
+            ],
+            "trimBox": [
+              53,
+              65,
+              245,
+              289
+            ],
+            "clearedLowAlphaPixels": 5105,
+            "foregroundComponentAreas": [
+              17598
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 29
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.895833,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 946,
+              "y": 312,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              76,
+              48,
+              217,
+              283
+            ],
+            "trimBox": [
+              70,
+              42,
+              223,
+              289
+            ],
+            "clearedLowAlphaPixels": 5470,
+            "foregroundComponentAreas": [
+              17632
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 29
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.939891,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 624,
+              "width": 315,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              106,
+              34,
+              251,
+              267
+            ],
+            "trimBox": [
+              100,
+              28,
+              257,
+              273
+            ],
+            "clearedLowAlphaPixels": 5742,
+            "foregroundComponentAreas": [
+              18164
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 34
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.939891,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 315,
+              "y": 624,
+              "width": 315,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              101,
+              48,
+              230,
+              266
+            ],
+            "trimBox": [
+              95,
+              42,
+              236,
+              272
+            ],
+            "clearedLowAlphaPixels": 5632,
+            "foregroundComponentAreas": [
+              17164
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 45
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.939891,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 630,
+              "y": 624,
+              "width": 316,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              94,
+              49,
+              265,
+              265
+            ],
+            "trimBox": [
+              88,
+              43,
+              271,
+              271
+            ],
+            "clearedLowAlphaPixels": 5857,
+            "foregroundComponentAreas": [
+              18071
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 46
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.939891,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 946,
+              "y": 624,
+              "width": 315,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              78,
+              38,
+              222,
+              267
+            ],
+            "trimBox": [
+              72,
+              32,
+              228,
+              273
+            ],
+            "clearedLowAlphaPixels": 5101,
+            "foregroundComponentAreas": [
+              18190
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 38
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.919786,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 935,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              107,
+              27,
+              250,
+              262
+            ],
+            "trimBox": [
+              101,
+              21,
+              256,
+              268
+            ],
+            "clearedLowAlphaPixels": 4827,
+            "foregroundComponentAreas": [
+              16906
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 27
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.919786,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 315,
+              "y": 935,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              105,
+              43,
+              225,
+              262
+            ],
+            "trimBox": [
+              99,
+              37,
+              231,
+              268
+            ],
+            "clearedLowAlphaPixels": 4834,
+            "foregroundComponentAreas": [
+              16414
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 43
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.919786,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 630,
+              "y": 935,
+              "width": 316,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              74,
+              51,
+              249,
+              262
+            ],
+            "trimBox": [
+              68,
+              45,
+              255,
+              268
+            ],
+            "clearedLowAlphaPixels": 4453,
+            "foregroundComponentAreas": [
+              16482
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 50
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.919786,
+            "durationMs": 47.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 946,
+              "y": 935,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              81,
+              30,
+              222,
+              262
+            ],
+            "trimBox": [
+              75,
+              24,
+              228,
+              268
+            ],
+            "clearedLowAlphaPixels": 4562,
+            "foregroundComponentAreas": [
+              17280
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 30
+          }
+        ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
+        "contactSheet": "tests/evidence/b05/ember-drive-dodge-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/ember-drive-dodge-at-speed.gif"
+      },
+      "guardParry": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/ember-guard-grid-v1.png",
+          "size": [
+            1247,
+            1261
+          ],
+          "sha256": "52cb0f0ec7144fa5848d78ba00c57a5a3a5dda73dd3d3134180531c3b29969fd",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "READY",
+            "COVER",
+            "PARRY",
+            "HOLD"
+          ],
+          "rowCuts": null,
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/ember-drive/guardParry.webp",
+        "runtimeBytes": 584954,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.808362,
+          "right": 0.794521,
+          "back": 0.825623,
+          "left": 0.794521
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.808362,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              101,
+              33,
+              262,
+              307
+            ],
+            "trimBox": [
+              95,
+              27,
+              268,
+              313
+            ],
+            "clearedLowAlphaPixels": 13727,
+            "foregroundComponentAreas": [
+              23863
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.808362,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              84,
+              32,
+              245,
+              307
+            ],
+            "trimBox": [
+              78,
+              26,
+              251,
+              313
+            ],
+            "clearedLowAlphaPixels": 11607,
+            "foregroundComponentAreas": [
+              23377
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.808362,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 0,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              59,
+              33,
+              224,
+              307
+            ],
+            "trimBox": [
+              53,
+              27,
+              230,
+              313
+            ],
+            "clearedLowAlphaPixels": 10949,
+            "foregroundComponentAreas": [
+              23975
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.808362,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              48,
+              35,
+              214,
+              306
+            ],
+            "trimBox": [
+              42,
+              29,
+              220,
+              312
+            ],
+            "clearedLowAlphaPixels": 13097,
+            "foregroundComponentAreas": [
+              24078
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 9
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              91,
+              27,
+              254,
+              303
+            ],
+            "trimBox": [
+              85,
+              21,
+              260,
+              309
+            ],
+            "clearedLowAlphaPixels": 15467,
+            "foregroundComponentAreas": [
+              22119
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              77,
+              23,
+              243,
+              303
+            ],
+            "trimBox": [
+              71,
+              17,
+              249,
+              309
+            ],
+            "clearedLowAlphaPixels": 11620,
+            "foregroundComponentAreas": [
+              22543
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 12
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 315,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              60,
+              23,
+              241,
+              302
+            ],
+            "trimBox": [
+              54,
+              17,
+              247,
+              308
+            ],
+            "clearedLowAlphaPixels": 12296,
+            "foregroundComponentAreas": [
+              21839
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 13
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              47,
+              31,
+              217,
+              304
+            ],
+            "trimBox": [
+              41,
+              25,
+              223,
+              310
+            ],
+            "clearedLowAlphaPixels": 11784,
+            "foregroundComponentAreas": [
+              22696
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.825623,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              97,
+              27,
+              266,
+              292
+            ],
+            "trimBox": [
+              91,
+              21,
+              272,
+              298
+            ],
+            "clearedLowAlphaPixels": 18992,
+            "foregroundComponentAreas": [
+              23070
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 24
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.825623,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              84,
+              24,
+              251,
+              291
+            ],
+            "trimBox": [
+              78,
+              18,
+              257,
+              297
+            ],
+            "clearedLowAlphaPixels": 13511,
+            "foregroundComponentAreas": [
+              22444
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 24
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.825623,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 630,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              64,
+              22,
+              232,
+              291
+            ],
+            "trimBox": [
+              58,
+              16,
+              238,
+              297
+            ],
+            "clearedLowAlphaPixels": 13633,
+            "foregroundComponentAreas": [
+              22935
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 22
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.825623,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              52,
+              29,
+              221,
+              291
+            ],
+            "trimBox": [
+              46,
+              23,
+              227,
+              297
+            ],
+            "clearedLowAlphaPixels": 13300,
+            "foregroundComponentAreas": [
+              23182
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 25
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              105,
+              18,
+              278,
+              288
+            ],
+            "trimBox": [
+              99,
+              12,
+              284,
+              294
+            ],
+            "clearedLowAlphaPixels": 14780,
+            "foregroundComponentAreas": [
+              22333
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              90,
+              9,
+              259,
+              289
+            ],
+            "trimBox": [
+              84,
+              3,
+              265,
+              295
+            ],
+            "clearedLowAlphaPixels": 10780,
+            "foregroundComponentAreas": [
+              22764
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 9
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 946,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              68,
+              8,
+              239,
+              288
+            ],
+            "trimBox": [
+              62,
+              2,
+              245,
+              294
+            ],
+            "clearedLowAlphaPixels": 11831,
+            "foregroundComponentAreas": [
+              22058
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.794521,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              62,
+              21,
+              229,
+              288
+            ],
+            "trimBox": [
+              56,
+              15,
+              235,
+              294
+            ],
+            "clearedLowAlphaPixels": 15986,
+            "foregroundComponentAreas": [
+              21877
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 21
+          }
+        ],
+        "timingBasis": "event-driven guard/parry; GIF uses 100ms preview phases",
+        "contactSheet": "tests/evidence/b05/ember-drive-guardParry-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/ember-drive-guardParry-at-speed.gif"
+      },
+      "bolt": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/ember-bolt-grid-v1.png",
+          "size": [
+            1247,
+            1261
+          ],
+          "sha256": "fbcb3f588499552a34105ca6a27cfc87a5e8f619b1eb68bb45608e20d761c564",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "READY",
+            "WINDUP",
+            "RELEASE",
+            "RECOVER"
+          ],
+          "rowCuts": null,
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/ember-drive/bolt.webp",
+        "runtimeBytes": 584030,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.789116,
+          "right": 0.783784,
+          "back": 0.788991,
+          "left": 0.774775
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              96,
+              27,
+              261,
+              305
+            ],
+            "trimBox": [
+              90,
+              21,
+              267,
+              311
+            ],
+            "clearedLowAlphaPixels": 15576,
+            "foregroundComponentAreas": [
+              25059
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              72,
+              26,
+              249,
+              305
+            ],
+            "trimBox": [
+              66,
+              20,
+              255,
+              311
+            ],
+            "clearedLowAlphaPixels": 16868,
+            "foregroundComponentAreas": [
+              27068
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 0,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              51,
+              23,
+              231,
+              305
+            ],
+            "trimBox": [
+              45,
+              17,
+              237,
+              311
+            ],
+            "clearedLowAlphaPixels": 14227,
+            "foregroundComponentAreas": [
+              25611
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 0,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              46,
+              28,
+              211,
+              305
+            ],
+            "trimBox": [
+              40,
+              22,
+              217,
+              311
+            ],
+            "clearedLowAlphaPixels": 18703,
+            "foregroundComponentAreas": [
+              24802
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.783784,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              95,
+              26,
+              258,
+              305
+            ],
+            "trimBox": [
+              89,
+              20,
+              264,
+              311
+            ],
+            "clearedLowAlphaPixels": 16866,
+            "foregroundComponentAreas": [
+              23147
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.783784,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              73,
+              22,
+              243,
+              305
+            ],
+            "trimBox": [
+              67,
+              16,
+              249,
+              311
+            ],
+            "clearedLowAlphaPixels": 17466,
+            "foregroundComponentAreas": [
+              25778
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.783784,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 315,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              61,
+              20,
+              259,
+              304
+            ],
+            "trimBox": [
+              55,
+              14,
+              265,
+              310
+            ],
+            "clearedLowAlphaPixels": 16507,
+            "foregroundComponentAreas": [
+              23836
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.783784,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 315,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              49,
+              27,
+              216,
+              305
+            ],
+            "trimBox": [
+              43,
+              21,
+              222,
+              311
+            ],
+            "clearedLowAlphaPixels": 16756,
+            "foregroundComponentAreas": [
+              23139
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.788991,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              92,
+              26,
+              266,
+              293
+            ],
+            "trimBox": [
+              86,
+              20,
+              272,
+              299
+            ],
+            "clearedLowAlphaPixels": 24150,
+            "foregroundComponentAreas": [
+              23979
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 23
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.788991,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              74,
+              18,
+              254,
+              293
+            ],
+            "trimBox": [
+              68,
+              12,
+              260,
+              299
+            ],
+            "clearedLowAlphaPixels": 21101,
+            "foregroundComponentAreas": [
+              25393
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.788991,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 630,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              63,
+              15,
+              269,
+              293
+            ],
+            "trimBox": [
+              57,
+              9,
+              275,
+              299
+            ],
+            "clearedLowAlphaPixels": 19314,
+            "foregroundComponentAreas": [
+              25774
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.788991,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 630,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              48,
+              26,
+              219,
+              293
+            ],
+            "trimBox": [
+              42,
+              20,
+              225,
+              299
+            ],
+            "clearedLowAlphaPixels": 19806,
+            "foregroundComponentAreas": [
+              23995
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 23
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.774775,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              102,
+              22,
+              273,
+              292
+            ],
+            "trimBox": [
+              96,
+              16,
+              279,
+              298
+            ],
+            "clearedLowAlphaPixels": 22804,
+            "foregroundComponentAreas": [
+              22486
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 22
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.774775,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              84,
+              10,
+              253,
+              292
+            ],
+            "trimBox": [
+              78,
+              4,
+              259,
+              298
+            ],
+            "clearedLowAlphaPixels": 18134,
+            "foregroundComponentAreas": [
+              24307
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.774775,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 624,
+              "y": 946,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              27,
+              8,
+              237,
+              291
+            ],
+            "trimBox": [
+              21,
+              2,
+              243,
+              297
+            ],
+            "clearedLowAlphaPixels": 20456,
+            "foregroundComponentAreas": [
+              23975
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.774775,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 935,
+              "y": 946,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              57,
+              26,
+              227,
+              291
+            ],
+            "trimBox": [
+              51,
+              20,
+              233,
+              297
+            ],
+            "clearedLowAlphaPixels": 23065,
+            "foregroundComponentAreas": [
+              22082
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 24
+          }
+        ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
+        "contactSheet": "tests/evidence/b05/ember-drive-bolt-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/ember-drive-bolt-at-speed.gif"
       },
       "icons": {
         "source": "art-source/b05/review/ember-ability-icons-v1.png",
@@ -1285,6 +3823,27 @@
       },
       "contactSheet": "tests/evidence/b05/ember-drive-combo-contact.jpg",
       "atSpeedPreview": "tests/evidence/b05/ember-drive-combo-at-speed.gif",
+      "phaseDurationsMs": {
+        "hit1": [
+          65,
+          55,
+          114,
+          76
+        ],
+        "hit2": [
+          38,
+          52,
+          65,
+          200
+        ],
+        "hit3": [
+          57,
+          78,
+          85,
+          300
+        ]
+      },
+      "timingBasis": "B04 simulation windup/active/recovery; windup and recovery are split across candidate anticipation/settle poses; offline GIF is only a phase preview",
       "frames": [
         {
           "direction": "front",
@@ -1295,7 +3854,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.719665,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -1333,7 +3892,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.719665,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -1371,7 +3930,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.719665,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -1409,7 +3968,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.719665,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -1447,7 +4006,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.753247,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -1485,7 +4044,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.753247,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -1523,7 +4082,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.753247,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -1561,7 +4120,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.753247,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -1599,7 +4158,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.64624,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -1637,7 +4196,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.64624,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -1713,7 +4272,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.64624,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -1751,7 +4310,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.646617,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -1789,7 +4348,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.646617,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -1827,7 +4386,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.646617,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -1865,7 +4424,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.646617,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -1903,7 +4462,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.750809,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -1941,7 +4500,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.750809,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -1979,7 +4538,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.750809,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -2017,7 +4576,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.750809,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -2055,7 +4614,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.640884,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -2093,7 +4652,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.640884,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -2170,7 +4729,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.640884,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -2208,7 +4767,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.728814,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -2246,7 +4805,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.728814,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -2284,7 +4843,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.728814,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -2322,7 +4881,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.728814,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -2360,7 +4919,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.7557,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -2398,7 +4957,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.7557,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -2436,7 +4995,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.7557,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -2475,7 +5034,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.7557,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -2513,7 +5072,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.640884,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -2551,7 +5110,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.640884,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -2627,7 +5186,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.640884,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -2665,7 +5224,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.669261,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -2703,7 +5262,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.669261,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -2741,7 +5300,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.669261,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -2779,7 +5338,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.669261,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -2818,7 +5377,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.75817,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -2856,7 +5415,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.75817,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -2894,7 +5453,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.75817,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -2932,7 +5491,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.75817,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -2970,7 +5529,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.64624,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -3008,7 +5567,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.64624,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -3084,7 +5643,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.64624,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -3118,12 +5677,12 @@
         "combo1": true,
         "combo2": true,
         "combo3": true,
-        "idle": false,
+        "idle": true,
         "run": true,
-        "dodge": false,
-        "guardParry": false,
+        "dodge": true,
+        "guardParry": true,
         "hurtKo": false,
-        "bolt": false,
+        "bolt": true,
         "special": false,
         "finisher": false,
         "activation": false,
@@ -3147,10 +5706,10 @@
             "columns": 4,
             "rows": 4,
             "columnOrder": [
-              "phase 1",
-              "phase 2",
-              "phase 3",
-              "phase 4"
+              "windup",
+              "contact",
+              "recovery",
+              "settle"
             ],
             "rowOrder": [
               "front",
@@ -3171,10 +5730,10 @@
             "columns": 4,
             "rows": 4,
             "columnOrder": [
-              "phase 1",
-              "phase 2",
-              "phase 3",
-              "phase 4"
+              "windup",
+              "anticipation",
+              "contact",
+              "recovery"
             ],
             "rowOrder": [
               "front",
@@ -3195,10 +5754,10 @@
             "columns": 4,
             "rows": 4,
             "columnOrder": [
-              "phase 1",
-              "phase 2",
-              "phase 3",
-              "phase 4"
+              "windup",
+              "anticipation",
+              "contact",
+              "recovery"
             ],
             "rowOrder": [
               "front",
@@ -3222,11 +5781,12 @@
           "columns": 4,
           "rows": 4,
           "columnOrder": [
-            "push-off",
-            "stride",
-            "pass",
-            "land"
+            "PUSH-OFF",
+            "STRIDE",
+            "PASS",
+            "LAND"
           ],
+          "rowCuts": null,
           "rowOrder": [
             "front",
             "right",
@@ -3292,7 +5852,8 @@
             "foregroundComponentAreas": [
               18783
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
           },
           {
             "direction": "front",
@@ -3327,7 +5888,8 @@
             "foregroundComponentAreas": [
               18479
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
           },
           {
             "direction": "front",
@@ -3362,7 +5924,8 @@
             "foregroundComponentAreas": [
               17308
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
           },
           {
             "direction": "front",
@@ -3397,7 +5960,8 @@
             "foregroundComponentAreas": [
               17947
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
           },
           {
             "direction": "right",
@@ -3432,7 +5996,8 @@
             "foregroundComponentAreas": [
               19772
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 9
           },
           {
             "direction": "right",
@@ -3467,7 +6032,8 @@
             "foregroundComponentAreas": [
               15763
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
           },
           {
             "direction": "right",
@@ -3502,7 +6068,8 @@
             "foregroundComponentAreas": [
               16291
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
           },
           {
             "direction": "right",
@@ -3537,7 +6104,8 @@
             "foregroundComponentAreas": [
               17883
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
           },
           {
             "direction": "back",
@@ -3572,7 +6140,8 @@
             "foregroundComponentAreas": [
               19418
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
           },
           {
             "direction": "back",
@@ -3607,7 +6176,8 @@
             "foregroundComponentAreas": [
               17621
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
           },
           {
             "direction": "back",
@@ -3642,7 +6212,8 @@
             "foregroundComponentAreas": [
               17780
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
           },
           {
             "direction": "back",
@@ -3677,7 +6248,8 @@
             "foregroundComponentAreas": [
               18654
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
           },
           {
             "direction": "left",
@@ -3712,7 +6284,8 @@
             "foregroundComponentAreas": [
               19879
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 9
           },
           {
             "direction": "left",
@@ -3747,7 +6320,8 @@
             "foregroundComponentAreas": [
               16132
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
           },
           {
             "direction": "left",
@@ -3782,7 +6356,8 @@
             "foregroundComponentAreas": [
               16141
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 10
           },
           {
             "direction": "left",
@@ -3817,11 +6392,2540 @@
             "foregroundComponentAreas": [
               18974
             ],
-            "cellBorderPixelsAboveAlphaFloor": 0
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
           }
         ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
         "contactSheet": "tests/evidence/b05/glass-current-run-contact.jpg",
         "atSpeedPreview": "tests/evidence/b05/glass-current-run-at-speed.gif"
+      },
+      "idle": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/glass-idle-grid-v2.png",
+          "size": [
+            1246,
+            1263
+          ],
+          "sha256": "af2e7e19437bb387eab301f31ac627df755f399139931916fb0bc8b807299951",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "READY",
+            "INHALE",
+            "SHIFT",
+            "SETTLE"
+          ],
+          "rowCuts": null,
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/glass-current/idle.webp",
+        "runtimeBytes": 528450,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.789116,
+          "right": 0.8,
+          "back": 0.802768,
+          "left": 0.8
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              101,
+              20,
+              237,
+              300
+            ],
+            "trimBox": [
+              95,
+              14,
+              243,
+              306
+            ],
+            "clearedLowAlphaPixels": 5932,
+            "foregroundComponentAreas": [
+              20859
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 0,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              88,
+              19,
+              225,
+              300
+            ],
+            "trimBox": [
+              82,
+              13,
+              231,
+              306
+            ],
+            "clearedLowAlphaPixels": 5828,
+            "foregroundComponentAreas": [
+              20931
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 0,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              75,
+              18,
+              213,
+              300
+            ],
+            "trimBox": [
+              69,
+              12,
+              219,
+              306
+            ],
+            "clearedLowAlphaPixels": 5974,
+            "foregroundComponentAreas": [
+              20945
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.789116,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 0,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              63,
+              20,
+              202,
+              300
+            ],
+            "trimBox": [
+              57,
+              14,
+              208,
+              306
+            ],
+            "clearedLowAlphaPixels": 5618,
+            "foregroundComponentAreas": [
+              20937
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 316,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              101,
+              24,
+              243,
+              300
+            ],
+            "trimBox": [
+              95,
+              18,
+              249,
+              306
+            ],
+            "clearedLowAlphaPixels": 5412,
+            "foregroundComponentAreas": [
+              20707
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 316,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              87,
+              23,
+              230,
+              300
+            ],
+            "trimBox": [
+              81,
+              17,
+              236,
+              306
+            ],
+            "clearedLowAlphaPixels": 5301,
+            "foregroundComponentAreas": [
+              20919
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 316,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              77,
+              22,
+              221,
+              300
+            ],
+            "trimBox": [
+              71,
+              16,
+              227,
+              306
+            ],
+            "clearedLowAlphaPixels": 5813,
+            "foregroundComponentAreas": [
+              20412
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 316,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              66,
+              25,
+              210,
+              300
+            ],
+            "trimBox": [
+              60,
+              19,
+              216,
+              306
+            ],
+            "clearedLowAlphaPixels": 5532,
+            "foregroundComponentAreas": [
+              20816
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 632,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              94,
+              22,
+              231,
+              297
+            ],
+            "trimBox": [
+              88,
+              16,
+              237,
+              303
+            ],
+            "clearedLowAlphaPixels": 6274,
+            "foregroundComponentAreas": [
+              20295
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 632,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              81,
+              21,
+              222,
+              297
+            ],
+            "trimBox": [
+              75,
+              15,
+              228,
+              303
+            ],
+            "clearedLowAlphaPixels": 5505,
+            "foregroundComponentAreas": [
+              20649
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 632,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              71,
+              20,
+              213,
+              297
+            ],
+            "trimBox": [
+              65,
+              14,
+              219,
+              303
+            ],
+            "clearedLowAlphaPixels": 5607,
+            "foregroundComponentAreas": [
+              20694
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 632,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              60,
+              24,
+              200,
+              297
+            ],
+            "trimBox": [
+              54,
+              18,
+              206,
+              303
+            ],
+            "clearedLowAlphaPixels": 6064,
+            "foregroundComponentAreas": [
+              20296
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 947,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              91,
+              24,
+              234,
+              299
+            ],
+            "trimBox": [
+              85,
+              18,
+              240,
+              305
+            ],
+            "clearedLowAlphaPixels": 6135,
+            "foregroundComponentAreas": [
+              19564
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 947,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              78,
+              22,
+              221,
+              299
+            ],
+            "trimBox": [
+              72,
+              16,
+              227,
+              305
+            ],
+            "clearedLowAlphaPixels": 5841,
+            "foregroundComponentAreas": [
+              19465
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 947,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              68,
+              21,
+              212,
+              299
+            ],
+            "trimBox": [
+              62,
+              15,
+              218,
+              305
+            ],
+            "clearedLowAlphaPixels": 5975,
+            "foregroundComponentAreas": [
+              19545
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.8,
+            "durationMs": 160,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 947,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              57,
+              25,
+              201,
+              299
+            ],
+            "trimBox": [
+              51,
+              19,
+              207,
+              305
+            ],
+            "clearedLowAlphaPixels": 6230,
+            "foregroundComponentAreas": [
+              19620
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          }
+        ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
+        "contactSheet": "tests/evidence/b05/glass-current-idle-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/glass-current-idle-at-speed.gif"
+      },
+      "dodge": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/glass-dodge-grid-v2.png",
+          "size": [
+            1263,
+            1246
+          ],
+          "sha256": "0efb34fa97cd0f5f44d622d21bdef1dd60f87508acaff902fd18c93a622d6bd3",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "GUARD",
+            "COIL",
+            "EVADE",
+            "RECOVER"
+          ],
+          "rowCuts": [
+            0,
+            316,
+            623,
+            934,
+            1246
+          ],
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/glass-current/dodge.webp",
+        "runtimeBytes": 548802,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.885496,
+          "right": 0.909804,
+          "back": 0.920635,
+          "left": 0.928
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.885496,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 316,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              106,
+              58,
+              235,
+              308
+            ],
+            "trimBox": [
+              100,
+              52,
+              241,
+              314
+            ],
+            "clearedLowAlphaPixels": 4422,
+            "foregroundComponentAreas": [
+              18017
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.885496,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 316,
+              "y": 0,
+              "width": 316,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              85,
+              89,
+              207,
+              308
+            ],
+            "trimBox": [
+              79,
+              83,
+              213,
+              314
+            ],
+            "clearedLowAlphaPixels": 3897,
+            "foregroundComponentAreas": [
+              16136
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.885496,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 632,
+              "y": 0,
+              "width": 315,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              48,
+              96,
+              198,
+              305
+            ],
+            "trimBox": [
+              42,
+              90,
+              204,
+              311
+            ],
+            "clearedLowAlphaPixels": 4046,
+            "foregroundComponentAreas": [
+              15932
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 11
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.885496,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 947,
+              "y": 0,
+              "width": 316,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              81,
+              63,
+              203,
+              308
+            ],
+            "trimBox": [
+              75,
+              57,
+              209,
+              314
+            ],
+            "clearedLowAlphaPixels": 4433,
+            "foregroundComponentAreas": [
+              17948
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.909804,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 316,
+              "width": 316,
+              "height": 307
+            },
+            "sourceAlphaBounds": [
+              105,
+              55,
+              230,
+              298
+            ],
+            "trimBox": [
+              99,
+              49,
+              236,
+              304
+            ],
+            "clearedLowAlphaPixels": 4896,
+            "foregroundComponentAreas": [
+              16618
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 9
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.909804,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 316,
+              "y": 316,
+              "width": 316,
+              "height": 307
+            },
+            "sourceAlphaBounds": [
+              82,
+              84,
+              211,
+              299
+            ],
+            "trimBox": [
+              76,
+              78,
+              217,
+              305
+            ],
+            "clearedLowAlphaPixels": 4485,
+            "foregroundComponentAreas": [
+              15955
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.909804,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 632,
+              "y": 316,
+              "width": 315,
+              "height": 307
+            },
+            "sourceAlphaBounds": [
+              57,
+              88,
+              217,
+              299
+            ],
+            "trimBox": [
+              51,
+              82,
+              223,
+              305
+            ],
+            "clearedLowAlphaPixels": 4491,
+            "foregroundComponentAreas": [
+              15504
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.909804,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 947,
+              "y": 316,
+              "width": 316,
+              "height": 307
+            },
+            "sourceAlphaBounds": [
+              79,
+              60,
+              204,
+              299
+            ],
+            "trimBox": [
+              73,
+              54,
+              210,
+              305
+            ],
+            "clearedLowAlphaPixels": 4605,
+            "foregroundComponentAreas": [
+              16720
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 8
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.920635,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 623,
+              "width": 316,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              104,
+              47,
+              230,
+              287
+            ],
+            "trimBox": [
+              98,
+              41,
+              236,
+              293
+            ],
+            "clearedLowAlphaPixels": 4825,
+            "foregroundComponentAreas": [
+              17387
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 24
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.920635,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 316,
+              "y": 623,
+              "width": 316,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              100,
+              71,
+              214,
+              287
+            ],
+            "trimBox": [
+              94,
+              65,
+              220,
+              293
+            ],
+            "clearedLowAlphaPixels": 4135,
+            "foregroundComponentAreas": [
+              15839
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 24
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.920635,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 632,
+              "y": 623,
+              "width": 315,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              58,
+              72,
+              227,
+              289
+            ],
+            "trimBox": [
+              52,
+              66,
+              233,
+              295
+            ],
+            "clearedLowAlphaPixels": 3946,
+            "foregroundComponentAreas": [
+              16595
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 22
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.920635,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 947,
+              "y": 623,
+              "width": 316,
+              "height": 311
+            },
+            "sourceAlphaBounds": [
+              80,
+              51,
+              207,
+              287
+            ],
+            "trimBox": [
+              74,
+              45,
+              213,
+              293
+            ],
+            "clearedLowAlphaPixels": 5435,
+            "foregroundComponentAreas": [
+              17476
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 24
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.928,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 934,
+              "width": 316,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              103,
+              38,
+              232,
+              276
+            ],
+            "trimBox": [
+              97,
+              32,
+              238,
+              282
+            ],
+            "clearedLowAlphaPixels": 4901,
+            "foregroundComponentAreas": [
+              15949
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 36
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.928,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 316,
+              "y": 934,
+              "width": 316,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              89,
+              65,
+              218,
+              274
+            ],
+            "trimBox": [
+              83,
+              59,
+              224,
+              280
+            ],
+            "clearedLowAlphaPixels": 4723,
+            "foregroundComponentAreas": [
+              15473
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 38
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.928,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 632,
+              "y": 934,
+              "width": 315,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              59,
+              65,
+              209,
+              275
+            ],
+            "trimBox": [
+              53,
+              59,
+              215,
+              281
+            ],
+            "clearedLowAlphaPixels": 3539,
+            "foregroundComponentAreas": [
+              15359
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 37
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.928,
+            "durationMs": 60,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 947,
+              "y": 934,
+              "width": 316,
+              "height": 312
+            },
+            "sourceAlphaBounds": [
+              79,
+              39,
+              211,
+              277
+            ],
+            "trimBox": [
+              73,
+              33,
+              217,
+              283
+            ],
+            "clearedLowAlphaPixels": 4850,
+            "foregroundComponentAreas": [
+              16248
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 35
+          }
+        ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
+        "contactSheet": "tests/evidence/b05/glass-current-dodge-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/glass-current-dodge-at-speed.gif"
+      },
+      "guardParry": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/glass-guard-grid-v1.png",
+          "size": [
+            1246,
+            1263
+          ],
+          "sha256": "433b468effa730bd67e5d91e6c6c89cf5e677d1b2f2f813554eccf3a0bc0f784",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "READY",
+            "COVER",
+            "PARRY",
+            "HOLD"
+          ],
+          "rowCuts": null,
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/glass-current/guardParry.webp",
+        "runtimeBytes": 587348,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.786441,
+          "right": 0.791809,
+          "back": 0.797251,
+          "left": 0.802768
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.786441,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              98,
+              17,
+              239,
+              300
+            ],
+            "trimBox": [
+              92,
+              11,
+              245,
+              306
+            ],
+            "clearedLowAlphaPixels": 14690,
+            "foregroundComponentAreas": [
+              23315
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 16
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.786441,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 0,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              89,
+              18,
+              227,
+              301
+            ],
+            "trimBox": [
+              83,
+              12,
+              233,
+              307
+            ],
+            "clearedLowAlphaPixels": 15295,
+            "foregroundComponentAreas": [
+              22583
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.786441,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 0,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              71,
+              18,
+              226,
+              301
+            ],
+            "trimBox": [
+              65,
+              12,
+              232,
+              307
+            ],
+            "clearedLowAlphaPixels": 13463,
+            "foregroundComponentAreas": [
+              23721
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.786441,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 0,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              62,
+              19,
+              207,
+              301
+            ],
+            "trimBox": [
+              56,
+              13,
+              213,
+              307
+            ],
+            "clearedLowAlphaPixels": 17523,
+            "foregroundComponentAreas": [
+              23316
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 316,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              96,
+              21,
+              246,
+              302
+            ],
+            "trimBox": [
+              90,
+              15,
+              252,
+              308
+            ],
+            "clearedLowAlphaPixels": 16767,
+            "foregroundComponentAreas": [
+              23060
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 316,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              83,
+              21,
+              234,
+              302
+            ],
+            "trimBox": [
+              77,
+              15,
+              240,
+              308
+            ],
+            "clearedLowAlphaPixels": 16228,
+            "foregroundComponentAreas": [
+              22459
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 316,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              75,
+              21,
+              239,
+              302
+            ],
+            "trimBox": [
+              69,
+              15,
+              245,
+              308
+            ],
+            "clearedLowAlphaPixels": 16810,
+            "foregroundComponentAreas": [
+              23360
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 316,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              64,
+              24,
+              216,
+              302
+            ],
+            "trimBox": [
+              58,
+              18,
+              222,
+              308
+            ],
+            "clearedLowAlphaPixels": 19720,
+            "foregroundComponentAreas": [
+              23119
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 14
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 632,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              88,
+              18,
+              236,
+              297
+            ],
+            "trimBox": [
+              82,
+              12,
+              242,
+              303
+            ],
+            "clearedLowAlphaPixels": 16381,
+            "foregroundComponentAreas": [
+              23126
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 632,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              82,
+              19,
+              222,
+              297
+            ],
+            "trimBox": [
+              76,
+              13,
+              228,
+              303
+            ],
+            "clearedLowAlphaPixels": 16943,
+            "foregroundComponentAreas": [
+              22277
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 632,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              50,
+              19,
+              215,
+              297
+            ],
+            "trimBox": [
+              44,
+              13,
+              221,
+              303
+            ],
+            "clearedLowAlphaPixels": 15712,
+            "foregroundComponentAreas": [
+              22856
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 632,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              62,
+              19,
+              212,
+              297
+            ],
+            "trimBox": [
+              56,
+              13,
+              218,
+              303
+            ],
+            "clearedLowAlphaPixels": 18977,
+            "foregroundComponentAreas": [
+              22786
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 947,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              90,
+              21,
+              237,
+              296
+            ],
+            "trimBox": [
+              84,
+              15,
+              243,
+              302
+            ],
+            "clearedLowAlphaPixels": 15183,
+            "foregroundComponentAreas": [
+              22105
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 20
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 947,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              78,
+              22,
+              224,
+              297
+            ],
+            "trimBox": [
+              72,
+              16,
+              230,
+              303
+            ],
+            "clearedLowAlphaPixels": 15168,
+            "foregroundComponentAreas": [
+              22136
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 19
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 947,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              68,
+              20,
+              215,
+              297
+            ],
+            "trimBox": [
+              62,
+              14,
+              221,
+              303
+            ],
+            "clearedLowAlphaPixels": 16435,
+            "foregroundComponentAreas": [
+              22237
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 19
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.802768,
+            "durationMs": null,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 947,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              62,
+              23,
+              207,
+              296
+            ],
+            "trimBox": [
+              56,
+              17,
+              213,
+              302
+            ],
+            "clearedLowAlphaPixels": 18182,
+            "foregroundComponentAreas": [
+              22114
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 20
+          }
+        ],
+        "timingBasis": "event-driven guard/parry; GIF uses 100ms preview phases",
+        "contactSheet": "tests/evidence/b05/glass-current-guardParry-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/glass-current-guardParry-at-speed.gif"
+      },
+      "bolt": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/glass-bolt-grid-v1.png",
+          "size": [
+            1246,
+            1263
+          ],
+          "sha256": "d341347e4f02616156da07217b4193ff26469770d6911840aac2661207673be9",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "READY",
+            "WINDUP",
+            "RELEASE",
+            "RECOVER"
+          ],
+          "rowCuts": null,
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/glass-current/bolt.webp",
+        "runtimeBytes": 574322,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.781145,
+          "right": 0.7713,
+          "back": 0.791809,
+          "left": 0.797251
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              99,
+              17,
+              238,
+              301
+            ],
+            "trimBox": [
+              93,
+              11,
+              244,
+              307
+            ],
+            "clearedLowAlphaPixels": 6585,
+            "foregroundComponentAreas": [
+              22837
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 0,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              68,
+              18,
+              226,
+              301
+            ],
+            "trimBox": [
+              62,
+              12,
+              232,
+              307
+            ],
+            "clearedLowAlphaPixels": 6361,
+            "foregroundComponentAreas": [
+              24258
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 0,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              69,
+              16,
+              217,
+              301
+            ],
+            "trimBox": [
+              63,
+              10,
+              223,
+              307
+            ],
+            "clearedLowAlphaPixels": 5447,
+            "foregroundComponentAreas": [
+              22863
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 0,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              60,
+              18,
+              201,
+              301
+            ],
+            "trimBox": [
+              54,
+              12,
+              207,
+              307
+            ],
+            "clearedLowAlphaPixels": 5516,
+            "foregroundComponentAreas": [
+              22997
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.7713,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 316,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              97,
+              22,
+              245,
+              301
+            ],
+            "trimBox": [
+              91,
+              16,
+              251,
+              307
+            ],
+            "clearedLowAlphaPixels": 6652,
+            "foregroundComponentAreas": [
+              22528
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.7713,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 316,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              57,
+              21,
+              232,
+              301
+            ],
+            "trimBox": [
+              51,
+              15,
+              238,
+              307
+            ],
+            "clearedLowAlphaPixels": 5663,
+            "foregroundComponentAreas": [
+              24484
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.7713,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 316,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              59,
+              21,
+              270,
+              301
+            ],
+            "trimBox": [
+              53,
+              15,
+              276,
+              307
+            ],
+            "clearedLowAlphaPixels": 6637,
+            "foregroundComponentAreas": [
+              24501
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.7713,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 316,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              60,
+              22,
+              211,
+              301
+            ],
+            "trimBox": [
+              54,
+              16,
+              217,
+              307
+            ],
+            "clearedLowAlphaPixels": 5348,
+            "foregroundComponentAreas": [
+              22764
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 15
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 632,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              94,
+              18,
+              232,
+              297
+            ],
+            "trimBox": [
+              88,
+              12,
+              238,
+              303
+            ],
+            "clearedLowAlphaPixels": 6943,
+            "foregroundComponentAreas": [
+              22589
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 632,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              75,
+              18,
+              225,
+              297
+            ],
+            "trimBox": [
+              69,
+              12,
+              231,
+              303
+            ],
+            "clearedLowAlphaPixels": 6079,
+            "foregroundComponentAreas": [
+              22842
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 632,
+              "width": 311,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              65,
+              17,
+              268,
+              298
+            ],
+            "trimBox": [
+              59,
+              11,
+              274,
+              304
+            ],
+            "clearedLowAlphaPixels": 6553,
+            "foregroundComponentAreas": [
+              23911
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.791809,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 632,
+              "width": 312,
+              "height": 315
+            },
+            "sourceAlphaBounds": [
+              61,
+              22,
+              200,
+              297
+            ],
+            "trimBox": [
+              55,
+              16,
+              206,
+              303
+            ],
+            "clearedLowAlphaPixels": 6308,
+            "foregroundComponentAreas": [
+              22447,
+              1
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 18
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 947,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              91,
+              21,
+              235,
+              299
+            ],
+            "trimBox": [
+              85,
+              15,
+              241,
+              305
+            ],
+            "clearedLowAlphaPixels": 5988,
+            "foregroundComponentAreas": [
+              21494
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 52.5,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 312,
+              "y": 947,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              75,
+              21,
+              223,
+              299
+            ],
+            "trimBox": [
+              69,
+              15,
+              229,
+              305
+            ],
+            "clearedLowAlphaPixels": 6055,
+            "foregroundComponentAreas": [
+              22449
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 55,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 623,
+              "y": 947,
+              "width": 311,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              36,
+              20,
+              213,
+              299
+            ],
+            "trimBox": [
+              30,
+              14,
+              219,
+              305
+            ],
+            "clearedLowAlphaPixels": 5994,
+            "foregroundComponentAreas": [
+              22873
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.797251,
+            "durationMs": 240,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 934,
+              "y": 947,
+              "width": 312,
+              "height": 316
+            },
+            "sourceAlphaBounds": [
+              57,
+              21,
+              206,
+              299
+            ],
+            "trimBox": [
+              51,
+              15,
+              212,
+              305
+            ],
+            "clearedLowAlphaPixels": 5695,
+            "foregroundComponentAreas": [
+              22209
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0,
+            "minimumCellMargin": 17
+          }
+        ],
+        "timingBasis": "simulation timing; GIF rounded to milliseconds",
+        "contactSheet": "tests/evidence/b05/glass-current-bolt-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/glass-current-bolt-at-speed.gif"
       },
       "icons": {
         "source": "art-source/b05/review/glass-ability-icons-v1.png",
@@ -4353,6 +9457,27 @@
       },
       "contactSheet": "tests/evidence/b05/glass-current-combo-contact.jpg",
       "atSpeedPreview": "tests/evidence/b05/glass-current-combo-at-speed.gif",
+      "phaseDurationsMs": {
+        "hit1": [
+          65,
+          55,
+          114,
+          76
+        ],
+        "hit2": [
+          38,
+          52,
+          65,
+          200
+        ],
+        "hit3": [
+          57,
+          78,
+          85,
+          300
+        ]
+      },
+      "timingBasis": "B04 simulation windup/active/recovery; windup and recovery are split across candidate anticipation/settle poses; offline GIF is only a phase preview",
       "frames": [
         {
           "direction": "front",
@@ -4363,7 +9488,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -4401,7 +9526,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -4439,7 +9564,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -4477,7 +9602,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -4515,7 +9640,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -4553,7 +9678,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -4591,7 +9716,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -4629,7 +9754,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -4667,7 +9792,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.939271,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -4705,7 +9830,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.939271,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -4781,7 +9906,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.939271,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -4819,7 +9944,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -4857,7 +9982,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -4895,7 +10020,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -4933,7 +10058,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -4971,7 +10096,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.764444,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -5009,7 +10134,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.764444,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -5047,7 +10172,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.764444,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -5085,7 +10210,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.764444,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -5123,7 +10248,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.928,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -5161,7 +10286,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.928,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -5237,7 +10362,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.928,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -5275,7 +10400,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -5313,7 +10438,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -5351,7 +10476,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -5389,7 +10514,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.736508,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -5427,7 +10552,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -5465,7 +10590,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -5503,7 +10628,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -5541,7 +10666,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.770764,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -5579,7 +10704,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.935484,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -5617,7 +10742,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.935484,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -5693,7 +10818,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.935484,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -5731,7 +10856,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.741214,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 0,
@@ -5769,7 +10894,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.741214,
-          "durationMs": 85,
+          "durationMs": 55,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 1,
@@ -5807,7 +10932,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.741214,
-          "durationMs": 85,
+          "durationMs": 114,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 2,
@@ -5845,7 +10970,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.741214,
-          "durationMs": 85,
+          "durationMs": 76,
           "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
           "sourceHit": "hit1",
           "sourcePhase": 3,
@@ -5884,7 +11009,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.751092,
-          "durationMs": 85,
+          "durationMs": 38,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 0,
@@ -5922,7 +11047,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.751092,
-          "durationMs": 85,
+          "durationMs": 52,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 1,
@@ -5960,7 +11085,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.751092,
-          "durationMs": 85,
+          "durationMs": 65,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 2,
@@ -5998,7 +11123,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.751092,
-          "durationMs": 85,
+          "durationMs": 200,
           "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
           "sourceHit": "hit2",
           "sourcePhase": 3,
@@ -6036,7 +11161,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.928,
-          "durationMs": 85,
+          "durationMs": 57,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 0,
@@ -6074,7 +11199,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.928,
-          "durationMs": 85,
+          "durationMs": 78,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 1,
@@ -6150,7 +11275,7 @@
             248
           ],
           "uniformHitDirectionScale": 0.928,
-          "durationMs": 85,
+          "durationMs": 300,
           "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
           "sourceHit": "hit3",
           "sourcePhase": 3,
@@ -6184,12 +11309,12 @@
         "combo1": true,
         "combo2": true,
         "combo3": true,
-        "idle": false,
+        "idle": true,
         "run": true,
-        "dodge": false,
-        "guardParry": false,
+        "dodge": true,
+        "guardParry": true,
         "hurtKo": false,
-        "bolt": false,
+        "bolt": true,
         "special": false,
         "finisher": false,
         "activation": false,
@@ -6199,7 +11324,28 @@
       }
     }
   },
+  "scaleComparison": "tests/evidence/b05/base-ember-glass-scale-comparison.jpg",
   "rejectedDrafts": [
+    {
+      "source": "art-source/b05/rejected/ember-dodge-grid-v1-unsafe-margin.png",
+      "sha256": "3d34d3a565b5a8fe0db03fc77f492b8fe116a902d2618e36313ad2c4ab5c6ee4",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/ember-dodge-grid-v2-stance-mismatch.png",
+      "sha256": "d7944bcb47e50e33ee6aa8edd233fa1de287f7774dbca17eaf896475c910a068",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/ember-hurtko-grid-v1-cell-edge-noise.png",
+      "sha256": "48d0326be0fd65a51ffbc1fbef0a786475915cbc9ec5723358b57a31963206e7",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/ember-idle-grid-v1-wrong-facing.png",
+      "sha256": "a37c5430b281ecec405de4334963b9d826a265f738becdaca8627e6cc6a5b6fd",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
     {
       "source": "art-source/b05/rejected/glass-combo-hit2-grid-top-edge-rejected.png",
       "sha256": "7ce522f0c8e0ec8871f2f74059395b8789666ae8c2f2cbe4fdc000e1547a3fcf",
@@ -6219,18 +11365,31 @@
       "source": "art-source/b05/rejected/glass-combo-hit3-grid-trailing-cut-rejected.png",
       "sha256": "31f53e07ea8c4383d818a05e2793d80d2d2f9f7068ac0d9ebf94319eb51f97d0",
       "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/glass-dodge-grid-v1-stance-mismatch.png",
+      "sha256": "26e4fe1e2eea57e2e7cfe2e12917da8f94b636e4fbbe5dc58ad9f2312df69b5c",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/glass-hurtko-grid-v1-repeated-left-facing.png",
+      "sha256": "9c7b449fb5b26c55b141d60e12a3cd188aad9d314579031da73531cc39dfb812",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/glass-idle-grid-v1-edge-contact.png",
+      "sha256": "dfca1227a628b9eb8131ca5a4277cc19a212d20248278e603d4294cc59db6003",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
     }
   ],
   "missingCoverage": [
-    "idle",
-    "dodge",
-    "guard/parry character animation",
     "hurt/KO character animation",
+    "form-specific start/stop transitions",
     "fluid activation/deactivation character animation",
     "active loop character animation",
     "fluid authored animation beyond 4 key poses",
     "dedicated form audio and active loops",
-    "Glass piercing projectile/finisher character animation"
+    "form special/finisher character animation"
   ],
   "limitations": [
     "These 12-frame action atlases are production candidates, not owner-approved art.",

@@ -10,7 +10,7 @@ import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
 import { facingFromAngle, facingFromVector } from '../dist-preview/src/game/core/direction.js';
 import { resolveAtlasSource, resolveFormComboAtlas, resolveFormRunAtlas, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
-import { KAIRO_COMBO_HITS } from '../dist-preview/src/game/data/kairoAbilities.js';
+import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS } from '../dist-preview/src/game/data/kairoAbilities.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 const action=(pressed=[], held=[], movement={x:0,y:0}, aim={x:1,y:0})=>({pressed:new Set(pressed),held:new Set(held),movement,aim});
@@ -44,6 +44,15 @@ test('animation resolver respects state priority, combo contact timing, and reco
  h.hurtTime=.2;h.hurtFacing='front';assert.equal(resolveHeroAnimation(h,.2).state,'hurt');assert.equal(resolveHeroAnimation(h,.2).direction,'front');
  h.ko=true;assert.equal(resolveHeroAnimation(h,.2).state,'ko');
  h.ko=false;h.hurtTime=0;h.guardTime=0;h.transformVisualTime=.3;h.transformVisualDuration=.72;assert.equal(resolveHeroAnimation(h,.2).state,'ember');
+});
+test('combo contact frame follows each hit’s real active window',()=>{
+ const s=new CombatSession(initialSave());s.newRun(408);const h=s.hero;h.attackTime=1;
+ for(const formId of ['base','ember-drive','glass-current'])for(let i=0;i<KAIRO_COMBO_HITS.length;i++){
+  const timing=KAIRO_COMBO_HITS[i].timing;h.combo=i+1;h.formId=formId;h.transformed=formId!=='base';
+  const contactPhase=formId!=='base'&&i===0?1:2;
+  h.attackAnimTime=timing.windup+.001;assert.equal(resolveHeroAnimation(h,0).frame,i*4+contactPhase);
+  h.attackAnimTime=timing.windup+timing.active+.001;assert.equal(resolveHeroAnimation(h,0).frame,i*4+(contactPhase===1?2:3));
+ }
 });
 test('form-specific run animation advances at each form movement speed',()=>{
  const s=new CombatSession(initialSave());s.newRun(407);const h=s.hero;
@@ -85,6 +94,7 @@ test('B05 selects form combo atlases only when active and loaded, and exports cl
  const manifest=JSON.parse(readFileSync('docs/art/b05-animation-manifest.json','utf8'));
  assert.equal(manifest.runtimeAssetsExported,true);
  assert.deepEqual(manifest.directions,['front','right','back','left']);
+ assert.ok(existsSync(manifest.scaleComparison),`missing ${manifest.scaleComparison}`);
  for(const formId of ['ember-drive','glass-current']){
   const form=manifest.forms[formId];
   assert.equal(form.status,'PRODUCTION_CANDIDATE_OWNER_APPROVAL_PENDING');
@@ -93,8 +103,22 @@ test('B05 selects form combo atlases only when active and loaded, and exports cl
   assert.equal(form.frames.length,48);
   assert.ok(existsSync(form.runtime),`missing ${form.runtime}`);
   assert.ok(existsSync(form.contactSheet),`missing ${form.contactSheet}`);
+  assert.deepEqual(form.phaseDurationsMs,{hit1:[65,55,114,76],hit2:[38,52,65,200],hit3:[57,78,85,300]});
+  assert.deepEqual(form.frames.slice(0,4).map(frame=>frame.durationMs),form.phaseDurationsMs.hit1);
+  assert.deepEqual(form.frames.slice(16,20).map(frame=>frame.durationMs),form.phaseDurationsMs.hit2);
+  assert.deepEqual(form.frames.slice(32,36).map(frame=>frame.durationMs),form.phaseDurationsMs.hit3);
+  assert.ok(existsSync(form.atSpeedPreview),`missing ${form.atSpeedPreview}`);
   assert.ok(existsSync(form.run.runtime),`missing ${form.run.runtime}`);
   assert.ok(existsSync(form.run.contactSheet),`missing ${form.run.contactSheet}`);
+  assert.equal(form.coverage.idle,true);
+  assert.ok(existsSync(form.idle.runtime),`missing ${form.idle.runtime}`);
+  assert.ok(existsSync(form.idle.contactSheet),`missing ${form.idle.contactSheet}`);
+  assert.equal(form.idle.frames.length,16);
+  for(const frame of form.idle.frames){assert.equal(frame.componentsDeleted,0);assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);assert.ok(frame.minimumCellMargin>=6);assert.deepEqual(frame.runtimePivot,[96,248]);}
+  assert.equal(form.coverage.dodge,true);
+  if(form.coverage.dodge){assert.ok(existsSync(form.dodge.runtime));assert.equal(form.dodge.frames.length,16);for(const frame of form.dodge.frames){assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);assert.ok(frame.minimumCellMargin>=6);assert.deepEqual(frame.runtimePivot,[96,248]);}}
+  assert.equal(form.coverage.guardParry,true);assert.ok(existsSync(form.guardParry.runtime));assert.equal(form.guardParry.frames.length,16);
+  for(const frame of form.guardParry.frames){assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);assert.ok(frame.minimumCellMargin>=6);assert.deepEqual(frame.runtimePivot,[96,248]);}
   assert.equal(form.run.frames.length,16);
   assert.deepEqual(form.run.runtimePivot,[96,248]);
   for(const frame of form.run.frames){assert.equal(frame.componentsDeleted,0);assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);}
@@ -113,7 +137,27 @@ test('B05 selects form combo atlases only when active and loaded, and exports cl
    assert.deepEqual(frame.runtimePivot,[96,248]);
   }
   assert.equal(form.coverage.run,true);
-  for(const state of ['idle','dodge','guardParry','hurtKo','bolt','special','finisher','activation','deactivation'])assert.equal(form.coverage[state],false);
+  assert.equal(form.coverage.bolt,true);assert.ok(existsSync(form.bolt.runtime));assert.equal(form.bolt.frames.length,16);
+  for(const frame of form.bolt.frames){assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);assert.ok(frame.minimumCellMargin>=6);assert.deepEqual(frame.runtimePivot,[96,248]);}
+  for(const state of ['hurtKo','special','finisher','activation','deactivation'])assert.equal(form.coverage[state],false);
+ }
+});
+test('combo offline previews keep four directions together and use the simulation phase durations',()=>{
+ const manifest=JSON.parse(readFileSync('docs/art/b05-animation-manifest.json','utf8'));
+ for(const formId of ['ember-drive','glass-current']){
+  const form=manifest.forms[formId];assert.equal(form.frames.length,48);
+  const image=readFileSync(form.atSpeedPreview);assert.ok(image.length>1000);
+  assert.match(form.timingBasis,/simulation windup\/active\/recovery/);
+ }
+});
+test('form bolt animation changes to release at the exact cast windup',()=>{
+ const timing=KAIRO_BASE_ABILITIES.bolt.timing;
+ for(const formId of ['base','ember-drive','glass-current']){
+  const s=new CombatSession(initialSave());s.newRun(909);s.enemies=[];s.hero.formId=formId;s.hero.transformed=formId!=='base';s.hero.formTime=5;
+  s.update(1/60,action(['bolt']));advance(s,5);s.hero.abilityAnimTime=timing.windup-.001;
+  assert.equal(resolveHeroAnimation(s.hero,0).frame,1);
+  s.hero.abilityAnimTime=timing.windup;
+  assert.equal(resolveHeroAnimation(s.hero,0).frame,2);
  }
 });
 test('planned forms are catalog records, not claimed implemented assets',()=>{
@@ -256,14 +300,32 @@ test('equipped form loads for a new run and its finisher remains affordable afte
 test('Glass Current perfect dodge and earned counter use a bounded one-shot window',()=>{
  const s=new CombatSession(initialSave());s.newRun(112);s.save.unlockedForms.push('glass-current');s.save.equippedForm='glass-current';s.hero.formId='glass-current';s.hero.transformed=true;s.hero.formTime=5;
  const foe=s.enemies[0];foe.x=s.hero.x+45;foe.y=s.hero.y;const before=foe.hp;
- s.hero.invuln=.2;s.hero.glassCounterTime=.2;s.damageHero(12,foe);
- assert.ok(foe.hp<before);assert.equal(s.hero.glassCounterTime,0);const after=foe.hp;
- s.hero.invuln=.2;s.damageHero(12,foe);assert.equal(foe.hp,after);
+ s.startDodge(action([],[],{x:1,y:0}));assert.equal(s.hero.dashDuration,.24);assert.equal(s.hero.dashTime,.24);
+ assert.equal(s.hero.glassCounterTime,0);assert.equal(s.getAbilityReason('shockwave'),'recovery');
+ s.hero.dashTime=.12;assert.equal(resolveHeroAnimation(s.hero,0).frame,2);
+ s.damageHero(12,foe);assert.equal(foe.hp,before);assert.equal(s.hero.glassDodgeWindow,0);assert.equal(s.hero.glassCounterTime,.55);
+ s.damageHero(12,foe);assert.equal(s.hero.glassCounterTime,.55);assert.equal(s.events.filter(event=>event.id==='glass-counter').length,1);
 });
 test('five earned perfect parries unlock Glass Current without resetting run records',()=>{
  const s=new CombatSession(initialSave());s.newRun(113);const foe=s.enemies[0];foe.x=s.hero.x+35;foe.y=s.hero.y;
- for(let i=0;i<5;i++){s.hero.invuln=0;s.hero.guardTime=.1;s.hero.parryWindow=.2;s.damageHero(12,foe);}
+ foe.attackCooldown=99;
+ for(let i=0;i<5;i++){s.hero.invuln=0;s.update(.016,action([],['guard']));s.damageHero(12,foe);s.update(.016,action());}
  assert.equal(s.save.precisionTrials,5);assert.ok(s.save.unlockedForms.includes('glass-current'));assert.equal(s.save.shards,0);
+});
+test('a held guard cannot award repeated perfect parries without release',()=>{
+ const s=new CombatSession(initialSave());s.newRun(118);const foe=s.enemies[0];foe.x=s.hero.x+35;foe.y=s.hero.y;foe.attackCooldown=99;s.hero.invuln=0;
+ s.update(.016,action([],['guard']));s.damageHero(12,foe);assert.equal(s.save.precisionTrials,1);
+ s.update(.016,action([],['guard']));assert.equal(s.hero.parryWindow,0);s.damageHero(12,foe);
+ assert.equal(s.save.precisionTrials,1);assert.ok(s.hero.hp<100,'second hit is a block, not another perfect parry');
+});
+test('form parry pose follows a successful parry rather than an unused window',()=>{
+ for(const formId of ['ember-drive','glass-current']){
+  const s=new CombatSession(initialSave());s.newRun(119);s.hero.formId=formId;s.hero.transformed=true;s.hero.formTime=5;s.hero.pulse=100;s.hero.invuln=0;
+  for(const e of s.enemies)e.attackCooldown=99;const foe=s.enemies[0];foe.x=s.hero.x+35;foe.y=s.hero.y;
+  s.update(.016,action([],['guard']));assert.equal(resolveHeroAnimation(s.hero,0).state,'guard');
+  s.damageHero(12,foe);const pose=resolveHeroAnimation(s.hero,0);assert.equal(pose.state,'parry');assert.equal(pose.frame,2);
+  advance(s,10,action([],['guard']));assert.equal(resolveHeroAnimation(s.hero,0).state,'guard');
+ }
 });
 test('Ember combo marks detonate only on the third contact',()=>{
  const s=new CombatSession(initialSave());s.newRun(114);s.hero.formId='ember-drive';s.hero.transformed=true;
@@ -274,14 +336,38 @@ test('Ember combo marks detonate only on the third contact',()=>{
  assert.equal(s.snapshot.formMarks,2);
  s.hitArc(0,'combo',KAIRO_COMBO_HITS[2],'combo-contact',3);assert.equal(foe.emberMarks,0);assert.equal(foe.hp,915);
  assert.equal(s.snapshot.formMarks,0);
+ assert.equal(s.events.filter(event=>event.id==='combo-contact').length,3);
+ assert.equal(s.events.filter(event=>event.id==='ember-detonate').length,1);
+});
+test('bolt keeps the form it was fired with through a form transition',()=>{
+ const setup=(form)=>{const s=new CombatSession(initialSave());s.newRun(116);s.enemies=s.enemies.slice(0,2);s.hero.formId='ember-drive';s.hero.transformed=form==='ember-drive';s.hero.abilityFormId=form;s.hero.actionAngle=0;
+  for(const [i,e] of s.enemies.entries()){e.x=s.hero.x+(i?75:45);e.y=s.hero.y;e.hp=300;e.maxHp=300;e.attackCooldown=99;}s.fireBolt();return s;};
+ const ember=setup('ember-drive');ember.hero.transformed=false;ember.updateProjectiles(.01);
+ assert.ok(ember.enemies[1].hp<300,'Ember splash stays on a projectile after reversion');
+ assert.equal(ember.events.find(event=>event.id==='bolt-hit')?.formId,'ember-drive');
+ const base=setup('base');base.hero.transformed=true;base.updateProjectiles(.01);
+ assert.equal(base.enemies[1].hp,300,'base projectile does not acquire Ember splash after activation');
+ assert.equal(base.events.find(event=>event.id==='bolt-hit')?.formId,'base');
+});
+test('Ember detonates on a target’s third confirmed contact, not merely combo step three',()=>{
+ const s=new CombatSession(initialSave());s.newRun(117);s.hero.formId='ember-drive';s.hero.transformed=true;
+ const foe=s.enemies[0];foe.x=s.hero.x+40;foe.y=s.hero.y;foe.hp=1000;foe.maxHp=1000;
+ s.hitArc(0,'combo',KAIRO_COMBO_HITS[2],'combo-contact',3);
+ assert.equal(foe.emberMarks,1);assert.equal(s.events.filter(event=>event.id==='ember-detonate').length,0);
+ s.hitArc(0,'combo',KAIRO_COMBO_HITS[0],'combo-contact',1);assert.equal(foe.emberMarks,2);
+ s.hitArc(0,'combo',KAIRO_COMBO_HITS[1],'combo-contact',2);assert.equal(foe.emberMarks,0);
+ assert.equal(s.events.filter(event=>event.id==='ember-detonate').length,1);
 });
 test('Glass special is unavailable without a counter window and consumes a valid window once',()=>{
  const s=new CombatSession(initialSave());s.newRun(115);s.save.unlockedForms.push('glass-current');s.hero.formId='glass-current';s.hero.transformed=true;s.hero.pulse=20;s.hero.formTime=5;
  const foe=s.enemies[0];foe.x=s.hero.x+50;foe.y=s.hero.y;foe.hp=300;foe.maxHp=300;
  assert.equal(s.getAbilityReason('shockwave'),'recovery');s.hero.glassCounterTime=.4;
  assert.equal(s.snapshot.counterWindow,.4);
- s.update(.016,action(['shockwave']));assert.equal(foe.hp,264);assert.equal(s.hero.glassCounterTime,0);
+ s.update(.016,action(['shockwave']));assert.equal(foe.hp,300,'counter damage waits for its windup');assert.equal(s.hero.glassCounterTime,0);
  assert.equal(s.snapshot.counterWindow,0);
+ s.hero.formTime=.03;foe.attackCooldown=99;advance(s,14);
+ assert.equal(s.hero.transformed,false);assert.equal(foe.hp,264,'a committed counter keeps its cast form through expiry');
+ assert.equal(s.events.find(event=>event.id==='shockwave-hit')?.formId,'glass-current');
 });
 test('defeat records KO animation state after real incoming damage',()=>{
  const s=new CombatSession(initialSave());s.newRun(333);const e=s.enemies[0];

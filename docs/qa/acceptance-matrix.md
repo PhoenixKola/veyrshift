@@ -119,3 +119,26 @@
 | B06 major appearance-swap readiness | UNVERIFIED | No alternate form animation library has been integrated or inspected. |
 
 **Gate:** B05 is **PARTIAL / BLOCKED**. No complete-transformation, production-art, performance or owner-approval claim is made. See `docs/qa/b05-completion-evidence.md` for current results and the owner-run visible Chrome checklist. `docs/qa/b05-evidence.md` records the inherited B04 live gate.
+
+
+## B05 finalization coverage ? 2026-11-06
+
+| State | Base | Ember Drive | Glass Current |
+|---|---|---|---|
+| Idle | Native art | Native candidate art; live check not run | Native candidate art; live check not run |
+| Run | Native art | Native candidate art; live check not run | Native candidate art; live check not run |
+| Start/stop | Native art | Base fallback | Base fallback |
+| Combo 1/2/3 | Native art | Native candidate art; contact timing changed by hit | Native candidate art; contact timing changed by hit |
+| Dodge | Native art | Native candidate art | Native candidate art; `.24s` duration retained |
+| Guard | Native art | Native candidate art | Native candidate art |
+| Parry | Native art | Native candidate event pose | Native candidate event pose |
+| Hurt | Native art | Base fallback | Base fallback |
+| KO | Native art | Base fallback | Base fallback |
+| Bolt cast | Native art | Native candidate art | Native candidate art |
+| Special | Native art | Base fallback | Base fallback |
+| Finisher | Native art | Base fallback | Base fallback |
+| Activate | Existing base transition | Base transition/effects | Base transition/effects |
+| Active loop | Base idle/aura | Candidate idle/aura; no sustained loop | Candidate idle/aura; no sustained loop |
+| Deactivate | Existing base state | Base transition/effects | Base transition/effects |
+
+?Native candidate art? means a runtime atlas is routed; it does not mean animation quality or game integration was approved. See the finalization evidence matrix for source/test, live-game and owner-approval statuses.

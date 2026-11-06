@@ -1,6 +1,6 @@
 ﻿# B05 form art direction — candidate proposal, owner approval pending
 
-**Updated 2026-11-06. Status: PARTIAL.** Two replacement turnaround candidates, four-direction run and combo source grids, six-icon families, and six-purpose VFX texture sheets are in `art-source/b05/review/`. The deterministic exporter writes lossless candidate WebP assets under `public/assets/`; none is approved for production. Source-cell checks and dark-background contact sheets are in the B05 manifest and `tests/evidence/b05/`.
+**Updated 2026-11-06. Status: PARTIAL.** Two replacement turnaround candidates, four-direction idle/run/dodge/guard-parry/bolt and combo source grids, six-icon families, and six-purpose VFX texture sheets are in `art-source/b05/review/`. The deterministic exporter writes lossless candidate WebP assets under `public/assets/`; none is approved for production. Source-cell checks and dark-background contact sheets are in the B05 manifest and `tests/evidence/b05/`.
 
 ## Ember Drive — Fury
 
@@ -12,14 +12,15 @@ Retain the same identity and dark plum hair. Candidate design uses refined cuff 
 
 ## Exported candidate coverage
 
-- Character sheets: 4 directions (`front`, `right`, `back`, `left`) × 4 run key poses and 12 combo poses per form. Each combo hit has four generated phases. Boundary count is zero; the builder clears only low-alpha edge noise (alpha 1–32) and never deletes disconnected components.
+- Character sheets: 4 directions (`front`, `right`, `back`, `left`) × four idle, run, dodge, guard/parry and bolt poses plus 12 combo poses per form. Each combo hit has four generated phases. Boundary count is zero for exported candidates; the builder clears only low-alpha pixels (alpha 1–32) and never deletes disconnected components. These are short pose sequences, not continuous animation proof. Ember and Glass bolts change to the release pose at the B04 `.105s` windup boundary.
+- Candidate directional lookup covers idle, run, combo, dodge, guard/parry and bolt in the renderer. Start/stop, hurt/KO, shockwave/special, finisher and activation/deactivation continue to use base state art or existing base effects. No form-specific sustained animation loop has been integrated.
 - HUD glyphs: six separate 128×128 textures per form (`identity`, `activation`, `bolt`, `special`, `finisher`, `combo`). They are rendered in the form screen and transformed HUD, alongside Ember target-mark/detonation status or Glass counter-window status.
-- VFX textures: six separate 256×256 transparent textures per form (`activation`, `contact`, `bolt`, `special`, `finisher`, `transition`). Canvas2D selects these from form-tagged events and animates their size/opacity over event lifetime. This is single-texture presentation, not a layered particle animation.
+- VFX textures: six separate 256×256 transparent textures per form (`activation`, `contact`, `bolt`, `special`, `finisher`, `transition`). Canvas2D selects form textures from form-tagged events and animates their size/opacity over event lifetime, with a second authored pass for some event types. This remains limited layering, not a polished flipbook or full event-specific effect system. It has not been inspected during actual combat.
 - WebAudio: distinct procedural cues are routed for form activation/reversion, combo hits, projectile, special/counter and finisher. They are unlistened proposals. No active loop or authored recording exists.
 
 ## Missing production states and acceptance gates
 
-Form-specific character art is still missing for idle, dodge, guard/parry, hurt/KO, ranged cast, special, finisher, active loop and fluid activation/deactivation. Run/combo sheets contain short key-pose sequences, so the at-speed offline GIFs are an export/playback aid, not proof of fluid motion. Start/stop and other states still use inherited base art. The two masters have not been checked in an actual browser at normal gameplay scale; no owner approval, audio listening, controller test, boss-room test, or sustained-effects performance measurement exists.
+Form-specific character art remains missing for start/stop, hurt/KO, special, finisher, active loop and fluid activation/deactivation. Run, dodge, idle, guard/parry, bolt and combo sheets contain short key-pose sequences, so offline GIFs are an export/playback aid, not proof of fluid motion. Start/stop and missing action states use inherited base art. The two masters have not been checked in an actual browser at normal gameplay scale; no owner approval, audio listening, controller test, boss-room test, or sustained-effects performance measurement exists. Rejected hurt/KO generations remain under `art-source/b05/rejected/` because facing and boundary audits failed.
 
 Keep these proposals out of any “approved” category. Do not claim B05 complete or B06 appearance-swap readiness. For current per-gate status and owner capture steps, see `docs/qa/b05-completion-evidence.md` and `docs/qa/b05-evidence.md`.
 

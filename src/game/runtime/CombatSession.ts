@@ -42,14 +42,14 @@ export class CombatSession {
     return {
       x: 590, y: 360, vx: 0, vy: 0, face: 0, moveFacing: 'right', hurtFacing: 'right', attackFacing: 'right', actionAngle: 0,
       hp: 100, maxHp: 100, pulse: 0, maxPulse: PULSE_TUNING.max,
-      dashTime: 0, invuln: 0,
+      dashTime: 0, dashDuration: .19, invuln: 0,
       attackTime: 0, attackAnimTime: 0, attackDuration: 0, attackStartup: 0,
       attackHitFired: false, attackCooldown: 0, attackBuffer: 0, combo: 0, comboWindow: 0,
       abilityCooldowns: { combo: 0, bolt: 0, shockwave: 0, guard: 0, dodge: 0, finisher: 0, emberPreview: 0 },
-      currentAbility: null, abilityAnimTime: 0, abilityAnimDuration: 0, abilityContactFired: false,
-      guardTime: 0, parryWindow: 0,
+      currentAbility: null, abilityFormId: 'base', abilityAnimTime: 0, abilityAnimDuration: 0, abilityContactFired: false,
+      guardTime: 0, parryWindow: 0, parryConsumed: false, parryVisualTime: 0,
       formTime: 0, formMaxTime: 8, transformVisualTime: 0, transformVisualDuration: .72, transformed: false,
-      formId: 'ember-drive', emberMarks: 0, glassCounterTime: 0,
+      formId: 'ember-drive', emberMarks: 0, glassCounterTime: 0, glassDodgeWindow: 0,
       locomotion: 'idle', locomotionTime: 0, movingInput: false,
       hurtTime: 0, ko: false, hitFlash: 0, step: 0,
     };
@@ -189,20 +189,21 @@ export class CombatSession {
     if (this.particles.length > 260) this.particles.splice(0, this.particles.length - 260);
   }
 
-  private damageEnemy(enemy: Enemy, amount: number, direction: Vec2, options: { knockback: number; stagger: number; pulse: number; event: CombatEventId; ability: AbilityId; comboIndex?: number; } ): void {
+  private damageEnemy(enemy: Enemy, amount: number, direction: Vec2, options: { knockback: number; stagger: number; pulse: number; event: CombatEventId; ability: AbilityId; comboIndex?: number; formId?: KairoFormId; } ): void {
     if (enemy.hp <= 0) return;
     enemy.hp -= amount; enemy.flash = .22; enemy.stagger = Math.max(enemy.stagger, options.stagger);
     const vector = normalize(direction); enemy.vx += vector.x * options.knockback; enemy.vy += vector.y * options.knockback;
-    const impactColor = this.hero.transformed && this.hero.formId === 'ember-drive' ? '#ff7a3d' : this.hero.transformed && this.hero.formId === 'glass-current' ? '#b6eaf1' : options.ability === 'finisher' ? '#f4d39a' : options.ability === 'shockwave' ? '#90dce1' : '#b6e8ef';
+    const impactForm = options.formId ?? (this.hero.transformed ? this.hero.formId : 'base');
+    const impactColor = impactForm === 'ember-drive' ? '#ff7a3d' : impactForm === 'glass-current' ? '#b6eaf1' : options.ability === 'finisher' ? '#f4d39a' : options.ability === 'shockwave' ? '#90dce1' : '#b6e8ef';
     this.burst(enemy.x, enemy.y, impactColor, options.ability === 'finisher' ? 18 : 10, options.knockback);
     if (options.pulse > 0) this.pulse(options.pulse);
     this.shake = Math.min(options.ability === 'finisher' ? 15 : 10, this.shake + (options.ability === 'finisher' ? 5.5 : options.ability === 'shockwave' ? 3.2 : 2.2));
     this.hitstop = Math.min(options.ability === 'finisher' ? .11 : .075, this.hitstop + (options.ability === 'finisher' ? .075 : .032));
     this.notify(options.event, enemy.x, enemy.y, Math.atan2(vector.y, vector.x), options.ability,
-      options.ability === 'finisher' ? 1.5 : options.comboIndex ?? 1, options.comboIndex);
+      options.ability === 'finisher' ? 1.5 : options.comboIndex ?? 1, options.comboIndex, impactForm);
     if (enemy.hp <= 0) {
       this.runShards += enemy.kind === 'sentinel' ? 9 : enemy.kind === 'striker' ? 4 : 2;
-      this.pulse(PULSE_TUNING.killBonus); this.burst(enemy.x, enemy.y, '#f6d59c', 15, 200); this.notify('kill', enemy.x, enemy.y, undefined, options.ability);
+      this.pulse(PULSE_TUNING.killBonus); this.burst(enemy.x, enemy.y, '#f6d59c', 15, 200); this.notify('kill', enemy.x, enemy.y, undefined, options.ability, 1, undefined, impactForm);
     }
   }
 
@@ -219,19 +220,19 @@ export class CombatSession {
     this.notify('combo-start', hero.x, hero.y, hero.face, 'combo', next, next);
   }
 
-  private hitArc(angle: number, ability: AbilityId, hit: { damage: number; range: number; arcRadians: number; targetCap: number; knockback: number; stagger: number; pulseOnHit: number; }, event: CombatEventId, comboIndex?: number): number {
+  private hitArc(angle: number, ability: AbilityId, hit: { damage: number; range: number; arcRadians: number; targetCap: number; knockback: number; stagger: number; pulseOnHit: number; }, event: CombatEventId, comboIndex?: number, formId?: KairoFormId): number {
     const hero = this.hero;
     const targets = this.enemies.filter(enemy => enemy.hp > 0 && inArc(P(hero.x, hero.y), angle, enemy, hit.range + enemy.radius, hit.arcRadians))
       .sort((a, b) => distance(hero, a) - distance(hero, b) || a.id - b.id).slice(0, hit.targetCap);
     const direction = { x: Math.cos(angle), y: Math.sin(angle) };
     for (const enemy of targets) {
-      this.damageEnemy(enemy, hit.damage, direction, { knockback: hit.knockback, stagger: hit.stagger, pulse: hit.pulseOnHit, event, ability, comboIndex });
+      this.damageEnemy(enemy, hit.damage, direction, { knockback: hit.knockback, stagger: hit.stagger, pulse: hit.pulseOnHit, event, ability, comboIndex, formId });
       if (ability === 'combo' && this.hero.transformed && this.hero.formId === 'ember-drive') {
         const form=formById(this.hero.formId)!;
         enemy.emberMarks = Math.min(form.combat.markCap, (enemy.emberMarks ?? 0) + 1);
-        if (comboIndex === 3 && enemy.emberMarks > 0) {
+        if (enemy.emberMarks >= form.combat.markCap) {
           const marks = enemy.emberMarks; enemy.emberMarks = 0;
-          this.damageEnemy(enemy, marks * form.combat.markDetonationDamage, direction, { knockback: 80, stagger: .3, pulse: 0, event, ability, comboIndex });
+          this.damageEnemy(enemy, marks * form.combat.markDetonationDamage, direction, { knockback: 80, stagger: .3, pulse: 0, event: 'ember-detonate', ability, comboIndex });
         }
       }
     }
@@ -246,21 +247,16 @@ export class CombatSession {
     if (id === 'emberPreview' && !this.save.unlockedForms.includes(hero.formId)) { this.notify('action-unavailable',hero.x,hero.y,hero.face,id,.18); return; }
     const cost=this.pulseCost(id);if (cost) this.pulse(-cost);
     hero.abilityCooldowns[id] = definition.cooldown;
-    hero.currentAbility = id; hero.abilityAnimTime = 0;
+    hero.currentAbility = id; hero.abilityFormId = hero.transformed ? hero.formId : 'base'; hero.abilityAnimTime = 0;
     hero.abilityAnimDuration = definition.timing.windup + definition.timing.active + definition.timing.recovery;
     hero.abilityContactFired = false;
     if (id === 'bolt') hero.actionAngle = hero.face;
     else { hero.attackFacing = facingFromAngle(hero.face); hero.face = CARDINAL_ANGLE[hero.attackFacing]; hero.actionAngle = hero.face; }
-    if (id === 'shockwave') this.notify('shockwave-charge', hero.x, hero.y, undefined, id);
+    if (id === 'shockwave') this.notify('shockwave-charge', hero.x, hero.y, hero.actionAngle, id);
     if (id === 'finisher') this.notify('finisher-build', hero.x, hero.y, hero.actionAngle, id);
     if (id === 'emberPreview') { this.activateForm(); hero.currentAbility = null; }
     if (id === 'shockwave' && hero.transformed && hero.formId === 'glass-current') {
-      const form=formById(hero.formId)!;
       hero.glassCounterTime = 0;
-      const targets = this.enemies.filter(enemy => enemy.hp > 0 && distance(hero, enemy) <= form.combat.specialRadius + enemy.radius).sort((a,b)=>distance(hero,a)-distance(hero,b)).slice(0,form.combat.specialTargetCap);
-      for (const enemy of targets) this.damageEnemy(enemy, form.combat.specialDamage, normalize({x:enemy.x-hero.x,y:enemy.y-hero.y}), {knockback:220,stagger:.65,pulse:4,event:'shockwave-hit',ability:'shockwave'});
-      this.notify('glass-counter',hero.x,hero.y,hero.face,'shockwave',targets.length?1:.5);
-      hero.currentAbility = null;
     }
   }
 
@@ -269,40 +265,45 @@ export class CombatSession {
     const angle = hero.actionAngle, direction = { x: Math.cos(angle), y: Math.sin(angle) };
     const definition = KAIRO_BASE_ABILITIES.bolt;
     const life = definition.range / 610;
-    const form=hero.transformed?formById(hero.formId):undefined;
+    const form=formById(hero.abilityFormId);
     const ember = form?.id === 'ember-drive';
     const glass = form?.id === 'glass-current';
     this.projectiles.push({ x: hero.x + direction.x * 30, y: hero.y + direction.y * 30,
       vx: direction.x * 610, vy: direction.y * 610, life, maxLife: life, age: 0, radius: 9, power: definition.damage,
-      source: 'hero', color: ember ? '#ff7942' : glass ? '#c4f3f2' : '#9ceaf0', ability: 'bolt', hitsRemaining: form?.combat.boltPierceTargets ?? 1, piercedEnemyIds: glass ? [] : undefined });
-    this.notify('bolt-cast', hero.x + direction.x * 31, hero.y + direction.y * 31, angle, 'bolt');
+      source: 'hero', color: ember ? '#ff7942' : glass ? '#c4f3f2' : '#9ceaf0', ability: 'bolt', formId: form?.id ?? 'base', hitsRemaining: form?.combat.boltPierceTargets ?? 1, piercedEnemyIds: glass ? [] : undefined });
+    this.notify('bolt-cast', hero.x + direction.x * 31, hero.y + direction.y * 31, angle, 'bolt', 1, undefined, hero.abilityFormId);
     this.burst(hero.x + direction.x * 25, hero.y + direction.y * 25, '#c6f8f4', 5, 70);
   }
 
   private releaseShockwave(): void {
     const hero = this.hero, definition = KAIRO_BASE_ABILITIES.shockwave;
-    const form=hero.transformed?formById(hero.formId):undefined;
+    const form=formById(hero.abilityFormId);
     const glass = form?.id === 'glass-current';
-    if (glass) return;
+    if (glass) {
+      const targets=this.enemies.filter(enemy=>enemy.hp>0&&distance(hero,enemy)<=form.combat.specialRadius+enemy.radius).sort((a,b)=>distance(hero,a)-distance(hero,b)||a.id-b.id).slice(0,form.combat.specialTargetCap);
+      for(const enemy of targets)this.damageEnemy(enemy,form.combat.specialDamage,normalize({x:enemy.x-hero.x,y:enemy.y-hero.y}),{knockback:220,stagger:.65,pulse:4,event:'shockwave-hit',ability:'shockwave',formId:form.id});
+      this.notify('glass-counter',hero.x,hero.y,hero.actionAngle,'shockwave',targets.length?1:.5,undefined,form.id);
+      return;
+    }
     const ember = form?.id === 'ember-drive';
     const range=ember?form.combat.specialRadius:definition.range,damage=ember?form.combat.specialDamage:definition.damage,cap=ember?form.combat.specialTargetCap:definition.targetCap;
     const targets = this.enemies.filter(enemy => enemy.hp > 0 && (ember ? inArc(P(hero.x,hero.y),hero.actionAngle,enemy,range+enemy.radius,1.0) : distance(hero, enemy) <= range + enemy.radius))
       .sort((a, b) => distance(hero, a) - distance(hero, b) || a.id - b.id).slice(0, cap);
     for (const enemy of targets) this.damageEnemy(enemy, damage,
       { x: enemy.x - hero.x, y: enemy.y - hero.y }, { knockback: definition.knockback, stagger: definition.stagger,
-        pulse: definition.pulseOnHit, event: 'shockwave-hit', ability: 'shockwave' });
-    this.notify('shockwave-release', hero.x, hero.y, undefined, 'shockwave', targets.length ? 1 : .75);
+        pulse: definition.pulseOnHit, event: 'shockwave-hit', ability: 'shockwave', formId: hero.abilityFormId });
+    this.notify('shockwave-release', hero.x, hero.y, hero.actionAngle, 'shockwave', targets.length ? 1 : .75, undefined, hero.abilityFormId);
   }
 
   private releaseFinisher(): void {
     const hero = this.hero, base = KAIRO_BASE_ABILITIES.finisher;
-    const form=hero.transformed?formById(hero.formId):undefined;
+    const form=formById(hero.abilityFormId);
     const definition = form ? {...base,damage:form.combat.finisherDamage,targetCap:form.combat.finisherTargetCap,range:form.combat.finisherRange} : base;
     const direction = { x: Math.cos(hero.actionAngle), y: Math.sin(hero.actionAngle) };
     hero.x = clamp(hero.x + direction.x * 24, ARENA.inset, this.width - ARENA.inset);
     hero.y = clamp(hero.y + direction.y * 24, ARENA.inset, this.height - ARENA.inset);
-    this.hitArc(hero.actionAngle, 'finisher', definition, 'finisher-hit');
-    this.notify('finisher-hit', hero.x + direction.x * 35, hero.y + direction.y * 30, hero.actionAngle, 'finisher', 1.4);
+    this.hitArc(hero.actionAngle, 'finisher', definition, 'finisher-hit', undefined, hero.abilityFormId);
+    this.notify('finisher-hit', hero.x + direction.x * 35, hero.y + direction.y * 30, hero.actionAngle, 'finisher', 1.4, undefined, hero.abilityFormId);
   }
 
   private advanceAbilityAnimation(dt: number): void {
@@ -317,7 +318,7 @@ export class CombatSession {
       if (id === 'finisher') this.releaseFinisher();
     }
     if (hero.abilityAnimTime >= hero.abilityAnimDuration) {
-      if (id === 'finisher') this.notify('finisher-fade', hero.x, hero.y, hero.actionAngle, id);
+      if (id === 'finisher') this.notify('finisher-fade', hero.x, hero.y, hero.actionAngle, id, 1, undefined, hero.abilityFormId);
       if (id === 'emberPreview') hero.currentAbility = null;
       else hero.currentAbility = null;
     }
@@ -328,7 +329,7 @@ export class CombatSession {
     const form = formById(hero.formId); if (!form) return;
     if (!this.save.unlockedForms.includes(form.id)) return;
     hero.formMaxTime = form.duration; hero.formTime = form.duration; hero.transformVisualDuration = .5;
-    hero.transformVisualTime = hero.transformVisualDuration; hero.transformed = true; hero.invuln = .32; hero.glassCounterTime=0;
+    hero.transformVisualTime = hero.transformVisualDuration; hero.transformed = true; hero.invuln = .32; hero.glassCounterTime=0; hero.glassDodgeWindow=0;
     this.message = `${form.name.toUpperCase()} • Form active`;
     const event = hero.formId === 'ember-drive' ? 'ember-start' : 'glass-start'; this.notify(event, hero.x, hero.y, hero.face, 'emberPreview');
     this.burst(hero.x, hero.y, hero.formId === 'ember-drive' ? '#d96a3d' : '#b6eaf1', 18, 180);
@@ -337,7 +338,7 @@ export class CombatSession {
   private endForm(): void {
     const hero=this.hero; if (!hero.transformed) return;
     hero.transformed=false; hero.formTime=0; hero.transformVisualTime=0;
-    hero.glassCounterTime=0;for(const enemy of this.enemies)enemy.emberMarks=0;
+    hero.glassCounterTime=0;hero.glassDodgeWindow=0;for(const enemy of this.enemies)enemy.emberMarks=0;
     this.notify(hero.formId==='ember-drive'?'ember-end':'glass-end',hero.x,hero.y,hero.face,'emberPreview',1,undefined,hero.formId);
     this.burst(hero.x,hero.y,hero.formId==='ember-drive'?'#bd6645':'#9ddde8',8,110);
   }
@@ -348,31 +349,29 @@ export class CombatSession {
     if (reason !== 'ready') { this.notify('action-unavailable', hero.x, hero.y, hero.face, 'dodge', .16); return; }
     const definition = KAIRO_BASE_ABILITIES.dodge;
     const form=hero.transformed?formById(hero.formId):undefined;
-    hero.abilityCooldowns.dodge = definition.cooldown; hero.dashTime = form?.combat.dodgeDuration ?? .19; hero.invuln = form?.combat.dodgeIframes ?? .26;
-    if (form?.id === 'glass-current') hero.glassCounterTime = .32;
+    hero.abilityCooldowns.dodge = definition.cooldown; hero.dashDuration = form?.combat.dodgeDuration ?? .19; hero.dashTime = hero.dashDuration; hero.invuln = form?.combat.dodgeIframes ?? .26;
+    if (form?.id === 'glass-current') hero.glassDodgeWindow = .32;
     const move = normalize(input.movement);
     const direction = Math.hypot(move.x, move.y) > .1 ? move : { x: Math.cos(hero.face), y: Math.sin(hero.face) };
     hero.moveFacing = facingFromVector(direction); hero.vx = direction.x * 820; hero.vy = direction.y * 820;
     hero.attackTime = 0; hero.attackCooldown = 0; hero.attackHitFired = true; hero.attackBuffer = 0;
-    hero.currentAbility = null; hero.dashTime = .19;
+    hero.currentAbility = null;
     this.notify('dash-start', hero.x, hero.y, Math.atan2(direction.y, direction.x), 'dodge');
   }
 
   private damageHero(amount: number, origin: Vec2): void {
     const hero = this.hero;
     if (hero.invuln > 0 || hero.dashTime > 0) {
-      if (hero.transformed && hero.formId === 'glass-current' && hero.glassCounterTime > 0) {
-        hero.glassCounterTime = 0;
-        const form=formById(hero.formId)!;
+      if (hero.transformed && hero.formId === 'glass-current' && hero.glassDodgeWindow > 0) {
+        hero.glassDodgeWindow = 0; hero.glassCounterTime = .55;
         const angle = Math.atan2(origin.y-hero.y,origin.x-hero.x);
-        const counter = this.enemies.filter(enemy=>enemy.hp>0&&distance(hero,enemy)<150).sort((a,b)=>distance(hero,a)-distance(hero,b)).slice(0,1);
-        for (const enemy of counter) this.damageEnemy(enemy,form.combat.counterDamage,{x:Math.cos(angle),y:Math.sin(angle)},{knockback:210,stagger:.5,pulse:4,event:'glass-counter',ability:'dodge'});
-        this.notify('glass-counter',hero.x,hero.y,angle,'dodge',counter.length?1:.5);
+        this.notify('glass-counter',hero.x,hero.y,angle,'dodge');
       }
       return;
     }
     if (hero.guardTime > 0) {
-      if (hero.parryWindow > 0) {
+      if (hero.parryWindow > 0 && !hero.parryConsumed) {
+        hero.parryConsumed = true; hero.parryWindow = 0; hero.parryVisualTime = .14;
         this.pulse(PULSE_TUNING.parry); this.notify('parry', hero.x, hero.y, Math.atan2(origin.y - hero.y, origin.x - hero.x), 'guard');
         if (hero.transformed && hero.formId === 'glass-current') hero.glassCounterTime = .55;
         this.save.precisionTrials++; if (this.save.precisionTrials >= 5 && !this.save.unlockedForms.includes('glass-current')) this.save.unlockedForms.push('glass-current');
@@ -411,7 +410,7 @@ export class CombatSession {
     hero.invuln = dec(hero.invuln); hero.hurtTime = dec(hero.hurtTime); hero.attackCooldown = dec(hero.attackCooldown);
     hero.attackBuffer = dec(hero.attackBuffer); hero.comboWindow = dec(hero.comboWindow);
     for (const id of ABILITY_IDS) hero.abilityCooldowns[id] = dec(hero.abilityCooldowns[id]);
-    hero.hitFlash = dec(hero.hitFlash); hero.transformVisualTime = dec(hero.transformVisualTime);
+    hero.hitFlash = dec(hero.hitFlash); hero.transformVisualTime = dec(hero.transformVisualTime); hero.parryVisualTime = dec(hero.parryVisualTime);
     if (hero.comboWindow === 0 && hero.attackTime === 0) hero.combo = 0;
 
     const wasDashing = hero.dashTime > 0;
@@ -428,11 +427,12 @@ export class CombatSession {
     this.advanceAbilityAnimation(dt);
     if (hero.transformed) {
       hero.glassCounterTime = Math.max(0,hero.glassCounterTime-dt);
+      hero.glassDodgeWindow = Math.max(0,hero.glassDodgeWindow-dt);
       hero.formTime = dec(hero.formTime);
       hero.pulse = clamp(hero.pulse - dt * (formById(hero.formId)?.upkeepPerSecond ?? 2), 0, hero.maxPulse);
       if (hero.formTime === 0 || hero.pulse === 0) {
         hero.transformed = false; hero.transformVisualTime = 0; this.burst(hero.x, hero.y, '#c6b7a5', 10, 130);
-        hero.glassCounterTime=0;for(const enemy of this.enemies)enemy.emberMarks=0;
+        hero.glassCounterTime=0;hero.glassDodgeWindow=0;for(const enemy of this.enemies)enemy.emberMarks=0;
         this.notify(hero.formId === 'ember-drive' ? 'ember-end':'glass-end', hero.x, hero.y, hero.face, 'emberPreview', 1, undefined, hero.formId);
       }
     }
@@ -461,11 +461,12 @@ export class CombatSession {
 
     const wasGuarding = hero.guardTime > 0;
     if (input.held.has('guard') && hero.hurtTime === 0) {
-      hero.guardTime += dt; hero.parryWindow = Math.max(0, KAIRO_BASE_ABILITIES.guard.timing.active - hero.guardTime);
+      if (!wasGuarding) hero.parryConsumed = false;
+      hero.guardTime += dt; hero.parryWindow = hero.parryConsumed ? 0 : Math.max(0, KAIRO_BASE_ABILITIES.guard.timing.active - hero.guardTime);
       if (!wasGuarding) this.notify('guard-start', hero.x, hero.y, hero.face, 'guard');
     } else {
       if (wasGuarding) this.notify('guard-end', hero.x, hero.y, hero.face, 'guard');
-      hero.guardTime = 0; hero.parryWindow = 0;
+      hero.guardTime = 0; hero.parryWindow = 0; hero.parryConsumed = false;
     }
 
     hero.x = clamp(hero.x + hero.vx * dt, ARENA.inset, ARENA.width - ARENA.inset);
@@ -511,13 +512,13 @@ export class CombatSession {
           if (enemy.hp > 0 && !projectile.piercedEnemyIds?.includes(enemy.id) && distance(projectile, enemy) < projectile.radius + enemy.radius) {
             const definition = KAIRO_BASE_ABILITIES.bolt;
             this.damageEnemy(enemy, projectile.power, { x: projectile.vx, y: projectile.vy }, {
-              knockback: definition.knockback, stagger: definition.stagger, pulse: definition.pulseOnHit, event: 'bolt-hit', ability: 'bolt',
+              knockback: definition.knockback, stagger: definition.stagger, pulse: definition.pulseOnHit, event: 'bolt-hit', ability: 'bolt', formId: projectile.formId ?? 'base',
             });
             hitSomething = true;
-            if (this.hero.transformed && this.hero.formId==='ember-drive') {
-              const form=formById(this.hero.formId)!;
+            if (projectile.formId==='ember-drive') {
+              const form=formById(projectile.formId)!;
               const splash=this.enemies.filter(other=>other!==enemy&&other.hp>0&&distance(enemy,other)<form.combat.boltSplashRadius).slice(0,2);
-              for (const other of splash) this.damageEnemy(other,form.combat.boltSplashDamage,{x:projectile.vx,y:projectile.vy},{knockback:95,stagger:.12,pulse:0,event:'bolt-hit',ability:'bolt'});
+              for (const other of splash) this.damageEnemy(other,form.combat.boltSplashDamage,{x:projectile.vx,y:projectile.vy},{knockback:95,stagger:.12,pulse:0,event:'bolt-hit',ability:'bolt',formId:projectile.formId});
             }
             if (projectile.hitsRemaining && projectile.hitsRemaining>1) { projectile.hitsRemaining--; projectile.piercedEnemyIds?.push(enemy.id); continue; }
             projectile.life = 0; break;
@@ -527,7 +528,7 @@ export class CombatSession {
       } else if (projectile.source === 'enemy' && distance(projectile, this.hero) < projectile.radius + 18) {
         this.damageHero(projectile.power, projectile); projectile.life = 0;
       }
-      if (projectile.life <= 0) this.notify('bolt-dissipate', projectile.x, projectile.y, Math.atan2(projectile.vy, projectile.vx), projectile.ability ?? 'bolt');
+      if (projectile.life <= 0) this.notify('bolt-dissipate', projectile.x, projectile.y, Math.atan2(projectile.vy, projectile.vx), projectile.ability ?? 'bolt', 1, undefined, projectile.formId ?? 'base');
     }
     this.projectiles = this.projectiles.filter(projectile => projectile.life > 0 && projectile.x > -30 && projectile.x < this.width + 30 && projectile.y > -30 && projectile.y < this.height + 30);
   }

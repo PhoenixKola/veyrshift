@@ -20,6 +20,7 @@ RUNTIME = ROOT / "public" / "assets" / "characters" / "kairo" / "forms"
 EVIDENCE = ROOT / "tests" / "evidence" / "b05"
 DIRECTIONS = ["front", "right", "back", "left"]
 HITS = ["hit1", "hit2", "hit3"]
+COMBO_PHASE_MS = [[65, 55, 114, 76], [38, 52, 65, 200], [57, 78, 85, 300]]
 CELL_W, CELL_H = 192, 256
 ALPHA_FLOOR = 32
 cv2.setNumThreads(1)
@@ -42,6 +43,12 @@ RUN_SHEETS = {
     "glass-current": "glass-run-grid-v1.png",
 }
 
+IDLE_SHEETS = {"ember-drive": "ember-idle-grid-v2.png", "glass-current": "glass-idle-grid-v2.png"}
+DODGE_SHEETS = {"ember-drive": ("ember-dodge-grid-v3.png", None),
+                "glass-current": ("glass-dodge-grid-v2.png", [0, 316, 623, 934, 1246])}
+GUARD_SHEETS = {"ember-drive": "ember-guard-grid-v1.png", "glass-current": "glass-guard-grid-v1.png"}
+BOLT_SHEETS = {"ember-drive": "ember-bolt-grid-v1.png", "glass-current": "glass-bolt-grid-v1.png"}
+
 ICON_SHEETS = {
     "ember-drive": ("ember-ability-icons-v1.png", ["identity", "activation", "bolt", "special", "finisher", "combo"]),
     "glass-current": ("glass-ability-icons-v1.png", ["identity", "activation", "bolt", "special", "finisher", "combo"]),
@@ -62,11 +69,11 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def split_cell(image: Image.Image, column: int, row: int, columns: int = 4, rows: int = 4) -> tuple[Image.Image, dict]:
+def split_cell(image: Image.Image, column: int, row: int, columns: int = 4, rows: int = 4, row_cuts: list[int] | None = None) -> tuple[Image.Image, dict]:
     left = round(column * image.width / columns)
     right = round((column + 1) * image.width / columns)
-    top = round(row * image.height / rows)
-    bottom = round((row + 1) * image.height / rows)
+    top = row_cuts[row] if row_cuts else round(row * image.height / rows)
+    bottom = row_cuts[row + 1] if row_cuts else round((row + 1) * image.height / rows)
     raw = image.crop((left, top, right, bottom)).convert("RGBA")
     alpha = np.asarray(raw.getchannel("A")).copy()
     cleared = int(np.count_nonzero((alpha > 0) & (alpha <= ALPHA_FLOOR)))
@@ -108,8 +115,8 @@ def fit_cell(source: Image.Image, scale: float) -> Image.Image:
 
 def composite_contact(atlas: Image.Image, form_id: str) -> None:
     phase_labels = ["HIT 1 · WINDUP", "HIT 1 · CONTACT", "HIT 1 · RECOVERY", "HIT 1 · SETTLE",
-                    "HIT 2 · WINDUP", "HIT 2 · CONTACT", "HIT 2 · RECOVERY", "HIT 2 · SETTLE",
-                    "HIT 3 · WINDUP", "HIT 3 · CONTACT", "HIT 3 · RECOVERY", "HIT 3 · SETTLE"]
+                    "HIT 2 · WINDUP", "HIT 2 · ANTICIPATE", "HIT 2 · CONTACT", "HIT 2 · RECOVER",
+                    "HIT 3 · WINDUP", "HIT 3 · ANTICIPATE", "HIT 3 · CONTACT", "HIT 3 · RECOVER"]
     sheet = Image.new("RGB", (CELL_W * 12, CELL_H * 4 + 32), (19, 27, 38))
     draw = ImageDraw.Draw(sheet)
     for col, label in enumerate(phase_labels):
@@ -127,16 +134,18 @@ def composite_contact(atlas: Image.Image, form_id: str) -> None:
 def animation_preview(atlas: Image.Image, form_id: str) -> None:
     frames = []
     for col in range(12):
-        for row in range(4):
-            frame = atlas.crop((col * CELL_W, row * CELL_H, (col + 1) * CELL_W, (row + 1) * CELL_H))
-            background = Image.new("RGBA", frame.size, (19, 27, 38, 255))
-            background.alpha_composite(frame)
-            frames.append(background.convert("RGB"))
+        # Keep all four direction rows visible in every time step. A preview
+        # must not change facing once per direction row while the pose advances.
+        frame = atlas.crop((col * CELL_W, 0, (col + 1) * CELL_W, CELL_H * 4))
+        background = Image.new("RGBA", frame.size, (19, 27, 38, 255))
+        background.alpha_composite(frame)
+        frames.append(background.convert("RGB"))
+    durations = [COMBO_PHASE_MS[index // 4][index % 4] for index in range(12)]
     frames[0].save(EVIDENCE / f"{form_id}-combo-at-speed.gif", save_all=True, append_images=frames[1:],
-                   duration=85, loop=0, disposal=2, optimize=False)
+                   duration=durations, loop=0, disposal=2, optimize=False)
 
 
-def build_run(form_id: str, filename: str) -> dict:
+def build_run(form_id: str, filename: str, kind: str = "run", row_cuts: list[int] | None = None) -> dict:
     path = SOURCE / "review" / filename
     image = Image.open(path).convert("RGBA")
     source_cells = {}
@@ -145,13 +154,17 @@ def build_run(form_id: str, filename: str) -> dict:
     frames = []
     for row, direction in enumerate(DIRECTIONS):
         for phase in range(4):
-            cell, metadata = split_cell(image, phase, row)
+            cell, metadata = split_cell(image, phase, row, row_cuts=row_cuts)
             if metadata["cellBorderPixelsAboveAlphaFloor"]:
-                raise ValueError(f"{form_id} run {direction} frame {phase} touches source-cell border")
+                raise ValueError(f"{form_id} {kind} {direction} frame {phase} touches source-cell border")
+            bounds = metadata["sourceAlphaBounds"]
+            size = metadata["sourceCell"]
+            metadata["minimumCellMargin"] = min(bounds[0], bounds[1], size["width"] - bounds[2], size["height"] - bounds[3])
+            if kind != "run" and metadata["minimumCellMargin"] < 6:
+                raise ValueError(f"{form_id} {kind} {direction} frame {phase} has an unsafe cell margin")
             source_cells[(row, phase)] = (cell, metadata)
             direction_sizes[row][0] = max(direction_sizes[row][0], cell.width)
             direction_sizes[row][1] = max(direction_sizes[row][1], cell.height)
-            bounds = metadata["sourceAlphaBounds"]
             direction_heights[row].append(bounds[3] - bounds[1])
 
     scales = []
@@ -160,21 +173,31 @@ def build_run(form_id: str, filename: str) -> dict:
         width, height = direction_sizes[row]
         scales.append(min(224 / max(1, median_height), 172 / width, 232 / height))
     atlas = Image.new("RGBA", (CELL_W * 4, CELL_H * 4), (0, 0, 0, 0))
+    durations = ([160, 160, 160, 160] if kind == "idle" else
+                 [60, 60, 60, 60] if kind == "dodge" and form_id == "glass-current" else
+                 [47.5, 47.5, 47.5, 47.5] if kind == "dodge" else
+                 [52.5, 52.5, 55, 240] if kind == "bolt" else
+                 [None, None, None, None] if kind == "guardParry" else [70, 70, 70, 70])
     for row, direction in enumerate(DIRECTIONS):
         for phase in range(4):
             cell, metadata = source_cells[(row, phase)]
             atlas.alpha_composite(fit_cell(cell, scales[row]), (phase * CELL_W, row * CELL_H))
             frames.append({"direction": direction, "directionRow": row, "frame": phase,
                            "runtimePivot": [CELL_W / 2, CELL_H - 8], "uniformDirectionScale": round(scales[row], 6),
-                           "durationMs": 70, "componentsDeleted": 0, **metadata})
+                           "durationMs": durations[phase], "componentsDeleted": 0, **metadata})
 
     out_dir = RUNTIME / form_id
     out_dir.mkdir(parents=True, exist_ok=True)
-    output = out_dir / "run.webp"
+    output = out_dir / f"{kind}.webp"
     atlas.save(output, "WEBP", lossless=True, method=4, exact=True)
     sheet = Image.new("RGB", (CELL_W * 4, CELL_H * 4 + 32), (19, 27, 38))
     draw = ImageDraw.Draw(sheet)
-    for phase, label in enumerate(["PUSH-OFF", "STRIDE", "PASS", "LAND"]):
+    labels = (["READY", "INHALE", "SHIFT", "SETTLE"] if kind == "idle" else
+              ["GUARD", "COIL", "EVADE", "RECOVER"] if kind == "dodge" else
+              ["READY", "COVER", "PARRY", "HOLD"] if kind == "guardParry" else
+              ["READY", "WINDUP", "RELEASE", "RECOVER"] if kind == "bolt" else
+              ["PUSH-OFF", "STRIDE", "PASS", "LAND"])
+    for phase, label in enumerate(labels):
         draw.text((phase * CELL_W + 5, 5), label, fill=(211, 223, 229))
     for row, direction in enumerate(DIRECTIONS):
         draw.text((4, row * CELL_H + 32), direction.upper(), fill=(145, 186, 198))
@@ -183,24 +206,25 @@ def build_run(form_id: str, filename: str) -> dict:
             background = Image.new("RGBA", frame.size, (19, 27, 38, 255))
             background.alpha_composite(frame)
             sheet.paste(background.convert("RGB"), (phase * CELL_W, row * CELL_H + 32))
-    sheet.save(EVIDENCE / f"{form_id}-run-contact.jpg", quality=94, subsampling=0, optimize=True)
+    sheet.save(EVIDENCE / f"{form_id}-{kind}-contact.jpg", quality=94, subsampling=0, optimize=True)
     preview_frames = []
     for phase in range(4):
         frame = atlas.crop((phase * CELL_W, 0, (phase + 1) * CELL_W, CELL_H * 4))
         background = Image.new("RGBA", frame.size, (19, 27, 38, 255))
         background.alpha_composite(frame)
         preview_frames.append(background.convert("RGB"))
-    preview_frames[0].save(EVIDENCE / f"{form_id}-run-at-speed.gif", save_all=True,
-                           append_images=preview_frames[1:], duration=70, loop=0, disposal=2)
+    preview_frames[0].save(EVIDENCE / f"{form_id}-{kind}-at-speed.gif", save_all=True,
+                           append_images=preview_frames[1:], duration=[round(d) if d is not None else 100 for d in durations], loop=0, disposal=2)
     return {"sourceGrid": {"source": path.relative_to(ROOT).as_posix(), "size": [image.width, image.height],
-                           "sha256": sha256(path), "columns": 4, "rows": 4, "columnOrder": ["push-off", "stride", "pass", "land"],
+                           "sha256": sha256(path), "columns": 4, "rows": 4, "columnOrder": labels, "rowCuts": row_cuts,
                            "rowOrder": DIRECTIONS},
             "runtime": output.relative_to(ROOT).as_posix(), "runtimeBytes": output.stat().st_size,
             "runtimeGrid": {"columns": 4, "rows": 4, "frameWidth": CELL_W, "frameHeight": CELL_H, "directionOrder": DIRECTIONS},
             "uniformDirectionScales": {direction: round(scales[index], 6) for index, direction in enumerate(DIRECTIONS)},
             "runtimePivot": [CELL_W / 2, CELL_H - 8], "frames": frames,
-            "contactSheet": f"tests/evidence/b05/{form_id}-run-contact.jpg",
-            "atSpeedPreview": f"tests/evidence/b05/{form_id}-run-at-speed.gif"}
+            "timingBasis": "event-driven guard/parry; GIF uses 100ms preview phases" if kind == "guardParry" else "simulation timing; GIF rounded to milliseconds",
+            "contactSheet": f"tests/evidence/b05/{form_id}-{kind}-contact.jpg",
+            "atSpeedPreview": f"tests/evidence/b05/{form_id}-{kind}-at-speed.gif"}
 
 
 def build_icons(form_id: str, filename: str, names: list[str]) -> dict:
@@ -290,7 +314,7 @@ def build_form(form_id: str, sheet_names: list[str]) -> dict:
         hash_value = sha256(path)
         sheet_record = {"source": path.relative_to(ROOT).as_posix(), "size": [image.width, image.height],
                         "sha256": hash_value, "grid": {"columns": 4, "rows": 4,
-                        "columnOrder": ["phase 1", "phase 2", "phase 3", "phase 4"],
+                        "columnOrder": ["windup", "contact", "recovery", "settle"] if hit_index == 0 else ["windup", "anticipation", "contact", "recovery"],
                         "rowOrder": DIRECTIONS}}
         for direction_index, direction in enumerate(DIRECTIONS):
             for phase in range(4):
@@ -332,7 +356,7 @@ def build_form(form_id: str, sheet_names: list[str]) -> dict:
             atlas.alpha_composite(fit_cell(cropped, scale), (column * CELL_W, row * CELL_H))
             frames.append({"direction": direction, "directionRow": row, "frame": column,
                            "runtimePivot": [CELL_W / 2, CELL_H - 8], "uniformHitDirectionScale": round(scale, 6),
-                           "durationMs": 85, **metadata})
+                           "durationMs": COMBO_PHASE_MS[column // 4][column % 4], **metadata})
 
     out_dir = RUNTIME / form_id
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -341,6 +365,10 @@ def build_form(form_id: str, sheet_names: list[str]) -> dict:
     composite_contact(atlas, form_id)
     animation_preview(atlas, form_id)
     run = build_run(form_id, RUN_SHEETS[form_id])
+    idle = build_run(form_id, IDLE_SHEETS[form_id], "idle") if form_id in IDLE_SHEETS else None
+    dodge = build_run(form_id, DODGE_SHEETS[form_id][0], "dodge", DODGE_SHEETS[form_id][1]) if form_id in DODGE_SHEETS else None
+    guard = build_run(form_id, GUARD_SHEETS[form_id], "guardParry") if form_id in GUARD_SHEETS else None
+    bolt = build_run(form_id, BOLT_SHEETS[form_id], "bolt") if form_id in BOLT_SHEETS else None
     icon_filename, icon_names = ICON_SHEETS[form_id]
     icons = build_icons(form_id, icon_filename, icon_names)
     vfx_filename, vfx_names = VFX_SHEETS[form_id]
@@ -352,6 +380,10 @@ def build_form(form_id: str, sheet_names: list[str]) -> dict:
         "runtime": output.relative_to(ROOT).as_posix(),
         "runtimeBytes": output.stat().st_size,
         "run": run,
+        "idle": idle,
+        "dodge": dodge,
+        "guardParry": guard,
+        "bolt": bolt,
         "icons": icons,
         "vfx": vfx,
         "runtimeGrid": {"columns": 12, "rows": 4, "frameWidth": CELL_W, "frameHeight": CELL_H,
@@ -365,9 +397,11 @@ def build_form(form_id: str, sheet_names: list[str]) -> dict:
                     "rule": "All components above alpha floor are retained; source-cell edge contact blocks export."},
         "contactSheet": f"tests/evidence/b05/{form_id}-combo-contact.jpg",
         "atSpeedPreview": f"tests/evidence/b05/{form_id}-combo-at-speed.gif",
+        "phaseDurationsMs": {hit: COMBO_PHASE_MS[index] for index, hit in enumerate(HITS)},
+        "timingBasis": "B04 simulation windup/active/recovery; windup and recovery are split across candidate anticipation/settle poses; offline GIF is only a phase preview",
         "frames": frames,
-        "coverage": {"combo1": True, "combo2": True, "combo3": True, "idle": False, "run": True,
-                      "dodge": False, "guardParry": False, "hurtKo": False, "bolt": False,
+        "coverage": {"combo1": True, "combo2": True, "combo3": True, "idle": idle is not None, "run": True,
+                      "dodge": dodge is not None, "guardParry": guard is not None, "hurtKo": False, "bolt": bolt is not None,
                       "special": False, "finisher": False, "activation": False, "deactivation": False,
                       "dedicatedIcons": True, "authoredVfx": True},
     }
@@ -389,6 +423,30 @@ def audit_rejected() -> list[dict]:
     return rejected
 
 
+def build_scale_comparison() -> str:
+    """Compare front/right frames at the renderer's 100x140 draw size and 75%."""
+    paths = [ROOT / "public/assets/characters/kairo/b03/idle.png",
+             RUNTIME / "ember-drive/idle.webp", RUNTIME / "glass-current/idle.webp"]
+    atlases = [Image.open(path).convert("RGBA") for path in paths]
+    sheet = Image.new("RGB", (750, 390), (19, 27, 38))
+    draw = ImageDraw.Draw(sheet)
+    for row, (scale, label) in enumerate([(1.0, "100%"), (.75, "75%")]):
+        y = row * 190
+        draw.text((6, y + 5), label, fill=(220, 230, 235))
+        for direction_index, direction in enumerate(["front", "right"]):
+            for form_index, name in enumerate(["BASE", "EMBER", "GLASS"]):
+                x = (direction_index * 3 + form_index) * 124 + 12
+                draw.text((x, y + 20), f"{name} {direction.upper()}", fill=(190, 209, 219))
+                source_row = 0 if direction == "front" else 1
+                frame = atlases[form_index].crop((0, source_row * CELL_H, CELL_W, (source_row + 1) * CELL_H))
+                frame = frame.resize((round(100 * scale), round(140 * scale)), Image.Resampling.LANCZOS)
+                bg = Image.new("RGBA", frame.size, (19, 27, 38, 255)); bg.alpha_composite(frame)
+                sheet.paste(bg.convert("RGB"), (x + (100 - frame.width) // 2, y + 42 + (140 - frame.height)))
+    target = EVIDENCE / "base-ember-glass-scale-comparison.jpg"
+    sheet.save(target, quality=94, subsampling=0, optimize=True)
+    return target.relative_to(ROOT).as_posix()
+
+
 def main() -> None:
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     forms = {form_id: build_form(form_id, names) for form_id, names in SHEETS.items()}
@@ -406,11 +464,13 @@ def main() -> None:
                         "rejectCellEdgeContact": True},
         "turnarounds": {form_id: audit_turnaround(form_id, file) for form_id, file in TURNAROUNDS.items()},
         "forms": forms,
+        "scaleComparison": build_scale_comparison(),
         "rejectedDrafts": audit_rejected(),
-        "missingCoverage": ["idle", "dodge", "guard/parry character animation", "hurt/KO character animation",
+        "missingCoverage": ["hurt/KO character animation",
+                            "form-specific start/stop transitions",
                             "fluid activation/deactivation character animation", "active loop character animation",
                             "fluid authored animation beyond 4 key poses", "dedicated form audio and active loops",
-                            "Glass piercing projectile/finisher character animation"],
+                            "form special/finisher character animation"],
         "limitations": ["These 12-frame action atlases are production candidates, not owner-approved art.",
                         "Generated 4-frame hit and run clips are illustrative key poses; fluidity and timing are not approved.",
                         "B04 live Chrome gate and B05 live Vite gameplay/audio/performance checks remain blocked by unavailable CUA host.",
@@ -418,9 +478,11 @@ def main() -> None:
     }
     manifest_path = ROOT / "docs" / "art" / "b05-animation-manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"Built {len(forms)} B05 reviewable combo atlases and manifest -> {manifest_path.relative_to(ROOT)}")
+    print(f"Built B05 candidate atlases and manifest -> {manifest_path.relative_to(ROOT)}")
     for form_id, entry in forms.items():
-        print(f"  {form_id}: {entry['runtimeBytes']} bytes; 12 frames x 4 directions; remaining states not exported")
+        implemented = [state for state in ("idle", "run", "combo1", "combo2", "combo3", "dodge", "guardParry", "bolt")
+                       if entry["coverage"].get(state, False)]
+        print(f"  {form_id}: {entry['runtimeBytes']} byte combo atlas; candidate states: {', '.join(implemented)}")
 
 
 if __name__ == "__main__":

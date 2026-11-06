@@ -37,6 +37,22 @@ export class CanvasRenderer {
   'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/run.webp'),
   'glass-current':this.load('/assets/characters/kairo/forms/glass-current/run.webp'),
  };
+ private formIdles:Record<Exclude<KairoFormId,'base'>,HTMLImageElement>={
+  'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/idle.webp'),
+  'glass-current':this.load('/assets/characters/kairo/forms/glass-current/idle.webp'),
+ };
+ private formDodges:Partial<Record<Exclude<KairoFormId,'base'>,HTMLImageElement>>={
+  'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/dodge.webp'),
+  'glass-current':this.load('/assets/characters/kairo/forms/glass-current/dodge.webp'),
+ };
+ private formGuards:Record<Exclude<KairoFormId,'base'>,HTMLImageElement>={
+  'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/guardParry.webp'),
+  'glass-current':this.load('/assets/characters/kairo/forms/glass-current/guardParry.webp'),
+ };
+ private formBolts:Record<Exclude<KairoFormId,'base'>,HTMLImageElement>={
+  'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/bolt.webp'),
+  'glass-current':this.load('/assets/characters/kairo/forms/glass-current/bolt.webp'),
+ };
  private formVfx:Record<Exclude<KairoFormId,'base'>,Record<FormVfxKey,HTMLImageElement>>={
   'ember-drive':{
    activation:this.load('/assets/vfx/b05/ember-drive/activation.webp'),contact:this.load('/assets/vfx/b05/ember-drive/contact.webp'),
@@ -58,6 +74,8 @@ export class CanvasRenderer {
  readonly assetsReady:Promise<void>;
  private lastAnimation:ResolvedAnimation|null=null;
  private previousAnimation:ResolvedAnimation|null=null;
+ private lastAnimationForm:KairoFormId='base';
+ private previousAnimationForm:KairoFormId='base';
  private transitionRemaining=0;
  private previousRenderAt=0;
  private wisp=this.load('/assets/enemies/prototype/rift-wisp.png');
@@ -65,12 +83,12 @@ export class CanvasRenderer {
   this.forceB02=forceB02;
   canvas.width=ARENA.width;canvas.height=ARENA.height;
   const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D support is required');this.ctx=ctx;
-  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
+  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formIdles),...Object.values(this.formDodges),...Object.values(this.formGuards),...Object.values(this.formBolts),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
  }
  emit(events:CombatEvent[],clock:number):void {
   const durations:Partial<Record<CombatEvent['id'],number>>={'bolt-cast':.22,'bolt-hit':.23,'bolt-dissipate':.2,'combo-contact':.23,swing:.19,
    'shockwave-charge':.24,'shockwave-release':.48,'shockwave-hit':.22,parry:.23,block:.17,'dash-start':.24,'dash-land':.22,
-   'finisher-build':.3,'finisher-hit':.38,'finisher-fade':.32,'ember-start':.5,'ember-end':.28,'glass-start':.5,'glass-end':.28,'glass-counter':.3};
+   'finisher-build':.3,'finisher-hit':.38,'finisher-fade':.32,'ember-start':.5,'ember-end':.28,'ember-detonate':.36,'glass-start':.5,'glass-end':.28,'glass-counter':.3};
   for(const event of events){const duration=durations[event.id];if(duration)this.effects.push({event,start:clock,duration});}
   if(this.effects.length>80)this.effects.splice(0,this.effects.length-80);
  }
@@ -91,7 +109,7 @@ export class CanvasRenderer {
    c.fillStyle=p.color;c.beginPath();c.arc(p.x,p.y,p.size*(1.2-a*.45),0,Math.PI*2);c.fill();}
   c.globalAlpha=1;
   this.drawVfx(game.clock,true,game.save.settings);
-  for(const p of game.projectiles){if(p.source==='hero'&&this.ready(this.vfx.bolt)){const angle=Math.atan2(p.vy,p.vx);this.drawSprite(this.vfx.bolt,p.x,p.y,angle,57,35,1,game.save.settings);}}
+  for(const p of game.projectiles){if(p.source==='hero'){const angle=Math.atan2(p.vy,p.vx);const id=p.formId;if(id&&id!=='base'&&this.ready(this.formVfx[id].bolt))this.drawFormVfx(this.formVfx[id].bolt,id,p.x,p.y,angle,72,34,1,game.save.settings);else this.drawSprite(this.vfx.bolt,p.x,p.y,angle,57,35,1,game.save.settings);}}
   const actors:[number,()=>void][]=[...game.enemies.map(e=>[e.y,()=>this.drawEnemy(e,game.clock,game.save.settings)] as [number,()=>void]),
    [game.hero.y,()=>this.drawHero(game.hero,game.clock,true)]];
   actors.sort((a,b)=>a[0]-b[0]);for(const [,draw] of actors)draw();
@@ -165,10 +183,13 @@ export class CanvasRenderer {
  private drawHero(h:Hero,t:number,inBattle:boolean):void {
   const c=this.ctx;this.drawShadow(h.x,h.y,1.05);c.save();c.translate(h.x,h.y);
   const resolved=resolveHeroAnimation(h,t);
-  const key=`${resolved.state}:${resolved.direction}`;
-  if(!this.lastAnimation)this.lastAnimation=resolved;
-  else if(`${this.lastAnimation.state}:${this.lastAnimation.direction}`!==key){
+  const committedAbility=resolved.state==='bolt'||resolved.state==='shockwave'||resolved.state==='finisher';
+  const currentForm=committedAbility?h.abilityFormId:h.transformed?h.formId:'base';
+  const key=`${resolved.state}:${resolved.direction}:${currentForm}`;
+  if(!this.lastAnimation){this.lastAnimation=resolved;this.lastAnimationForm=currentForm;}
+  else if(`${this.lastAnimation.state}:${this.lastAnimation.direction}:${this.lastAnimationForm}`!==key){
    this.previousAnimation=this.lastAnimation;
+   this.previousAnimationForm=this.lastAnimationForm;
    this.transitionRemaining=this.reducedMotion?0:.07;
   }
   const now=performance.now();
@@ -179,43 +200,43 @@ export class CanvasRenderer {
   const sprite=this.fallbackAtlas(resolved.atlas);
   const authored=this.authoredAtlas(resolved.atlas);
   const legacy=this.legacyAtlas(resolved.atlas);
-  const formAtlasImages=resolved.state==='combo'?this.formCombos:resolved.state==='run'?this.formRuns:null;
-  const formAtlasId=resolveFormAnimationAtlas(h.formId,h.transformed,resolved.state==='combo'||resolved.state==='run'
-   ?this.ready(formAtlasImages![h.formId==='base'?'ember-drive':h.formId]):false);
-  const formAtlas=formAtlasId&&formAtlasImages?formAtlasImages[formAtlasId]:null;
+  const formAtlasImages:Partial<Record<Exclude<KairoFormId,'base'>,HTMLImageElement>>|null=resolved.state==='combo'?this.formCombos:resolved.state==='run'?this.formRuns:resolved.state==='idle'?this.formIdles:resolved.state==='dodge'?this.formDodges:resolved.state==='guard'||resolved.state==='parry'?this.formGuards:resolved.state==='bolt'?this.formBolts:null;
+  const candidate=currentForm!=='base'?formAtlasImages?.[currentForm]:undefined;
+  const formAtlasId=resolveFormAnimationAtlas(currentForm,currentForm!=='base',!!candidate&&this.ready(candidate));
+  const formAtlas=formAtlasId?candidate:null;
   const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):formAtlas?'b05':authored!==null&&this.ready(authored)?'b04':resolveAtlasSource(this.ready(sprite),this.ready(legacy));
   const bob=this.reducedMotion?0:(resolved.state==='idle'?Math.sin(h.step*.018)*.7:0);
   c.translate(0,bob-17);
   if(atlasSource==='b05'){
-   if(h.transformVisualTime>0)this.drawIgnition(h,t);
+   if(h.transformVisualTime>0)this.drawIgnition(h);
    const animationDelta=this.transitionRemaining>0?blend:1;
    if(this.previousAnimation&&this.transitionRemaining>0){
-    const oldImage=this.animationImage(this.previousAnimation,h.formId);
+    const oldImage=this.animationImage(this.previousAnimation,this.previousAnimationForm);
     if(this.ready(oldImage))this.drawDirectionalFrame(oldImage,this.previousAnimation,heroAlpha*(1-animationDelta));
    }
    this.drawDirectionalFrame(formAtlas!,resolved,heroAlpha*animationDelta);
    this.transitionRemaining=Math.max(0,this.transitionRemaining-renderDelta);
-   this.lastAnimation=resolved;
+   this.lastAnimation=resolved;this.lastAnimationForm=currentForm;
    if(this.transitionRemaining===0)this.previousAnimation=null;
    c.restore();return;
   }
   if(atlasSource==='b04'||atlasSource==='b03'){
-   if(h.transformVisualTime>0)this.drawIgnition(h,t);
+   if(h.transformVisualTime>0)this.drawIgnition(h);
    const animationDelta=this.transitionRemaining>0?blend:1;
    if(this.previousAnimation&&this.transitionRemaining>0){
-    const oldImage=this.animationImage(this.previousAnimation,h.formId);
+    const oldImage=this.animationImage(this.previousAnimation,this.previousAnimationForm);
     if(this.ready(oldImage))this.drawDirectionalFrame(oldImage,this.previousAnimation,heroAlpha*(1-animationDelta));
    }
    this.drawDirectionalFrame(atlasSource==='b04'?authored!:sprite,resolved,heroAlpha*animationDelta);
    this.transitionRemaining=Math.max(0,this.transitionRemaining-renderDelta);
-   this.lastAnimation=resolved;
+   this.lastAnimation=resolved;this.lastAnimationForm=currentForm;
    if(this.transitionRemaining===0)this.previousAnimation=null;
    c.restore();return;
   }
   // If B03 atlases fail to load, use the B02 strip where available, then the vector fallback below.
   if(atlasSource==='b02'){
    if(Math.cos(h.face)<0)c.scale(-1,1);
-   if(h.transformVisualTime>0)this.drawIgnition(h,t);
+   if(h.transformVisualTime>0)this.drawIgnition(h);
    const frames=resolved.atlas==='idle'||resolved.atlas==='run'?8:resolved.atlas==='combo'?12:resolved.atlas==='dodge'?6:8;
    const fw=legacy.naturalWidth/frames;
    c.globalAlpha=heroAlpha;
@@ -244,7 +265,10 @@ export class CanvasRenderer {
  private ready(image:HTMLImageElement):boolean {return image.complete&&image.naturalWidth>0;}
  private fallbackAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {if(atlas==='idle')return this.directional.idle;if(atlas==='run')return this.directional.run;if(atlas==='dodge')return this.directional.dodge;if(atlas==='combo')return this.directional.combo;return this.directional.states;}
  private authoredAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement|null {if(atlas==='combo')return this.authored.combo;if(atlas==='locomotionTransitions')return this.authored.transitions;if(atlas==='bolt')return this.authored.bolt;if(atlas==='shockwave')return this.authored.shockwave;if(atlas==='guardParry')return this.authored.guardParry;if(atlas==='finisher')return this.authored.finisher;return null;}
- private animationImage(animation:ResolvedAnimation,formId:KairoFormId):HTMLImageElement {if(formId!=='base'&&animation.atlas==='combo')return this.formCombos[formId];if(formId!=='base'&&animation.atlas==='run')return this.formRuns[formId];return this.authoredAtlas(animation.atlas)??this.fallbackAtlas(animation.atlas);}
+ private animationImage(animation:ResolvedAnimation,formId:KairoFormId):HTMLImageElement {
+  if(formId!=='base') {const candidate=animation.atlas==='combo'?this.formCombos[formId]:animation.atlas==='run'?this.formRuns[formId]:animation.atlas==='idle'?this.formIdles[formId]:animation.atlas==='dodge'?this.formDodges[formId]:animation.atlas==='guardParry'?this.formGuards[formId]:animation.atlas==='bolt'?this.formBolts[formId]:null;if(candidate&&this.ready(candidate))return candidate;}
+  const authored=this.authoredAtlas(animation.atlas);return authored&&this.ready(authored)?authored:this.fallbackAtlas(animation.atlas);
+ }
  private legacyAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {
   if(atlas==='idle')return this.idle;if(atlas==='run')return this.run;if(atlas==='dodge')return this.dodge;
   if(atlas==='combo')return this.combo;return this.states;
@@ -257,24 +281,17 @@ export class CanvasRenderer {
   c.drawImage(image,animation.frame*frameWidth,animation.directionRow*frameHeight,frameWidth,frameHeight,-50,-103,100,140);
   c.restore();
  }
- private drawIgnition(h:Hero,t:number):void {
-  const c=this.ctx,progress=clamp(1-h.transformVisualTime/h.transformVisualDuration,0,1);
-  const radius=28+progress*82;c.save();c.globalAlpha=this.reducedFlash?.36:(1-progress)*.84;
-  c.strokeStyle='#ffc47f';c.lineWidth=this.reducedFlash?3:4;c.shadowColor='#ffad65';c.shadowBlur=this.reducedFlash?0:15;
-  c.beginPath();c.ellipse(0,5,radius,radius*.44,this.reducedMotion?0:t*1.1,0,Math.PI*2);c.stroke();
-  if(!this.reducedMotion&&!this.reducedFlash){for(let i=0;i<4;i++){const a=t*1.8+i*Math.PI/2;const x=Math.cos(a)*(radius+6),y=Math.sin(a)*(radius*.42+6);c.save();c.translate(x,y);c.rotate(a);c.fillStyle='#ffe0a4';c.fillRect(-2,-5,4,10);c.restore();}}
-  c.restore();
+ private drawIgnition(h:Hero):void {
+  if(h.formId==='base')return;const image=this.formVfx[h.formId].activation;if(!this.ready(image))return;
+  const c=this.ctx,progress=clamp(1-h.transformVisualTime/h.transformVisualDuration,0,1);const size=this.reducedMotion?110:95+progress*45;
+  c.save();c.globalAlpha=(this.reducedFlash?.3:.55)*(1-progress*.55);c.drawImage(image,-size/2,-size*.55,size,size);c.restore();
  }
  private drawFormAura(h:Hero,t:number):void {
-  const c=this.ctx;c.save();c.translate(h.x,h.y-15);
-  for(let i=0;i<3;i++){const r=44+i*12+(this.reducedMotion?0:Math.sin(t*7+i)*4);
-   c.strokeStyle=`rgba(255,${165+i*20},${104+i*26},${.26-i*.045})`;c.lineWidth=3-i*.4;
-   c.beginPath();c.ellipse(0,0,r,r*.75,(this.reducedMotion?0:t*.65)+i,0,Math.PI*2);c.stroke();}
-  c.shadowColor='#ffb378';c.shadowBlur=32;c.fillStyle='rgba(255,169,108,.14)';
-  c.beginPath();c.ellipse(0,0,46,58,0,0,Math.PI*2);c.fill();
-  c.globalAlpha=this.reducedFlash?.35:.72;c.fillStyle='#ffd49a';
-  for(let i=0;i<3;i++){const a=(this.reducedMotion?0:t*.9)+i*Math.PI*2/3;const x=Math.cos(a)*(51+i*4),y=Math.sin(a)*(31+i*3);c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,-6);c.lineTo(4,0);c.lineTo(0,6);c.lineTo(-4,0);c.closePath();c.fill();c.restore();}
-  c.restore();
+  if(h.formId==='base')return;const images=this.formVfx[h.formId],c=this.ctx;
+  const image=h.formId==='glass-current'?images.transition:images.activation;if(!this.ready(image))return;
+  c.save();c.translate(h.x,h.y-24);c.globalAlpha=this.reducedFlash?.14:.23;
+  const pulse=this.reducedMotion?0:Math.sin(t*(h.formId==='glass-current'?2:4))*3;
+  c.drawImage(image,-66-pulse,-67-pulse,132+pulse*2,124+pulse*2);c.restore();
  }
  private drawSprite(image:HTMLImageElement,x:number,y:number,angle:number,width:number,height:number,alpha:number,settings:GameSettings):void {
   if(!this.ready(image)||alpha<=.01)return;const c=this.ctx;c.save();c.translate(x,y);c.rotate(angle);
@@ -286,7 +303,7 @@ export class CanvasRenderer {
   const id=event.id;
   const key:FormVfxKey|undefined=id==='ember-start'||id==='glass-start'?'activation':id==='ember-end'||id==='glass-end'?'transition':
    id==='combo-contact'?'contact':id==='bolt-cast'||id==='bolt-hit'||id==='bolt-dissipate'?'bolt':
-   id==='shockwave-release'||id==='glass-counter'||id==='parry'?'special':
+   id==='shockwave-release'||id==='glass-counter'||id==='parry'||id==='ember-detonate'?'special':
    id==='finisher-build'||id==='finisher-hit'||id==='finisher-fade'?'finisher':
    id==='dash-start'||id==='dash-land'?'transition':undefined;
   if(!key)return null;const image=this.formVfx[event.formId][key];return this.ready(image)?{key,image}:null;
@@ -302,11 +319,18 @@ export class CanvasRenderer {
    const id=effect.event.id;const isBehind=['shockwave-charge','shockwave-release','dash-start','dash-land'].includes(id);
    const custom=this.formVfxFor(effect.event);
    const customBehind=custom&&(custom.key==='activation'||custom.key==='transition'||custom.key==='special');
-   if((custom?customBehind:isBehind)!==behind)continue;
    const p=clamp((clock-effect.start)/effect.duration,0,1),motion=settings.reducedMotion ? .48 : p;
    let angle=effect.event.angle??0;let x=effect.event.x;let y=effect.event.y;
    if(custom&&effect.event.formId&&effect.event.formId!=='base'){
-    let width=150,height=120,alpha=.8*(1-p*.65),angle=effect.event.angle??0;
+    if(behind!==customBehind){
+     if(settings.particles&&!settings.reducedMotion){
+      const formId=effect.event.formId,layer=custom.key==='contact'?this.formVfx[formId].transition:this.formVfx[formId].contact;
+      const travel=(formId==='glass-current'?-1:1)*p*18,layerAlpha=Math.sin(Math.PI*p)*.38;
+      this.drawFormVfx(layer,formId,x+Math.cos(angle)*travel,y+Math.sin(angle)*travel,angle+(formId==='glass-current'?-.2:.2),74+motion*28,64+motion*24,layerAlpha,settings);
+     }
+     continue;
+    }
+    let width=150,height=120,alpha=.8*(1-p*.65);
     if(custom.key==='activation'){width=190+motion*90;height=190+motion*90;alpha=.82*(1-p*.72);}
     else if(custom.key==='transition'){width=150+motion*100;height=120+motion*80;alpha=.68*(1-p);}
     else if(custom.key==='contact'){width=100+motion*44;height=90+motion*40;alpha=.96*(1-p*.65);}
@@ -315,6 +339,7 @@ export class CanvasRenderer {
     else if(custom.key==='finisher'){width=(id==='finisher-hit'?270:220)+motion*60;height=width*.72;alpha=(id==='finisher-hit'?1:.78)*(1-p*.78);if(effect.event.formId==='ember-drive')angle+=Math.PI/4;}
     this.drawFormVfx(custom.image,effect.event.formId,x,y,angle,width,height,alpha,settings);continue;
    }
+   if(isBehind!==behind)continue;
    let image:HTMLImageElement;let width:number;let height:number;let alpha=1;
    if(id==='shockwave-charge'||id==='shockwave-release'){
     image=this.vfx.shockwave;width=95+motion*300;height=47+motion*106;alpha=id==='shockwave-charge'?.74*(1-p*.3):.9*(1-p);

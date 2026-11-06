@@ -15,7 +15,7 @@ export type AbilityRuntimeSnapshot = {
   reason: AbilityReadyReason;
 };
 export type LocomotionState = 'idle'|'start'|'run'|'stop';
-export type CombatEventId = 'combo-start'|'combo-contact'|'bolt-cast'|'bolt-hit'|'bolt-dissipate'|'shockwave-charge'|'shockwave-release'|'shockwave-hit'|'guard-start'|'guard-end'|'parry'|'block'|'dash-start'|'dash-land'|'pulse-ready'|'pulse-gain'|'action-unavailable'|'finisher-build'|'finisher-hit'|'finisher-fade'|'hurt'|'kill'|'ember-start'|'ember-end'|'glass-start'|'glass-end'|'glass-counter'|'room-clear'|'reward'|'victory'|'defeat'|'swing';
+export type CombatEventId = 'combo-start'|'combo-contact'|'ember-detonate'|'bolt-cast'|'bolt-hit'|'bolt-dissipate'|'shockwave-charge'|'shockwave-release'|'shockwave-hit'|'guard-start'|'guard-end'|'parry'|'block'|'dash-start'|'dash-land'|'pulse-ready'|'pulse-gain'|'action-unavailable'|'finisher-build'|'finisher-hit'|'finisher-fade'|'hurt'|'kill'|'ember-start'|'ember-end'|'glass-start'|'glass-end'|'glass-counter'|'room-clear'|'reward'|'victory'|'defeat'|'swing';
 export type CombatEvent = {
   id: CombatEventId;
   x: number;
@@ -53,20 +53,20 @@ export interface Enemy {
   attackCooldown: number; telegraph: number; stagger: number; vx: number; vy: number;
   emberMarks?: number;
 }
-export interface Projectile { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; age: number; radius: number; power: number; source: 'hero'|'enemy'; color: string; ability?: AbilityId; hitsRemaining?: number; piercedEnemyIds?: number[]; }
+export interface Projectile { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; age: number; radius: number; power: number; source: 'hero'|'enemy'; color: string; ability?: AbilityId; formId?: KairoFormId; hitsRemaining?: number; piercedEnemyIds?: number[]; }
 export interface Particle { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; size: number; color: string; }
 export interface Hero {
   x: number; y: number; vx: number; vy: number; face: number;
   moveFacing: import('./direction.js').FacingDirection; hurtFacing: import('./direction.js').FacingDirection; attackFacing: import('./direction.js').FacingDirection; actionAngle: number;
   hp: number; maxHp: number; pulse: number; maxPulse: number;
-  dashTime: number; invuln: number;
+  dashTime: number; dashDuration: number; invuln: number;
   attackTime: number; attackAnimTime: number; attackDuration: number; attackStartup: number;
   attackHitFired: boolean; attackCooldown: number; attackBuffer: number; combo: number; comboWindow: number;
   abilityCooldowns: Record<AbilityId, number>;
-  currentAbility: AbilityId|null; abilityAnimTime: number; abilityAnimDuration: number; abilityContactFired: boolean;
-  guardTime: number; parryWindow: number;
+  currentAbility: AbilityId|null; abilityFormId: KairoFormId; abilityAnimTime: number; abilityAnimDuration: number; abilityContactFired: boolean;
+  guardTime: number; parryWindow: number; parryConsumed: boolean; parryVisualTime: number;
   formTime: number; formMaxTime: number; transformVisualTime: number; transformVisualDuration: number; transformed: boolean;
-  formId: KairoFormId; emberMarks: number; glassCounterTime: number;
+  formId: KairoFormId; emberMarks: number; glassCounterTime: number; glassDodgeWindow: number;
   locomotion: LocomotionState; locomotionTime: number; movingInput: boolean;
   hurtTime: number; ko: boolean; hitFlash: number; step: number;
 }

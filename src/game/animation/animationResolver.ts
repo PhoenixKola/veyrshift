@@ -1,6 +1,6 @@
 import { facingFromAngle, facingFromVector } from '../core/direction.js';
 import type { FacingDirection } from '../core/direction.js';
-import { KAIRO_COMBO_HITS } from '../data/kairoAbilities.js';
+import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS } from '../data/kairoAbilities.js';
 import { formById } from '../data/kairoForms.js';
 import type { AbilityId, Hero, KairoFormId, LocomotionState } from '../core/types.js';
 
@@ -35,13 +35,24 @@ const cardinal = (angle: number) => facingFromAngle(angle);
 function comboFrame(hero: Hero): number {
   const hit = KAIRO_COMBO_HITS[Math.max(0, Math.min(2, hero.combo - 1))];
   const t = hero.attackAnimTime;
+  // B05 hit one reaches contact on column 1; base and B05 hits two/three reach it on column 2.
+  if (hero.transformed && hero.formId !== 'base' && hero.combo === 1) {
+    if (t < hit.timing.windup) return 0;
+    if (t < hit.timing.windup + hit.timing.active) return 1;
+    return t < hit.timing.windup + hit.timing.active + hit.timing.recovery * .6 ? 2 : 3;
+  }
   if (t < hit.timing.windup * .42) return 0;
   if (t < hit.timing.windup) return 1;
-  if (t < hit.timing.windup + hit.timing.active) return 2;
-  return 3;
+  return t < hit.timing.windup + hit.timing.active ? 2 : 3;
 }
 
 function actionFrame(hero: Hero, id: AbilityId): number {
+  if (id === 'bolt') {
+    const timing=KAIRO_BASE_ABILITIES.bolt.timing,t=hero.abilityAnimTime;
+    if(t<timing.windup*.5)return 0;
+    if(t<timing.windup)return 1;
+    return t<timing.windup+timing.active?2:3;
+  }
   const definition = ({ bolt: .105, shockwave: .22, finisher: .27 } as Partial<Record<AbilityId, number>>)[id] ?? .2;
   const progress = Math.max(0, Math.min(.999, hero.abilityAnimTime / Math.max(definition, hero.abilityAnimDuration)));
   return Math.min(3, Math.floor(progress * 4));
@@ -66,7 +77,7 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
   else if (hero.transformVisualTime > 0) { state = 'ember'; atlas = 'states'; direction = cardinal(hero.face); frame = hero.transformVisualTime / hero.transformVisualDuration > .5 ? 0 : 1; }
   else if (hero.dashTime > 0) {
     state = 'dodge'; atlas = 'dodge'; direction = facingFromVector({ x: hero.vx, y: hero.vy });
-    frame = Math.min(3, Math.floor(Math.max(0, 1 - hero.dashTime / .19) * 4)); frameCount = 4;
+    frame = Math.min(3, Math.floor(Math.max(0, 1 - hero.dashTime / hero.dashDuration) * 4)); frameCount = 4;
   } else if (hero.attackTime > 0) {
     state = 'combo'; atlas = 'combo'; direction = hero.attackFacing;
     frame = (Math.max(1, Math.min(3, hero.combo)) - 1) * 4 + comboFrame(hero); frameCount = 12;
@@ -76,8 +87,12 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
     state = 'shockwave'; atlas = 'shockwave'; direction = hero.attackFacing; frame = actionFrame(hero, 'shockwave'); frameCount = 4;
   } else if (hero.currentAbility === 'finisher') {
     state = 'finisher'; atlas = 'finisher'; direction = hero.attackFacing; frame = actionFrame(hero, 'finisher'); frameCount = 4;
+  } else if (hero.transformed && hero.formId !== 'base' && hero.parryVisualTime > 0) {
+    state = 'parry'; atlas = 'guardParry'; direction = cardinal(hero.face); frame = 2; frameCount = 4;
   } else if (hero.guardTime > 0) {
-    state = hero.parryWindow > 0 ? 'parry' : 'guard'; atlas = 'guardParry'; direction = cardinal(hero.face); frame = state === 'parry' ? 0 : 1; frameCount = 4;
+    const formGuard = hero.transformed && hero.formId !== 'base';
+    state = formGuard ? 'guard' : hero.parryWindow > 0 ? 'parry' : 'guard'; atlas = 'guardParry'; direction = cardinal(hero.face);
+    frame = formGuard ? hero.guardTime < .06 ? 0 : hero.parryWindow > 0 ? 1 : 3 : state === 'parry' ? 0 : 1; frameCount = 4;
   } else if (hero.locomotion === 'start' || hero.locomotion === 'stop') {
     state = hero.locomotion; atlas = 'locomotionTransitions'; direction = hero.moveFacing;
     frame = locomotionFrame(hero.locomotion, hero.locomotionTime); frameCount = 4;
