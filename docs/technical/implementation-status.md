@@ -139,3 +139,7 @@ The B00 handoff ran on 2026-11-05; B01 work and current evidence are recorded be
 - Clean install, typecheck, build, 43/43 core tests, audit, QA self-test, art export and the headless browser run pass in an isolated clean validation checkout. The repository-root `npm ci` attempt encountered Windows `EPERM` on a native dependency held by the user's existing Vite process, which was preserved; see the evidence report.
 
 **Current B05 status:** **PARTIAL / PLAYABLE CANDIDATE / HUMAN REVIEW REQUIRED.** Current live runtime art still comes from `ember-drive-turnaround-v2.png` and `glass-current-turnaround-v3.png`; the separate Glass A and Ember reinterpretation silhouettes have not been converted to runtime atlases. Dedicated form hurt/KO, start/stop, special/finisher atlases, recorded audio and active audio loops remain missing. Neither form meets the full V2 contract, and B06 remains out of scope.
+
+## Rigged-3D sprite pilot feasibility — 2026-11-06
+
+**Status: INSUFFICIENT EVIDENCE / BLOCKED before modeling. NO-GO for production adoption in this batch.** The Windows development machine has no located Blender executable or registered installation, so no editable Kairo model, armature, animation, eight-view render, or Vite sprite proof was created. The pre-existing `visualRigCutoutPose` remains a single-image translation/rotation test, not a rig. No production code or B05 asset changed. See [ADR-020](adr-020-rigged-3d-sprite-pilot-feasibility.md) and the [criterion-by-criterion pilot report](../qa/animation-pipeline-rigged-3d-sprite-pilot.md).
