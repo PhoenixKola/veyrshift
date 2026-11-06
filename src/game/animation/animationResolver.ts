@@ -1,4 +1,4 @@
-import { facingFromAngle, facingFromVector } from '../core/direction.js';
+import { facingFromAngle, movementFacingFromVector } from '../core/direction.js';
 import type { FacingDirection } from '../core/direction.js';
 import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS } from '../data/kairoAbilities.js';
 import { formById } from '../data/kairoForms.js';
@@ -41,15 +41,16 @@ export function formAbilityComboFrame(formId: Exclude<KairoFormId, 'base'>, abil
 function comboFrame(hero: Hero): number {
   const hit = KAIRO_COMBO_HITS[Math.max(0, Math.min(2, hero.combo - 1))];
   const t = hero.attackAnimTime;
-  // B05 hit one reaches contact on column 1; base and B05 hits two/three reach it on column 2.
-  if (hero.transformed && hero.formId !== 'base' && hero.combo === 1) {
-    if (t < hit.timing.windup) return 0;
-    if (t < hit.timing.windup + hit.timing.active) return 1;
-    return t < hit.timing.windup + hit.timing.active + hit.timing.recovery * .6 ? 2 : 3;
-  }
-  if (t < hit.timing.windup * .42) return 0;
-  if (t < hit.timing.windup) return 1;
-  return t < hit.timing.windup + hit.timing.active ? 2 : 3;
+  const formHitOne = hero.attackFormId !== 'base' && hero.combo === 1;
+  const baseHitTwo = hero.attackFormId === 'base' && hero.combo === 2;
+  // Atlas columns differ: Ember hit one and base hit two land in column 1.
+  // Keep contact artwork on screen through the simulation's active hit window.
+  const contact = formHitOne || baseHitTwo ? 1 : 2;
+  if (t < hit.timing.windup * .52) return 0;
+  if (t < hit.timing.windup) return contact === 1 ? 0 : 1;
+  if (t < hit.timing.windup + hit.timing.active) return contact;
+  const recovery = t - hit.timing.windup - hit.timing.active;
+  return recovery < hit.timing.recovery * .44 ? Math.min(3, contact + 1) : 3;
 }
 
 function actionFrame(hero: Hero, id: AbilityId): number {
@@ -82,7 +83,7 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
   else if (hero.hurtTime > 0) { state = 'hurt'; atlas = 'states'; direction = hero.hurtFacing; frame = 2; }
   else if (hero.transformVisualTime > 0) { state = 'ember'; atlas = 'states'; direction = cardinal(hero.face); frame = hero.transformVisualTime / hero.transformVisualDuration > .5 ? 0 : 1; }
   else if (hero.dashTime > 0) {
-    state = 'dodge'; atlas = 'dodge'; direction = facingFromVector({ x: hero.vx, y: hero.vy });
+    state = 'dodge'; atlas = 'dodge'; direction = movementFacingFromVector({ x: hero.vx, y: hero.vy }, hero.moveFacing);
     frame = Math.min(3, Math.floor(Math.max(0, 1 - hero.dashTime / hero.dashDuration) * 4)); frameCount = 4;
   } else if (hero.attackTime > 0) {
     state = 'combo'; atlas = 'combo'; direction = hero.attackFacing;

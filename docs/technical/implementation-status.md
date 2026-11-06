@@ -1,4 +1,8 @@
-# Implementation status - current through B04 (2026-11-06)
+# Implementation status - current through B05 Ember polish (2026-11-06)
+
+## B05 Ember polish continuation — 2026-11-06
+
+Diagonal travel now uses a side-view-biased, hysteretic four-direction mapping; no true diagonal atlas exists. Base combo hit-two contact art aligns with the simulation hit window, and base/Ember attacks have renderer-only body drive and recovery settle. Ember has localized cuff light, stronger ignition/contact/finisher effects and a direction-aligned finisher texture. No new master character art was produced. See [ADR-018](adr-018-b05-diagonal-and-ember-combat-polish.md) and [live QA](../qa/b05-ember-polish-evidence.md). Focused real-game Chrome clips cover all four diagonals, base combo and Ember activation/attack/reversion; owner visual/audio approval remains pending. Ember still fails the complete-form contract and B05 is partial.
 
 ## Scaffold baseline verification (historical - before B00)
 - `npm run preview:build`: passes using installed global TypeScript compiler (no registry packages needed).

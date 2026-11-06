@@ -12,3 +12,4 @@ playwright-report/
 test-results/
 prompts/
 tests/evidence/b05/live-chrome/run-*/
+tests/evidence/b05/live-chrome/ember-polish-*/

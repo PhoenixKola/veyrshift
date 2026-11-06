@@ -8,7 +8,7 @@ import { initialSave, parseSave } from '../dist-preview/src/game/storage/save.js
 import { CombatSession } from '../dist-preview/src/game/runtime/CombatSession.js';
 import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/runtime/gamepadMapping.js';
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
-import { facingFromAngle, facingFromVector } from '../dist-preview/src/game/core/direction.js';
+import { facingFromAngle, facingFromVector, movementFacingFromVector } from '../dist-preview/src/game/core/direction.js';
 import { visualProofCuesBetween, visualProofDuration, visualProofFrameIndex, visualRigCutoutPose, VISUAL_PROOF_PHASES } from '../dist-preview/src/game/animation/visualBreakthrough.js';
 import { resolveAtlasSource, resolveFormComboAtlas, resolveFormRunAtlas, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
 import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS } from '../dist-preview/src/game/data/kairoAbilities.js';
@@ -31,15 +31,29 @@ test('four-direction selection covers cardinal and diagonal vectors without mirr
  assert.equal(facingFromVector({x:1,y:0}),'right');assert.equal(facingFromVector({x:-1,y:0}),'left');
  assert.equal(facingFromVector({x:1,y:1}),'front');assert.equal(facingFromVector({x:-1,y:-1}),'back');
  assert.equal(facingFromVector({x:1,y:.4}),'right');assert.equal(facingFromAngle(Math.PI),'left');
+ for(const [angle,side] of [[-Math.PI/4,'right'],[-3*Math.PI/4,'left'],[Math.PI/4,'right'],[3*Math.PI/4,'left']])
+  assert.equal(facingFromAngle(angle),side);
  const s=new CombatSession(initialSave());s.newRun(404);s.hero.vx=100;s.hero.moveFacing='left';
  for(const d of ['front','right','back','left']){s.hero.moveFacing=d;const pose=resolveHeroAnimation(s.hero,0);assert.equal(pose.direction,d);assert.equal(pose.mirrorX,false);}
+});
+test('diagonal travel favors the side view, stays stable near the boundary, and returns to cardinal views',()=>{
+ for(const [x,y,side,vertical] of [[1,1,'right','front'],[-1,1,'left','front'],[1,-1,'right','back'],[-1,-1,'left','back']]){
+  assert.equal(movementFacingFromVector({x,y},vertical),side);
+  assert.equal(movementFacingFromVector({x:x*.7,y},side),side);
+  assert.equal(movementFacingFromVector({x:0,y},side),vertical);
+  assert.equal(movementFacingFromVector({x,y:0},vertical),side);
+ }
+ const s=new CombatSession(initialSave());s.newRun(409);
+ s.update(1/60,action([],[],{x:1,y:-1}));
+ assert.equal(s.hero.moveFacing,'right');
+ assert.ok(s.hero.vx>0&&s.hero.vy<0);
 });
 test('animation resolver respects state priority, combo contact timing, and recovery',()=>{
  const s=new CombatSession(initialSave());s.newRun(405);const h=s.hero;
  assert.equal(resolveHeroAnimation(h,0).state,'idle');
  h.vx=120;h.moveFacing='back';assert.equal(resolveHeroAnimation(h,.1).state,'run');assert.equal(resolveHeroAnimation(h,.1).direction,'back');
  h.vx=0;h.attackTime=.36;h.attackDuration=.36;h.attackStartup=.075;h.combo=2;h.attackAnimTime=.06;
- assert.equal(resolveHeroAnimation(h,.2).frame,5);h.attackAnimTime=.1;const contact=resolveHeroAnimation(h,.2);assert.equal(contact.frame,6);assert.equal(contact.state,'combo');
+ assert.equal(resolveHeroAnimation(h,.2).frame,4);h.attackAnimTime=.1;const contact=resolveHeroAnimation(h,.2);assert.equal(contact.frame,5);assert.equal(contact.state,'combo');
  h.dashTime=.1;h.vx=-300;h.attackTime=0;const dodge=resolveHeroAnimation(h,.2);assert.equal(dodge.state,'dodge');assert.equal(dodge.direction,'left');
  h.dashTime=0;h.guardTime=.1;h.parryWindow=.1;assert.equal(resolveHeroAnimation(h,.2).state,'parry');
  h.hurtTime=.2;h.hurtFacing='front';assert.equal(resolveHeroAnimation(h,.2).state,'hurt');assert.equal(resolveHeroAnimation(h,.2).direction,'front');
@@ -49,8 +63,8 @@ test('animation resolver respects state priority, combo contact timing, and reco
 test('combo contact frame follows each hit’s real active window',()=>{
  const s=new CombatSession(initialSave());s.newRun(408);const h=s.hero;h.attackTime=1;
  for(const formId of ['base','ember-drive','glass-current'])for(let i=0;i<KAIRO_COMBO_HITS.length;i++){
-  const timing=KAIRO_COMBO_HITS[i].timing;h.combo=i+1;h.formId=formId;h.transformed=formId!=='base';
-  const contactPhase=formId!=='base'&&i===0?1:2;
+  const timing=KAIRO_COMBO_HITS[i].timing;h.combo=i+1;h.formId=formId;h.attackFormId=formId;h.transformed=formId!=='base';
+  const contactPhase=formId!=='base'&&i===0||formId==='base'&&i===1?1:2;
   h.attackAnimTime=timing.windup+.001;assert.equal(resolveHeroAnimation(h,0).frame,i*4+contactPhase);
   h.attackAnimTime=timing.windup+timing.active+.001;assert.equal(resolveHeroAnimation(h,0).frame,i*4+(contactPhase===1?2:3));
  }

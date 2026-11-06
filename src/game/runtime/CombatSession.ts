@@ -2,7 +2,7 @@ import { ARENA, ENCOUNTERS, ROOM_COUNT, UPGRADES } from '../data/encounters.js';
 import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS, PULSE_TUNING } from '../data/kairoAbilities.js';
 import { formById } from '../data/kairoForms.js';
 import { clamp, distance, inArc, normalize } from '../core/math.js';
-import { facingFromAngle, facingFromVector, type FacingDirection } from '../core/direction.js';
+import { facingFromAngle, facingFromVector, movementFacingFromVector, type FacingDirection } from '../core/direction.js';
 import { SeededRandom, stableRunSeed } from '../core/random.js';
 import { loadSave, writeSave } from '../storage/save.js';
 import type { AbilityId, AbilityReadyReason, ActionInput, CombatEvent, CombatEventId, Enemy, EnemyKind, GameMode, GameSnapshot, Hero, KairoFormId, Particle, Projectile, SaveData, UpgradeId, Vec2 } from '../core/types.js';
@@ -354,7 +354,7 @@ export class CombatSession {
     if (form?.id === 'glass-current') hero.glassDodgeWindow = .32;
     const move = normalize(input.movement);
     const direction = Math.hypot(move.x, move.y) > .1 ? move : { x: Math.cos(hero.face), y: Math.sin(hero.face) };
-    hero.moveFacing = facingFromVector(direction); hero.vx = direction.x * 820; hero.vy = direction.y * 820;
+    hero.moveFacing = movementFacingFromVector(direction, hero.moveFacing); hero.vx = direction.x * 820; hero.vy = direction.y * 820;
     hero.attackTime = 0; hero.attackCooldown = 0; hero.attackHitFired = true; hero.attackBuffer = 0;
     hero.currentAbility = null;
     this.notify('dash-start', hero.x, hero.y, Math.atan2(direction.y, direction.x), 'dodge');
@@ -442,7 +442,7 @@ export class CombatSession {
     if (Math.hypot(aim.x, aim.y) > .001) hero.face = Math.atan2(aim.y, aim.x);
     const move = normalize(input.movement);
     this.updateLocomotion(dt, move);
-    if (Math.hypot(move.x, move.y) > .001) hero.moveFacing = facingFromVector(move);
+    if (Math.hypot(move.x, move.y) > .001) hero.moveFacing = movementFacingFromVector(move, hero.moveFacing);
 
     if (input.pressed.has('dash')) this.startDodge(input);
     if (hero.dashTime > 0) {

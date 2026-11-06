@@ -189,3 +189,16 @@
 | Full V2 form contract / B06 readiness | FAIL / NOT READY | Dedicated transitions, special/finisher, hurt/KO and audio work plus owner visual/game-feel approval remain open. |
 
 **Current gate:** PARTIAL / PLAYABLE CANDIDATE / HUMAN REVIEW REQUIRED. The previous eight-pose GIFs remain rejected for motion quality; the newer atlas-based in-game sequence is a separate candidate and has not been accepted by the owner. See [`b05-animation-vfx-production-evidence.md`](b05-animation-vfx-production-evidence.md).
+
+## B05 Ember polish continuation — 2026-11-06
+
+| Criterion | Status | Evidence / limit |
+|---|---|---|
+| Four diagonal movement pairs and cardinal transitions | PASS in automated real-game capture; owner feel pending | Focused Chrome clip and direction/position samples; only four authored body directions. |
+| Base combo contact and chain | IMPLEMENTED CANDIDATE | Hit-two contact frame aligned with active window; real target damage in focused clip; human feel pending. |
+| Ember activation, combo, special, finisher, reversion | IMPLEMENTED CANDIDATE | Real-game focused clip, HUD/state samples and existing full showcase; animation/art approval pending. |
+| Selected segmented armor runtime identity | OPEN | Runtime still uses the earlier turnaround-derived four-view body art. |
+| Browser/audio/controller and owner signoff | PARTIAL / NOT RUN | Headless normal-speed video has no audio; headed listening and physical-controller review remain. |
+| Full transformation contract | FAIL / NOT READY | Dedicated action and hurt/KO body art, boss proof, approved audio and owner acceptance remain. |
+
+See [`b05-ember-polish-evidence.md`](b05-ember-polish-evidence.md). B05 stays partial; another Ember art/motion pass is required before calling the form complete.

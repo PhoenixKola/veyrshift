@@ -301,6 +301,15 @@ export class CanvasRenderer {
   const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):formAtlas?'b05':authored!==null&&this.ready(authored)?'b04':resolveAtlasSource(this.ready(sprite),this.ready(legacy));
   const bob=this.reducedMotion?0:(resolved.state==='idle'?Math.sin(h.step*.018)*.7:0);
   c.translate(0,bob-17);
+  // A short body drive carries each authored strike into its actual active window.
+  // The body returns during recovery; collision timing stays in CombatSession.
+  if(resolved.state==='combo'&&h.attackTime>0&&!this.reducedMotion){
+   const contact=clamp(h.attackAnimTime/Math.max(.001,h.attackStartup),0,1);
+   const settle=clamp(h.attackTime/Math.max(.001,h.attackDuration-h.attackStartup),0,1);
+   const drive=Math.sin(Math.PI*.5*contact)*Math.min(1,settle*2);
+   const distance=(h.combo===3?6:4)*(currentForm==='ember-drive'?1.18:1);
+   c.translate(Math.cos(h.actionAngle)*distance*drive,Math.sin(h.actionAngle)*distance*.55*drive);
+  }
   if(atlasSource==='b05'){
    if(h.transformVisualTime>0)this.drawIgnition(h);
    const animationDelta=this.transitionRemaining>0?blend:1;
@@ -310,6 +319,7 @@ export class CanvasRenderer {
    }
    if(resolved.state==='dodge'&&currentForm==='glass-current')this.drawGlassAfterimages(formAtlas!,resolved,h,heroAlpha);
    this.drawDirectionalFrame(formAtlas!,resolved,heroAlpha*animationDelta);
+   if(currentForm==='ember-drive')this.drawEmberBodyEnergy(resolved,h,t,heroAlpha*animationDelta);
    this.transitionRemaining=Math.max(0,this.transitionRemaining-renderDelta);
    this.lastAnimation=resolved;this.lastAnimationForm=currentForm;
    if(this.transitionRemaining===0)this.previousAnimation=null;
@@ -418,6 +428,20 @@ export class CanvasRenderer {
   const c=this.ctx,progress=clamp(1-h.transformVisualTime/h.transformVisualDuration,0,1);const size=this.reducedMotion?110:95+progress*45;
   c.save();c.globalAlpha=(this.reducedFlash?.3:.55)*(1-progress*.55);c.drawImage(image,-size/2,-size*.55,size,size);c.restore();
  }
+ private drawEmberBodyEnergy(animation:ResolvedAnimation,h:Hero,t:number,alpha:number):void {
+  if(!this.particlesEnabled||alpha<=.01)return;
+  const image=this.formVfx['ember-drive'].contact;if(!this.ready(image))return;
+  const activity=animation.state==='combo'&&h.attackTime>0
+   ? .28+.48*Math.sin(Math.PI*clamp(h.attackAnimTime/Math.max(.001,h.attackDuration),0,1))
+   : animation.state==='finisher'?.7:animation.state==='run'?.32:.2;
+  const pulse=this.reducedMotion?0:Math.sin(t*9)*.045;
+  const side=animation.direction==='left'?-1:1;
+  const anchors=animation.direction==='front'?[[-19,-35],[18,-35]]:animation.direction==='back'?[[-18,-30],[17,-30]]:[[side*23,-35]];
+  const c=this.ctx;c.save();c.globalCompositeOperation='screen';
+  c.globalAlpha=alpha*(this.reducedFlash?.45:1)*(activity+pulse);
+  for(const [x,y] of anchors)c.drawImage(image,x-17,y-13,34,26);
+  c.restore();
+ }
  private drawFormAura(h:Hero,t:number,settings:GameSettings):void {
   if(h.formId==='base')return;
   const images=this.formVfx[h.formId],c=this.ctx;
@@ -426,9 +450,9 @@ export class CanvasRenderer {
   const pulse=moving?Math.sin(t*(h.formId==='ember-drive'?3.2:1.6)):0;
   c.save();c.translate(h.x,h.y-29);
   if(h.formId==='ember-drive'){
-   this.drawFormVfx(images.transition,h.formId,Math.cos(phase)*8,-4+Math.sin(phase)*6,phase*.32,142+pulse*7,84+pulse*5,this.reducedFlash?.12:.20,settings);
-   this.drawFormVfx(images.activation,h.formId,0,-5,phase*.12,110+pulse*5,116+pulse*5,this.reducedFlash?.10:.16,settings);
-   if(moving)this.drawFormVfx(images.contact,h.formId,30+Math.cos(phase*1.4)*5,-31+Math.sin(phase*1.4)*5,phase*.55,46,40,.20,settings);
+   this.drawFormVfx(images.transition,h.formId,Math.cos(phase)*8,-4+Math.sin(phase)*6,phase*.32,142+pulse*7,84+pulse*5,this.reducedFlash?.10:.16,settings);
+   this.drawFormVfx(images.activation,h.formId,0,-5,phase*.12,110+pulse*5,116+pulse*5,this.reducedFlash?.08:.12,settings);
+   if(moving)this.drawFormVfx(images.contact,h.formId,30+Math.cos(phase*1.4)*5,-31+Math.sin(phase*1.4)*5,phase*.55,46,40,.26,settings);
   }else{
    this.drawFormVfx(images.transition,h.formId,Math.cos(phase)*8,-2,phase*.18,134+pulse*4,120+pulse*4,this.reducedFlash?.12:.19,settings);
    this.drawFormVfx(images.activation,h.formId,0,-7,-phase*.12,93,102,this.reducedFlash?.08:.13,settings);
@@ -463,8 +487,8 @@ export class CanvasRenderer {
   const drift=moving?progress:0;
   if(key==='activation'){
    if(behind){
-    this.drawFormVfx(images.transition,formId,x,y,angle+(formId==='ember-drive'?.12:-.08),198+beat*32,154+beat*22,.54*(1-progress*.55),settings);
-    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?-.18:.12),150+beat*22,156+beat*22,.66*(1-progress*.55),settings);
+    this.drawFormVfx(images.transition,formId,x,y,angle+(formId==='ember-drive'?.12:-.08),198+beat*32,154+beat*22,(formId==='ember-drive'?.68:.54)*(1-progress*.55),settings);
+    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?-.18:.12),150+beat*22,156+beat*22,(formId==='ember-drive'?.78:.66)*(1-progress*.55),settings);
    }else if(settings.particles){
     const orbit=moving?drift*5.5:0;
     this.drawFormVfx(images.contact,formId,x+Math.cos(orbit)*30,y+Math.sin(orbit)*26,angle+orbit,58,48,.34*(1-progress),settings);
@@ -521,8 +545,13 @@ export class CanvasRenderer {
     this.drawFormVfx(images.activation,formId,x-Math.cos(angle)*12,y-Math.sin(angle)*12,angle-.18,142+beat*34,126+beat*28,.32*(1-progress),settings);
    }else if(!behind){
     const width=event.id==='finisher-hit'?286:206,height=event.id==='finisher-hit'?202:146;
-    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?Math.PI/4:0),width+beat*40,height+beat*30,(event.id==='finisher-hit'?.96:.72)*(1-progress*.68),settings);
-    if(event.id==='finisher-hit'&&settings.particles)this.drawFormVfx(images.contact,formId,x,y,angle,138+beat*40,108+beat*32,.66*(1-progress),settings);
+    // The Ember texture points down-right in its source cell; rotate it back
+    // onto the actual strike vector rather than projecting it toward the floor.
+    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?-Math.PI/4:0),width+beat*40,height+beat*30,(event.id==='finisher-hit'?.96:.72)*(1-progress*.68),settings);
+    if(event.id==='finisher-hit'&&settings.particles){
+     this.drawFormVfx(images.contact,formId,x,y,angle,138+beat*40,108+beat*32,.66*(1-progress),settings);
+     if(formId==='ember-drive')this.drawFormVfx(images.special,formId,x+Math.cos(angle)*24,y+Math.sin(angle)*24,angle,155+beat*45,112+beat*28,.64*(1-progress),settings);
+    }
    }
   }
  }
