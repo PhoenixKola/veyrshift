@@ -1,22 +1,28 @@
-# B05 form art direction — proposal, owner approval pending
+﻿# B05 form art direction — candidate proposal, owner approval pending
 
-**Status (2026-11-06): PARTIAL.** Two original ImageGen turnaround proposals exist in `art-source/b05/proposed/`. Neither passed runtime-art review, neither is in `public/assets`, and neither is approved. The repeatable audit is `python tools/build-b05-art.py`; it exports no runtime art.
+**Updated 2026-11-06. Status: PARTIAL.** Two replacement turnaround candidates, four-direction run and combo source grids, six-icon families, and six-purpose VFX texture sheets are in `art-source/b05/review/`. The deterministic exporter writes lossless candidate WebP assets under `public/assets/`; none is approved for production. Source-cell checks and dark-background contact sheets are in the B05 manifest and `tests/evidence/b05/`.
 
 ## Ember Drive — Fury
 
-Keep Kairo's plum hair, charcoal jacket, split coat tails and kinetic cuffs recognizable. Evolve the cuff lattice into broader articulated bronze rings with restrained ember-red seam light; load the posture forward and use delayed ignition marks that detonate on the third combo contact. The generated reference preserves identity and four views, but its background is baked light and the silhouette change is too subtle for runtime use. Regenerate with transparent cutout, clean view labels removed, consistent separated cells and a stronger cuff/coat silhouette.
+Retain Kairo's recognizable plum hair, cropped charcoal jacket, split plum coat tails, bronze kinetic cuffs, lean adult build and proportions. Candidate design pushes a heavier forward stance and a stronger articulated bronze cuff lattice with ember light. Contact uses a hot faceted burst; the bolt is a compact forward streak; the special is a grounded sweep; the finisher is a descending comet; reversion uses an inward spiral. The current candidate turnaround was inspected on charcoal, but live normal-size/silhouette comparison, grayscale approval and owner review remain pending.
 
 ## Glass Current — Precision
 
-Keep Kairo's dark plum hair and costume. Use narrow prismatic cuff insets, a poised open hand and a restrained refractive echo disc; no white/silver hair, permanent aura or flame recolor. The generated reference has four recognizable views, but label artifacts and inconsistent echo-disc placement make it unsuitable as an atlas source. Regenerate a stable transparent turnaround before action frames.
+Retain the same identity and dark plum hair. Candidate design uses refined cuff facets, cooler glass insets and a narrower controlled stance. Contact is a refracted star, the projectile is a clean piercing lance, the special is a counter cross-cut, the finisher is a focused linear cut, and reversion leaves a pair of clean motion contours. The current candidate turnaround was inspected on charcoal; directional continuity, grayscale readability and owner approval remain pending.
 
-## Production gates
+## Exported candidate coverage
 
-- Four-view masters are design references, not animation frames. No idle, movement, combo, projectile, special, dodge, guard, hurt, KO, activation or finisher sequence has passed consistency review.
-- There are no B05 runtime character atlases, standalone ability icons, authored form VFX, or original form audio masters.
-- Do not reuse the B04 proxy renderer's hue shift as a production transformation visual. It remains a visibly provisional fallback.
-- Next art pass: repair both turnarounds, approve one clean consistent master per form, generate a small action test strip per direction, inspect every cell for anatomy/neighbor bleed, then expand only after review.
+- Character sheets: 4 directions (`front`, `right`, `back`, `left`) × 4 run key poses and 12 combo poses per form. Each combo hit has four generated phases. Boundary count is zero; the builder clears only low-alpha edge noise (alpha 1–32) and never deletes disconnected components.
+- HUD glyphs: six separate 128×128 textures per form (`identity`, `activation`, `bolt`, `special`, `finisher`, `combo`). They are rendered in the form screen and transformed HUD, alongside Ember target-mark/detonation status or Glass counter-window status.
+- VFX textures: six separate 256×256 transparent textures per form (`activation`, `contact`, `bolt`, `special`, `finisher`, `transition`). Canvas2D selects these from form-tagged events and animates their size/opacity over event lifetime. This is single-texture presentation, not a layered particle animation.
+- WebAudio: distinct procedural cues are routed for form activation/reversion, combo hits, projectile, special/counter and finisher. They are unlistened proposals. No active loop or authored recording exists.
+
+## Missing production states and acceptance gates
+
+Form-specific character art is still missing for idle, dodge, guard/parry, hurt/KO, ranged cast, special, finisher, active loop and fluid activation/deactivation. Run/combo sheets contain short key-pose sequences, so the at-speed offline GIFs are an export/playback aid, not proof of fluid motion. Start/stop and other states still use inherited base art. The two masters have not been checked in an actual browser at normal gameplay scale; no owner approval, audio listening, controller test, boss-room test, or sustained-effects performance measurement exists.
+
+Keep these proposals out of any “approved” category. Do not claim B05 complete or B06 appearance-swap readiness. For current per-gate status and owner capture steps, see `docs/qa/b05-completion-evidence.md` and `docs/qa/b05-evidence.md`.
 
 ## Provenance
 
-Created with built-in OpenAI image generation on 2026-11-06, using `art-source/b03/kairo-base-turnaround.png` as the identity reference. The exact generation briefs and output paths are recorded in `docs/qa/b05-evidence.md`. Provider model/version metadata was not exposed. No third-party material was intentionally used; no external likeness/IP clearance or owner signoff has occurred.
+Generated with OpenAI built-in ImageGen on 2026-11-06. Model/version and seed were not exposed. Exact prior-turn prompts were not retained in the repository; reconstruction notes are explicitly labeled in `docs/art/b05-generation-notes.md`. Source PNGs remain under `art-source/b05/review/`; failed sheets are retained under `art-source/b05/rejected/`. Runtime mapping, hashes, dimensions, cell checks and pivots are in `docs/art/b05-animation-manifest.json`. No external likeness/IP clearance or owner signoff has occurred.

@@ -24,6 +24,7 @@ export type CombatEvent = {
   intensity?: number;
   ability?: AbilityId;
   comboIndex?: number;
+  formId?: KairoFormId;
 };
 export type GameSettings = {
   masterVolume: number;
@@ -73,6 +74,7 @@ export interface GameSnapshot {
   mode: GameMode; room: number; roomsTotal: number; enemyCount: number;
   hp: number; maxHp: number; pulse: number; maxPulse: number; combo: number; guarding: boolean; parryWindow: number;
   transformed: boolean; formTime: number; formId: KairoFormId; shards: number; bankedShards: number;
+  formMarks?: number; counterWindow?: number;
   bestRoom: number; runs: number; message: string; upgrades: string[]; pauseFrom?: GameMode;
   abilities: Record<AbilityId, AbilityRuntimeSnapshot>;
 }

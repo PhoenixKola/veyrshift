@@ -5,7 +5,7 @@ import { clamp, distance, inArc, normalize } from '../core/math.js';
 import { facingFromAngle, facingFromVector, type FacingDirection } from '../core/direction.js';
 import { SeededRandom, stableRunSeed } from '../core/random.js';
 import { loadSave, writeSave } from '../storage/save.js';
-import type { AbilityId, AbilityReadyReason, ActionInput, CombatEvent, CombatEventId, Enemy, EnemyKind, GameMode, GameSnapshot, Hero, Particle, Projectile, SaveData, UpgradeId, Vec2 } from '../core/types.js';
+import type { AbilityId, AbilityReadyReason, ActionInput, CombatEvent, CombatEventId, Enemy, EnemyKind, GameMode, GameSnapshot, Hero, KairoFormId, Particle, Projectile, SaveData, UpgradeId, Vec2 } from '../core/types.js';
 
 const EMPTY_INPUT: ActionInput = { movement: { x: 0, y: 0 }, aim: { x: 1, y: 0 }, pressed: new Set(), held: new Set() };
 const ABILITY_IDS: readonly AbilityId[] = ['combo', 'bolt', 'shockwave', 'guard', 'dodge', 'finisher', 'emberPreview'];
@@ -63,14 +63,15 @@ export class CombatSession {
       combo: this.hero.combo, guarding: this.hero.guardTime > 0, parryWindow: this.hero.parryWindow,
       transformed: this.hero.transformed, formTime: this.hero.formTime,
       formId: this.hero.formId,
+      formMarks: Math.max(0, ...this.enemies.map(enemy => enemy.emberMarks ?? 0)), counterWindow: this.hero.glassCounterTime,
       shards: this.runShards, bankedShards: this.save.shards, bestRoom: this.save.bestRoom, runs: this.save.runs,
       message: this.message, upgrades: [...this.upgrades], pauseFrom: this.mode === 'paused' ? this.previousMode : undefined,
       abilities,
     };
   }
 
-  private notify(id: CombatEventId, x = this.hero.x, y = this.hero.y, angle?: number, ability?: AbilityId, intensity = 1, comboIndex?: number): void {
-    this.events.push({ id, x, y, angle, ability, intensity, comboIndex });
+  private notify(id: CombatEventId, x = this.hero.x, y = this.hero.y, angle?: number, ability?: AbilityId, intensity = 1, comboIndex?: number, formId?: KairoFormId): void {
+    this.events.push({ id, x, y, angle, ability, intensity, comboIndex, formId: formId ?? (this.hero.transformed ? this.hero.formId : undefined) });
   }
 
   consumeEvents(): CombatEvent[] { return this.events.splice(0); }
@@ -337,7 +338,7 @@ export class CombatSession {
     const hero=this.hero; if (!hero.transformed) return;
     hero.transformed=false; hero.formTime=0; hero.transformVisualTime=0;
     hero.glassCounterTime=0;for(const enemy of this.enemies)enemy.emberMarks=0;
-    this.notify(hero.formId==='ember-drive'?'ember-end':'glass-end',hero.x,hero.y,hero.face,'emberPreview');
+    this.notify(hero.formId==='ember-drive'?'ember-end':'glass-end',hero.x,hero.y,hero.face,'emberPreview',1,undefined,hero.formId);
     this.burst(hero.x,hero.y,hero.formId==='ember-drive'?'#bd6645':'#9ddde8',8,110);
   }
 
@@ -432,7 +433,7 @@ export class CombatSession {
       if (hero.formTime === 0 || hero.pulse === 0) {
         hero.transformed = false; hero.transformVisualTime = 0; this.burst(hero.x, hero.y, '#c6b7a5', 10, 130);
         hero.glassCounterTime=0;for(const enemy of this.enemies)enemy.emberMarks=0;
-        this.notify(hero.formId === 'ember-drive' ? 'ember-end':'glass-end', hero.x, hero.y, hero.face, 'emberPreview');
+        this.notify(hero.formId === 'ember-drive' ? 'ember-end':'glass-end', hero.x, hero.y, hero.face, 'emberPreview', 1, undefined, hero.formId);
       }
     }
 

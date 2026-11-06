@@ -1,8 +1,9 @@
 import { ARENA } from '../data/encounters.js';
-import type { CombatEvent, Enemy, GameSettings, Hero } from '../core/types.js';
+import type { CombatEvent, Enemy, GameSettings, Hero, KairoFormId } from '../core/types.js';
 import type { CombatSession } from '../runtime/CombatSession.js';
-import { resolveAtlasSource, resolveHeroAnimation, type ResolvedAnimation } from '../animation/animationResolver.js';
+import { resolveAtlasSource, resolveFormAnimationAtlas, resolveHeroAnimation, type ResolvedAnimation } from '../animation/animationResolver.js';
 import { clamp } from '../core/math.js';
+type FormVfxKey = 'activation'|'contact'|'bolt'|'special'|'finisher'|'transition';
 export class CanvasRenderer {
  private ctx:CanvasRenderingContext2D;
  private reducedMotion=false;
@@ -28,6 +29,26 @@ export class CanvasRenderer {
   guardParry:this.load('/assets/characters/kairo/b04/guard-parry.webp'),
   finisher:this.load('/assets/characters/kairo/b04/finisher.webp'),
  };
+ private formCombos:Record<Exclude<KairoFormId,'base'>,HTMLImageElement>={
+  'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/combo.webp'),
+  'glass-current':this.load('/assets/characters/kairo/forms/glass-current/combo.webp'),
+ };
+ private formRuns:Record<Exclude<KairoFormId,'base'>,HTMLImageElement>={
+  'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/run.webp'),
+  'glass-current':this.load('/assets/characters/kairo/forms/glass-current/run.webp'),
+ };
+ private formVfx:Record<Exclude<KairoFormId,'base'>,Record<FormVfxKey,HTMLImageElement>>={
+  'ember-drive':{
+   activation:this.load('/assets/vfx/b05/ember-drive/activation.webp'),contact:this.load('/assets/vfx/b05/ember-drive/contact.webp'),
+   bolt:this.load('/assets/vfx/b05/ember-drive/bolt.webp'),special:this.load('/assets/vfx/b05/ember-drive/special.webp'),
+   finisher:this.load('/assets/vfx/b05/ember-drive/finisher.webp'),transition:this.load('/assets/vfx/b05/ember-drive/transition.webp'),
+  },
+  'glass-current':{
+   activation:this.load('/assets/vfx/b05/glass-current/activation.webp'),contact:this.load('/assets/vfx/b05/glass-current/contact.webp'),
+   bolt:this.load('/assets/vfx/b05/glass-current/bolt.webp'),special:this.load('/assets/vfx/b05/glass-current/special.webp'),
+   finisher:this.load('/assets/vfx/b05/glass-current/finisher.webp'),transition:this.load('/assets/vfx/b05/glass-current/transition.webp'),
+  },
+ };
  private vfx={
   bolt:this.load('/assets/vfx/b04/boltFlight.webp'), combo:this.load('/assets/vfx/b04/comboImpact.webp'),
   shockwave:this.load('/assets/vfx/b04/shockwave.webp'), parry:this.load('/assets/vfx/b04/parry.webp'),
@@ -44,12 +65,12 @@ export class CanvasRenderer {
   this.forceB02=forceB02;
   canvas.width=ARENA.width;canvas.height=ARENA.height;
   const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D support is required');this.ctx=ctx;
-  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.vfx),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
+  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
  }
  emit(events:CombatEvent[],clock:number):void {
   const durations:Partial<Record<CombatEvent['id'],number>>={'bolt-cast':.22,'bolt-hit':.23,'bolt-dissipate':.2,'combo-contact':.23,swing:.19,
    'shockwave-charge':.24,'shockwave-release':.48,'shockwave-hit':.22,parry:.23,block:.17,'dash-start':.24,'dash-land':.22,
-   'finisher-build':.3,'finisher-hit':.38,'finisher-fade':.32,'ember-start':.5,'ember-end':.28};
+   'finisher-build':.3,'finisher-hit':.38,'finisher-fade':.32,'ember-start':.5,'ember-end':.28,'glass-start':.5,'glass-end':.28,'glass-counter':.3};
   for(const event of events){const duration=durations[event.id];if(duration)this.effects.push({event,start:clock,duration});}
   if(this.effects.length>80)this.effects.splice(0,this.effects.length-80);
  }
@@ -71,7 +92,7 @@ export class CanvasRenderer {
   c.globalAlpha=1;
   this.drawVfx(game.clock,true,game.save.settings);
   for(const p of game.projectiles){if(p.source==='hero'&&this.ready(this.vfx.bolt)){const angle=Math.atan2(p.vy,p.vx);this.drawSprite(this.vfx.bolt,p.x,p.y,angle,57,35,1,game.save.settings);}}
-  const actors:[number,()=>void][]=[...game.enemies.map(e=>[e.y,()=>this.drawEnemy(e,game.clock)] as [number,()=>void]),
+  const actors:[number,()=>void][]=[...game.enemies.map(e=>[e.y,()=>this.drawEnemy(e,game.clock,game.save.settings)] as [number,()=>void]),
    [game.hero.y,()=>this.drawHero(game.hero,game.clock,true)]];
   actors.sort((a,b)=>a[0]-b[0]);for(const [,draw] of actors)draw();
   this.drawVfx(game.clock,false,game.save.settings);c.restore();
@@ -114,7 +135,7 @@ export class CanvasRenderer {
  }
  private drawShadow(x:number,y:number,scale=1):void {const c=this.ctx;c.save();c.fillStyle='rgba(1,8,17,.55)';
   c.beginPath();c.ellipse(x,y+21,23*scale,9*scale,0,0,Math.PI*2);c.fill();c.restore();}
- private drawEnemy(e:Enemy,t:number):void {
+ private drawEnemy(e:Enemy,t:number,settings:GameSettings):void {
   const c=this.ctx;c.save();this.drawShadow(e.x,e.y,e.radius/18);
   c.translate(e.x,e.y);const bob=this.reducedMotion?0:Math.sin(t*3+e.phase)*3;c.translate(clamp(e.vx*.018,-5,5),bob-10+clamp(e.vy*.012,-3,3));
   if(e.flash>0){c.translate(-e.vx*.022,-e.vy*.014);c.scale(1.12,.88);}
@@ -139,6 +160,7 @@ export class CanvasRenderer {
   c.restore();
   const ratio=clamp(e.hp/e.maxHp,0,1);c.fillStyle='#101824';c.fillRect(e.x-25,e.y-e.radius-34,50,5);
   c.fillStyle=e.kind==='sentinel'?'#f7b989':'#dc8fb7';c.fillRect(e.x-25,e.y-e.radius-34,50*ratio,5);
+  if((e.emberMarks??0)>0){const mark=this.formVfx['ember-drive'].contact;for(let i=0;i<(e.emberMarks??0);i++)this.drawFormVfx(mark,'ember-drive',e.x+(i-((e.emberMarks??0)-1)/2)*15,e.y-e.radius-54,0,16,16,.86,settings);}
  }
  private drawHero(h:Hero,t:number,inBattle:boolean):void {
   const c=this.ctx;this.drawShadow(h.x,h.y,1.05);c.save();c.translate(h.x,h.y);
@@ -157,14 +179,31 @@ export class CanvasRenderer {
   const sprite=this.fallbackAtlas(resolved.atlas);
   const authored=this.authoredAtlas(resolved.atlas);
   const legacy=this.legacyAtlas(resolved.atlas);
-  const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):authored!==null&&this.ready(authored)?'b04':resolveAtlasSource(this.ready(sprite),this.ready(legacy));
+  const formAtlasImages=resolved.state==='combo'?this.formCombos:resolved.state==='run'?this.formRuns:null;
+  const formAtlasId=resolveFormAnimationAtlas(h.formId,h.transformed,resolved.state==='combo'||resolved.state==='run'
+   ?this.ready(formAtlasImages![h.formId==='base'?'ember-drive':h.formId]):false);
+  const formAtlas=formAtlasId&&formAtlasImages?formAtlasImages[formAtlasId]:null;
+  const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):formAtlas?'b05':authored!==null&&this.ready(authored)?'b04':resolveAtlasSource(this.ready(sprite),this.ready(legacy));
   const bob=this.reducedMotion?0:(resolved.state==='idle'?Math.sin(h.step*.018)*.7:0);
   c.translate(0,bob-17);
+  if(atlasSource==='b05'){
+   if(h.transformVisualTime>0)this.drawIgnition(h,t);
+   const animationDelta=this.transitionRemaining>0?blend:1;
+   if(this.previousAnimation&&this.transitionRemaining>0){
+    const oldImage=this.animationImage(this.previousAnimation,h.formId);
+    if(this.ready(oldImage))this.drawDirectionalFrame(oldImage,this.previousAnimation,heroAlpha*(1-animationDelta));
+   }
+   this.drawDirectionalFrame(formAtlas!,resolved,heroAlpha*animationDelta);
+   this.transitionRemaining=Math.max(0,this.transitionRemaining-renderDelta);
+   this.lastAnimation=resolved;
+   if(this.transitionRemaining===0)this.previousAnimation=null;
+   c.restore();return;
+  }
   if(atlasSource==='b04'||atlasSource==='b03'){
    if(h.transformVisualTime>0)this.drawIgnition(h,t);
    const animationDelta=this.transitionRemaining>0?blend:1;
    if(this.previousAnimation&&this.transitionRemaining>0){
-    const oldImage=this.authoredAtlas(this.previousAnimation.atlas)??this.fallbackAtlas(this.previousAnimation.atlas);
+    const oldImage=this.animationImage(this.previousAnimation,h.formId);
     if(this.ready(oldImage))this.drawDirectionalFrame(oldImage,this.previousAnimation,heroAlpha*(1-animationDelta));
    }
    this.drawDirectionalFrame(atlasSource==='b04'?authored!:sprite,resolved,heroAlpha*animationDelta);
@@ -205,6 +244,7 @@ export class CanvasRenderer {
  private ready(image:HTMLImageElement):boolean {return image.complete&&image.naturalWidth>0;}
  private fallbackAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {if(atlas==='idle')return this.directional.idle;if(atlas==='run')return this.directional.run;if(atlas==='dodge')return this.directional.dodge;if(atlas==='combo')return this.directional.combo;return this.directional.states;}
  private authoredAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement|null {if(atlas==='combo')return this.authored.combo;if(atlas==='locomotionTransitions')return this.authored.transitions;if(atlas==='bolt')return this.authored.bolt;if(atlas==='shockwave')return this.authored.shockwave;if(atlas==='guardParry')return this.authored.guardParry;if(atlas==='finisher')return this.authored.finisher;return null;}
+ private animationImage(animation:ResolvedAnimation,formId:KairoFormId):HTMLImageElement {if(formId!=='base'&&animation.atlas==='combo')return this.formCombos[formId];if(formId!=='base'&&animation.atlas==='run')return this.formRuns[formId];return this.authoredAtlas(animation.atlas)??this.fallbackAtlas(animation.atlas);}
  private legacyAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {
   if(atlas==='idle')return this.idle;if(atlas==='run')return this.run;if(atlas==='dodge')return this.dodge;
   if(atlas==='combo')return this.combo;return this.states;
@@ -241,13 +281,41 @@ export class CanvasRenderer {
   c.globalAlpha=alpha*(settings.reducedFlash ? .58 : 1);c.shadowColor='#79dce4';c.shadowBlur=settings.reducedFlash?0:12;
   c.drawImage(image,-width/2,-height/2,width,height);c.restore();
  }
+ private formVfxFor(event:CombatEvent):{key:FormVfxKey;image:HTMLImageElement}|null {
+  if(!event.formId||event.formId==='base')return null;
+  const id=event.id;
+  const key:FormVfxKey|undefined=id==='ember-start'||id==='glass-start'?'activation':id==='ember-end'||id==='glass-end'?'transition':
+   id==='combo-contact'?'contact':id==='bolt-cast'||id==='bolt-hit'||id==='bolt-dissipate'?'bolt':
+   id==='shockwave-release'||id==='glass-counter'||id==='parry'?'special':
+   id==='finisher-build'||id==='finisher-hit'||id==='finisher-fade'?'finisher':
+   id==='dash-start'||id==='dash-land'?'transition':undefined;
+  if(!key)return null;const image=this.formVfx[event.formId][key];return this.ready(image)?{key,image}:null;
+ }
+ private drawFormVfx(image:HTMLImageElement,formId:Exclude<KairoFormId,'base'>,x:number,y:number,angle:number,width:number,height:number,alpha:number,settings:GameSettings):void {
+  if(!this.ready(image)||alpha<=.01)return;const c=this.ctx;c.save();c.translate(x,y);c.rotate(angle);
+  c.globalAlpha=alpha*(settings.reducedFlash ? .58 : 1);c.shadowColor=formId==='ember-drive'?'#ff995d':'#80dcf0';c.shadowBlur=settings.reducedFlash?0:5;
+  c.drawImage(image,-width/2,-height/2,width,height);c.restore();
+ }
  private drawVfx(clock:number,behind:boolean,settings:GameSettings):void {
   this.effects=this.effects.filter(effect=>clock-effect.start<=effect.duration);
   for(const effect of this.effects){
    const id=effect.event.id;const isBehind=['shockwave-charge','shockwave-release','dash-start','dash-land'].includes(id);
-   if(isBehind!==behind)continue;
+   const custom=this.formVfxFor(effect.event);
+   const customBehind=custom&&(custom.key==='activation'||custom.key==='transition'||custom.key==='special');
+   if((custom?customBehind:isBehind)!==behind)continue;
    const p=clamp((clock-effect.start)/effect.duration,0,1),motion=settings.reducedMotion ? .48 : p;
-   let image:HTMLImageElement;let width:number;let height:number;let angle=effect.event.angle??0;let x=effect.event.x;let y=effect.event.y;let alpha=1;
+   let angle=effect.event.angle??0;let x=effect.event.x;let y=effect.event.y;
+   if(custom&&effect.event.formId&&effect.event.formId!=='base'){
+    let width=150,height=120,alpha=.8*(1-p*.65),angle=effect.event.angle??0;
+    if(custom.key==='activation'){width=190+motion*90;height=190+motion*90;alpha=.82*(1-p*.72);}
+    else if(custom.key==='transition'){width=150+motion*100;height=120+motion*80;alpha=.68*(1-p);}
+    else if(custom.key==='contact'){width=100+motion*44;height=90+motion*40;alpha=.96*(1-p*.65);}
+    else if(custom.key==='bolt'){width=id==='bolt-cast'?178:118;height=id==='bolt-cast'?58:112;alpha=(id==='bolt-cast'?.92:.84)*(1-p);}
+    else if(custom.key==='special'){width=212+motion*70;height=170+motion*45;alpha=.9*(1-p*.76);}
+    else if(custom.key==='finisher'){width=(id==='finisher-hit'?270:220)+motion*60;height=width*.72;alpha=(id==='finisher-hit'?1:.78)*(1-p*.78);if(effect.event.formId==='ember-drive')angle+=Math.PI/4;}
+    this.drawFormVfx(custom.image,effect.event.formId,x,y,angle,width,height,alpha,settings);continue;
+   }
+   let image:HTMLImageElement;let width:number;let height:number;let alpha=1;
    if(id==='shockwave-charge'||id==='shockwave-release'){
     image=this.vfx.shockwave;width=95+motion*300;height=47+motion*106;alpha=id==='shockwave-charge'?.74*(1-p*.3):.9*(1-p);
     y+=8;

@@ -1,7 +1,8 @@
 import { facingFromAngle, facingFromVector } from '../core/direction.js';
 import type { FacingDirection } from '../core/direction.js';
 import { KAIRO_COMBO_HITS } from '../data/kairoAbilities.js';
-import type { AbilityId, Hero, LocomotionState } from '../core/types.js';
+import { formById } from '../data/kairoForms.js';
+import type { AbilityId, Hero, KairoFormId, LocomotionState } from '../core/types.js';
 
 export type AnimationAtlas = 'idle'|'run'|'dodge'|'combo'|'states'|'locomotionTransitions'|'bolt'|'shockwave'|'guardParry'|'finisher';
 export type HeroAnimationState = 'idle'|'start'|'run'|'stop'|'dodge'|'combo'|'bolt'|'shockwave'|'finisher'|'guard'|'parry'|'hurt'|'ko'|'ember';
@@ -19,6 +20,13 @@ export type AtlasSource = 'b03'|'b02'|'vector';
 export function resolveAtlasSource(generatedReady: boolean, legacyReady: boolean): AtlasSource {
   return generatedReady ? 'b03' : legacyReady ? 'b02' : 'vector';
 }
+
+/** Select authored form animation art only when the form is active and its atlas loaded. */
+export function resolveFormAnimationAtlas(formId: KairoFormId, transformed: boolean, atlasReady: boolean): Exclude<KairoFormId, 'base'> | null {
+  return transformed && atlasReady && formId !== 'base' ? formId : null;
+}
+export const resolveFormComboAtlas = resolveFormAnimationAtlas;
+export const resolveFormRunAtlas = resolveFormAnimationAtlas;
 
 const directionRows: Record<FacingDirection, number> = { front: 0, right: 1, back: 2, left: 3 };
 const cardinalAngle: Record<FacingDirection, number> = { right: 0, front: Math.PI/2, left: Math.PI, back: -Math.PI/2 };
@@ -75,7 +83,8 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
     frame = locomotionFrame(hero.locomotion, hero.locomotionTime); frameCount = 4;
   } else if (Math.hypot(hero.vx, hero.vy) > 70) {
     state = 'run'; atlas = 'run'; direction = hero.moveFacing;
-    frame = Math.floor(hero.step / (277 * .07)) % 4; frameCount = 4; loop = true;
+    const stepSpeed = hero.transformed ? formById(hero.formId)?.combat.moveSpeed ?? 277 : 277;
+    frame = Math.floor(hero.step / (stepSpeed * .07)) % 4; frameCount = 4; loop = true;
   } else {
     state = 'idle'; atlas = 'idle'; direction = hero.moveFacing;
     frame = Math.floor(clock / .16) % 4; frameCount = 4; loop = true;

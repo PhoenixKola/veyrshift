@@ -79,6 +79,63 @@ const SFX: Readonly<Record<string, SfxSpec>> = {
   'ember-end': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
     { wave: 'sine', frequency: 390, endFrequency: 130, duration: .2, volume: .055 },
   ] },
+  'glass-start': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
+    { wave: 'sine', frequency: 520, endFrequency: 1040, duration: .31, volume: .065 }, { wave: 'triangle', frequency: 780, endFrequency: 660, duration: .36, volume: .045, delay: .04 },
+  ] },
+  'glass-end': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
+    { wave: 'sine', frequency: 880, endFrequency: 330, duration: .23, volume: .055 }, { wave: 'triangle', frequency: 660, endFrequency: 440, duration: .2, volume: .035, delay: .025 },
+  ] },
+  'ember-hit1': { group: 'combat', maxVoices: 3, minimumGap: .035, voices: [
+    { noise: true, frequency: 300, filter: 1700, duration: .06, volume: .11 }, { wave: 'triangle', frequency: 105, endFrequency: 62, duration: .11, volume: .17 },
+  ] },
+  'ember-hit2': { group: 'combat', maxVoices: 3, minimumGap: .04, voices: [
+    { noise: true, frequency: 410, filter: 2300, duration: .075, volume: .12 }, { wave: 'sawtooth', frequency: 139, endFrequency: 75, duration: .13, volume: .19 }, { wave: 'sine', frequency: 310, endFrequency: 180, duration: .09, volume: .045, delay: .012 },
+  ] },
+  'ember-hit3': { group: 'combat', maxVoices: 2, minimumGap: .12, voices: [
+    { noise: true, frequency: 190, filter: 1150, duration: .14, volume: .21 }, { wave: 'sawtooth', frequency: 83, endFrequency: 38, duration: .25, volume: .23 }, { wave: 'sine', frequency: 233, endFrequency: 61, duration: .19, volume: .12, delay: .014 },
+  ] },
+  'ember-bolt-cast': { group: 'combat', maxVoices: 2, minimumGap: .1, voices: [
+    { wave: 'sawtooth', frequency: 180, endFrequency: 660, duration: .13, volume: .065 }, { wave: 'triangle', frequency: 96, endFrequency: 180, duration: .16, volume: .075, delay: .02 },
+  ] },
+  'ember-bolt-hit': { group: 'combat', maxVoices: 2, minimumGap: .08, voices: [
+    { noise: true, frequency: 270, filter: 1300, duration: .12, volume: .17 }, { wave: 'sine', frequency: 124, endFrequency: 44, duration: .23, volume: .17 },
+  ] },
+  'ember-special': { group: 'combat', maxVoices: 1, minimumGap: .22, voices: [
+    { noise: true, frequency: 170, filter: 780, duration: .25, volume: .18 }, { wave: 'sawtooth', frequency: 76, endFrequency: 37, duration: .34, volume: .2 }, { wave: 'triangle', frequency: 210, endFrequency: 56, duration: .27, volume: .09, delay: .02 },
+  ] },
+  'ember-finisher-build': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
+    { wave: 'sawtooth', frequency: 67, endFrequency: 180, duration: .3, volume: .12 }, { wave: 'triangle', frequency: 140, endFrequency: 390, duration: .24, volume: .08, delay: .05 },
+  ] },
+  'ember-finisher-hit': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
+    { noise: true, frequency: 150, filter: 850, duration: .22, volume: .22 }, { wave: 'sawtooth', frequency: 54, endFrequency: 32, duration: .34, volume: .22 }, { wave: 'sine', frequency: 355, endFrequency: 72, duration: .28, volume: .13, delay: .014 },
+  ] },
+  'glass-contact': { group: 'combat', maxVoices: 3, minimumGap: .035, voices: [
+    { noise: true, frequency: 1800, filter: 6400, duration: .045, volume: .075 }, { wave: 'sine', frequency: 410, endFrequency: 210, duration: .12, volume: .11 }, { wave: 'triangle', frequency: 1160, endFrequency: 640, duration: .1, volume: .04, delay: .014 },
+  ] },
+  'glass-bolt-cast': { group: 'combat', maxVoices: 2, minimumGap: .1, voices: [
+    { wave: 'sine', frequency: 490, endFrequency: 1220, duration: .16, volume: .07 }, { wave: 'triangle', frequency: 710, endFrequency: 980, duration: .14, volume: .05, delay: .03 },
+  ] },
+  'glass-bolt-hit': { group: 'combat', maxVoices: 2, minimumGap: .08, voices: [
+    { noise: true, frequency: 2100, filter: 7100, duration: .06, volume: .085 }, { wave: 'sine', frequency: 1180, endFrequency: 380, duration: .18, volume: .085 },
+  ] },
+  'glass-counter': { group: 'combat', maxVoices: 1, minimumGap: .12, voices: [
+    { wave: 'sine', frequency: 940, endFrequency: 620, duration: .17, volume: .15 }, { wave: 'triangle', frequency: 520, endFrequency: 1180, duration: .13, volume: .085, delay: .014 }, { noise: true, frequency: 1850, filter: 6100, duration: .07, volume: .05, delay: .02 },
+  ] },
+  'glass-special': { group: 'combat', maxVoices: 1, minimumGap: .22, voices: [
+    { wave: 'sine', frequency: 300, endFrequency: 1480, duration: .29, volume: .1 }, { wave: 'triangle', frequency: 740, endFrequency: 330, duration: .34, volume: .08, delay: .045 }, { noise: true, frequency: 2400, filter: 8000, duration: .12, volume: .065, delay: .09 },
+  ] },
+  'glass-finisher-build': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
+    { wave: 'sine', frequency: 260, endFrequency: 1050, duration: .3, volume: .085 }, { wave: 'triangle', frequency: 430, endFrequency: 780, duration: .26, volume: .065, delay: .045 },
+  ] },
+  'glass-finisher-hit': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
+    { noise: true, frequency: 2300, filter: 7500, duration: .14, volume: .12 }, { wave: 'sine', frequency: 1480, endFrequency: 245, duration: .3, volume: .12 }, { wave: 'triangle', frequency: 720, endFrequency: 180, duration: .27, volume: .09, delay: .017 },
+  ] },
+  'glass-finisher-fade': { group: 'combat', maxVoices: 1, minimumGap: .3, voices: [
+    { wave: 'sine', frequency: 990, endFrequency: 280, duration: .26, volume: .06 }, { wave: 'triangle', frequency: 780, endFrequency: 510, duration: .23, volume: .04, delay: .028 },
+  ] },
+  'glass-dodge': { group: 'combat', maxVoices: 2, minimumGap: .07, voices: [
+    { noise: true, frequency: 1900, filter: 7200, duration: .09, volume: .065 }, { wave: 'sine', frequency: 560, endFrequency: 1040, duration: .12, volume: .065 },
+  ] },
   'ui-confirm': { group: 'ui', maxVoices: 2, minimumGap: .05, voices: [{ wave: 'sine', frequency: 520, endFrequency: 760, duration: .075, volume: .055 }] },
   'ui-pause': { group: 'ui', maxVoices: 1, minimumGap: .1, voices: [{ wave: 'sine', frequency: 410, endFrequency: 260, duration: .12, volume: .06 }] },
 };

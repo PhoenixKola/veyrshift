@@ -1,60 +1,6241 @@
 {
-  "batch": "B05",
+  "batch": "B05 continuation",
   "generatedDate": "2026-11-06",
   "pipeline": "python tools/build-b05-art.py",
-  "status": "PARTIAL_ART_GATE_BLOCKED",
-  "runtimeAssetsExported": false,
-  "transparencyPolicy": "Only PNG color types 4/6 encode an alpha channel; an alpha channel alone does not prove clean cutout edges.",
-  "forms": [
-    {
-      "form": "ember-drive",
-      "source": "art-source/b05/proposed/ember-drive-four-view-master.png",
-      "status": "PROPOSED_REFERENCE_ONLY",
-      "runtimeExport": null,
+  "status": "PARTIAL_ART_IMPLEMENTED_VISUAL_ACCEPTANCE_BLOCKED",
+  "generator": {
+    "tool": "OpenAI built-in ImageGen",
+    "modelVersion": "not exposed",
+    "seed": "not exposed",
+    "transcript": "See docs/art/b05-generation-notes.md; prior-turn exact prompts were not retained in this checkout."
+  },
+  "runtimeAssetsExported": true,
+  "runtimeCell": {
+    "width": 192,
+    "height": 256
+  },
+  "directions": [
+    "front",
+    "right",
+    "back",
+    "left"
+  ],
+  "alphaPolicy": {
+    "floor": 32,
+    "noAutomaticSmallComponentDeletion": true,
+    "rejectCellEdgeContact": true
+  },
+  "turnarounds": {
+    "ember-drive": {
+      "source": "art-source/b05/review/ember-drive-turnaround-v2.png",
+      "size": [
+        2172,
+        724
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "f7b711f3e7a05288223c70fe655f7539359db5d5ad007e7aec882d85dae2d36c",
+      "review": "Inspected on dark composite for pose count, spacing, costume/silhouette consistency and visible fragments; owner approval remains pending."
+    },
+    "glass-current": {
+      "source": "art-source/b05/review/glass-current-turnaround-v3.png",
+      "size": [
+        1774,
+        887
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "898ac7872a79ae0b2cb6eace96e183d0d57db09549aaf3fdac288a4adac35681",
+      "review": "Inspected on dark composite for pose count, spacing, costume/silhouette consistency and visible fragments; owner approval remains pending."
+    }
+  },
+  "forms": {
+    "ember-drive": {
+      "status": "PRODUCTION_CANDIDATE_OWNER_APPROVAL_PENDING",
+      "masterReference": "art-source/b05/review/ember-drive-turnaround-v2.png",
+      "sourceGrids": [
+        {
+          "source": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "size": [
+            1247,
+            1261
+          ],
+          "sha256": "846190a9d0dd590a7d9ec893fbbe590b8f2109be76fe6de749ec1ce1c2cd72e5",
+          "grid": {
+            "columns": 4,
+            "rows": 4,
+            "columnOrder": [
+              "phase 1",
+              "phase 2",
+              "phase 3",
+              "phase 4"
+            ],
+            "rowOrder": [
+              "front",
+              "right",
+              "back",
+              "left"
+            ]
+          }
+        },
+        {
+          "source": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "size": [
+            1247,
+            1261
+          ],
+          "sha256": "48a89470478d30132e1be378780c185cd33ded43443856800bddeb1d7583476e",
+          "grid": {
+            "columns": 4,
+            "rows": 4,
+            "columnOrder": [
+              "phase 1",
+              "phase 2",
+              "phase 3",
+              "phase 4"
+            ],
+            "rowOrder": [
+              "front",
+              "right",
+              "back",
+              "left"
+            ]
+          }
+        },
+        {
+          "source": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "size": [
+            1086,
+            1448
+          ],
+          "sha256": "a27709a495a938edced7909024efa099720e06a306e9ba32c3fba41596726094",
+          "grid": {
+            "columns": 4,
+            "rows": 4,
+            "columnOrder": [
+              "phase 1",
+              "phase 2",
+              "phase 3",
+              "phase 4"
+            ],
+            "rowOrder": [
+              "front",
+              "right",
+              "back",
+              "left"
+            ]
+          }
+        }
+      ],
+      "runtime": "public/assets/characters/kairo/forms/ember-drive/combo.webp",
+      "runtimeBytes": 1501852,
+      "run": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/ember-run-grid-v1.png",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "6f89833ae5a73c61edcd5d296b929d04cc731a364bcd42d899c235c5fa17a7f1",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "push-off",
+            "stride",
+            "pass",
+            "land"
+          ],
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/ember-drive/run.webp",
+        "runtimeBytes": 573020,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.773333,
+          "right": 0.781145,
+          "back": 0.770764,
+          "left": 0.778523
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              74,
+              20,
+              239,
+              300
+            ],
+            "trimBox": [
+              68,
+              14,
+              245,
+              306
+            ],
+            "clearedLowAlphaPixels": 6560,
+            "foregroundComponentAreas": [
+              25959
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 0,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              79,
+              18,
+              233,
+              299
+            ],
+            "trimBox": [
+              73,
+              12,
+              239,
+              305
+            ],
+            "clearedLowAlphaPixels": 5705,
+            "foregroundComponentAreas": [
+              23751
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 0,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              65,
+              14,
+              228,
+              302
+            ],
+            "trimBox": [
+              59,
+              8,
+              234,
+              308
+            ],
+            "clearedLowAlphaPixels": 4806,
+            "foregroundComponentAreas": [
+              24497
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 0,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              73,
+              20,
+              236,
+              300
+            ],
+            "trimBox": [
+              67,
+              14,
+              242,
+              306
+            ],
+            "clearedLowAlphaPixels": 6295,
+            "foregroundComponentAreas": [
+              26045
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 314,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              69,
+              22,
+              222,
+              300
+            ],
+            "trimBox": [
+              63,
+              16,
+              228,
+              306
+            ],
+            "clearedLowAlphaPixels": 5606,
+            "foregroundComponentAreas": [
+              21853
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 314,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              56,
+              14,
+              236,
+              299
+            ],
+            "trimBox": [
+              50,
+              8,
+              242,
+              305
+            ],
+            "clearedLowAlphaPixels": 5478,
+            "foregroundComponentAreas": [
+              22529
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 314,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              52,
+              15,
+              257,
+              299
+            ],
+            "trimBox": [
+              46,
+              9,
+              263,
+              305
+            ],
+            "clearedLowAlphaPixels": 6089,
+            "foregroundComponentAreas": [
+              24092
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.781145,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 314,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              73,
+              25,
+              224,
+              300
+            ],
+            "trimBox": [
+              67,
+              19,
+              230,
+              306
+            ],
+            "clearedLowAlphaPixels": 4856,
+            "foregroundComponentAreas": [
+              21251
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.770764,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 627,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              73,
+              20,
+              241,
+              300
+            ],
+            "trimBox": [
+              67,
+              14,
+              247,
+              306
+            ],
+            "clearedLowAlphaPixels": 7518,
+            "foregroundComponentAreas": [
+              25790
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.770764,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 627,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              83,
+              12,
+              234,
+              301
+            ],
+            "trimBox": [
+              77,
+              6,
+              240,
+              307
+            ],
+            "clearedLowAlphaPixels": 5716,
+            "foregroundComponentAreas": [
+              22837
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.770764,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 627,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              78,
+              13,
+              234,
+              302
+            ],
+            "trimBox": [
+              72,
+              7,
+              240,
+              308
+            ],
+            "clearedLowAlphaPixels": 6260,
+            "foregroundComponentAreas": [
+              24104
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.770764,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 627,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              73,
+              21,
+              238,
+              300
+            ],
+            "trimBox": [
+              67,
+              15,
+              244,
+              306
+            ],
+            "clearedLowAlphaPixels": 7491,
+            "foregroundComponentAreas": [
+              26340
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.778523,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 940,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              92,
+              28,
+              243,
+              302
+            ],
+            "trimBox": [
+              86,
+              22,
+              249,
+              308
+            ],
+            "clearedLowAlphaPixels": 5038,
+            "foregroundComponentAreas": [
+              19941
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.778523,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 940,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              83,
+              16,
+              257,
+              302
+            ],
+            "trimBox": [
+              77,
+              10,
+              263,
+              308
+            ],
+            "clearedLowAlphaPixels": 5695,
+            "foregroundComponentAreas": [
+              22608
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.778523,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 940,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              58,
+              18,
+              261,
+              302
+            ],
+            "trimBox": [
+              52,
+              12,
+              267,
+              308
+            ],
+            "clearedLowAlphaPixels": 6557,
+            "foregroundComponentAreas": [
+              24161
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.778523,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 940,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              95,
+              28,
+              244,
+              302
+            ],
+            "trimBox": [
+              89,
+              22,
+              250,
+              308
+            ],
+            "clearedLowAlphaPixels": 5516,
+            "foregroundComponentAreas": [
+              20512
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          }
+        ],
+        "contactSheet": "tests/evidence/b05/ember-drive-run-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/ember-drive-run-at-speed.gif"
+      },
+      "icons": {
+        "source": "art-source/b05/review/ember-ability-icons-v1.png",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "c7c27d44f85a4a6ae1a9adeaddd19794fd830fcffe81437ad8a69789b351f0b9",
+        "sourceGrid": {
+          "columns": 3,
+          "rows": 2,
+          "cellSize": [
+            512.0,
+            512.0
+          ]
+        },
+        "runtimeCell": [
+          128,
+          128
+        ],
+        "icons": [
+          {
+            "name": "identity",
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/ember-drive/identity.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 16824,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              56,
+              32,
+              485,
+              468
+            ],
+            "trimBox": [
+              50,
+              26,
+              491,
+              474
+            ],
+            "clearedLowAlphaPixels": 4502,
+            "foregroundComponentAreas": [
+              113627
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "activation",
+            "sourceCell": {
+              "x": 512,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/ember-drive/activation.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 17328,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              36,
+              32,
+              473,
+              469
+            ],
+            "trimBox": [
+              30,
+              26,
+              479,
+              475
+            ],
+            "clearedLowAlphaPixels": 4682,
+            "foregroundComponentAreas": [
+              113664
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "bolt",
+            "sourceCell": {
+              "x": 1024,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/ember-drive/bolt.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 16928,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              22,
+              31,
+              464,
+              468
+            ],
+            "trimBox": [
+              16,
+              25,
+              470,
+              474
+            ],
+            "clearedLowAlphaPixels": 4663,
+            "foregroundComponentAreas": [
+              114835
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "special",
+            "sourceCell": {
+              "x": 0,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/ember-drive/special.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 17176,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              56,
+              31,
+              485,
+              467
+            ],
+            "trimBox": [
+              50,
+              25,
+              491,
+              473
+            ],
+            "clearedLowAlphaPixels": 4812,
+            "foregroundComponentAreas": [
+              115298
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "finisher",
+            "sourceCell": {
+              "x": 512,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/ember-drive/finisher.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 18268,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              36,
+              33,
+              474,
+              468
+            ],
+            "trimBox": [
+              30,
+              27,
+              480,
+              474
+            ],
+            "clearedLowAlphaPixels": 5170,
+            "foregroundComponentAreas": [
+              117901
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "combo",
+            "sourceCell": {
+              "x": 1024,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/ember-drive/combo.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 17648,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              21,
+              32,
+              455,
+              469
+            ],
+            "trimBox": [
+              15,
+              26,
+              461,
+              475
+            ],
+            "clearedLowAlphaPixels": 5344,
+            "foregroundComponentAreas": [
+              116011
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          }
+        ],
+        "contactSheet": "tests/evidence/b05/ember-drive-ability-icons-contact.jpg"
+      },
+      "vfx": {
+        "source": "art-source/b05/review/ember-vfx-sheet-v1.png",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "b1b20e9e2de05fc2064be16a661dd6e3933375161a9b2921bc6aaf2b2c10ba1b",
+        "sourceGrid": {
+          "columns": 3,
+          "rows": 2,
+          "cellSize": [
+            512.0,
+            512.0
+          ]
+        },
+        "runtimeCell": [
+          256,
+          256
+        ],
+        "textures": [
+          {
+            "name": "activation",
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/ember-drive/activation.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 43828,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              37,
+              41,
+              471,
+              439
+            ],
+            "trimBox": [
+              31,
+              35,
+              477,
+              445
+            ],
+            "clearedLowAlphaPixels": 132417,
+            "foregroundComponentAreas": [
+              20444,
+              19377,
+              10597,
+              1217,
+              694,
+              358,
+              267,
+              254,
+              203,
+              144
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "contact",
+            "sourceCell": {
+              "x": 512,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/ember-drive/contact.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 29382,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              60,
+              60,
+              437,
+              434
+            ],
+            "trimBox": [
+              54,
+              54,
+              443,
+              440
+            ],
+            "clearedLowAlphaPixels": 109615,
+            "foregroundComponentAreas": [
+              28931,
+              243,
+              1
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "bolt",
+            "sourceCell": {
+              "x": 1024,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/ember-drive/bolt.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 21422,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              27,
+              172,
+              467,
+              355
+            ],
+            "trimBox": [
+              21,
+              166,
+              473,
+              361
+            ],
+            "clearedLowAlphaPixels": 68127,
+            "foregroundComponentAreas": [
+              29464,
+              755,
+              305
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "special",
+            "sourceCell": {
+              "x": 0,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/ember-drive/special.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 29692,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              39,
+              145,
+              486,
+              382
+            ],
+            "trimBox": [
+              33,
+              139,
+              492,
+              388
+            ],
+            "clearedLowAlphaPixels": 68061,
+            "foregroundComponentAreas": [
+              40938,
+              1205,
+              805,
+              722,
+              234,
+              119
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "finisher",
+            "sourceCell": {
+              "x": 512,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/ember-drive/finisher.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 34202,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              32,
+              47,
+              455,
+              416
+            ],
+            "trimBox": [
+              26,
+              41,
+              461,
+              422
+            ],
+            "clearedLowAlphaPixels": 86321,
+            "foregroundComponentAreas": [
+              42313,
+              663,
+              451,
+              389,
+              207
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "transition",
+            "sourceCell": {
+              "x": 1024,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/ember-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/ember-drive/transition.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 41726,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              71,
+              71,
+              436,
+              425
+            ],
+            "trimBox": [
+              65,
+              65,
+              442,
+              431
+            ],
+            "clearedLowAlphaPixels": 107694,
+            "foregroundComponentAreas": [
+              35250,
+              540,
+              485,
+              386,
+              269,
+              242,
+              86
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          }
+        ],
+        "contactSheet": "tests/evidence/b05/ember-drive-vfx-contact.jpg"
+      },
+      "runtimeGrid": {
+        "columns": 12,
+        "rows": 4,
+        "frameWidth": 192,
+        "frameHeight": 256,
+        "directionOrder": [
+          "front",
+          "right",
+          "back",
+          "left"
+        ],
+        "hitColumns": {
+          "hit1": [
+            0,
+            3
+          ],
+          "hit2": [
+            4,
+            7
+          ],
+          "hit3": [
+            8,
+            11
+          ]
+        }
+      },
+      "directionTargetSourceHeights": {
+        "front": 293.0,
+        "right": 291.0,
+        "back": 295.0,
+        "left": 287.5
+      },
+      "uniformHitDirectionScales": {
+        "front-hit1": 0.719665,
+        "front-hit2": 0.753247,
+        "front-hit3": 0.64624,
+        "right-hit1": 0.646617,
+        "right-hit2": 0.750809,
+        "right-hit3": 0.640884,
+        "back-hit1": 0.728814,
+        "back-hit2": 0.7557,
+        "back-hit3": 0.640884,
+        "left-hit1": 0.669261,
+        "left-hit2": 0.75817,
+        "left-hit3": 0.64624
+      },
+      "runtimePivot": [
+        96.0,
+        248
+      ],
+      "cleanup": {
+        "alphaFloor": 32,
+        "clearedLowAlphaPixelsPerSourceCell": true,
+        "disconnectedComponentsAutomaticallyDeleted": false,
+        "rule": "All components above alpha floor are retained; source-cell edge contact blocks export."
+      },
+      "contactSheet": "tests/evidence/b05/ember-drive-combo-contact.jpg",
+      "atSpeedPreview": "tests/evidence/b05/ember-drive-combo-at-speed.gif",
+      "frames": [
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.719665,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            43,
+            15,
+            262,
+            308
+          ],
+          "trimBox": [
+            37,
+            9,
+            268,
+            314
+          ],
+          "clearedLowAlphaPixels": 21424,
+          "foregroundComponentAreas": [
+            29322
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.719665,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            30,
+            15,
+            257,
+            308
+          ],
+          "trimBox": [
+            24,
+            9,
+            263,
+            314
+          ],
+          "clearedLowAlphaPixels": 23056,
+          "foregroundComponentAreas": [
+            26587
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.719665,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 0,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            29,
+            16,
+            254,
+            308
+          ],
+          "trimBox": [
+            23,
+            10,
+            260,
+            314
+          ],
+          "clearedLowAlphaPixels": 25612,
+          "foregroundComponentAreas": [
+            25856
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.719665,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            36,
+            16,
+            253,
+            309
+          ],
+          "trimBox": [
+            30,
+            10,
+            259,
+            315
+          ],
+          "clearedLowAlphaPixels": 22541,
+          "foregroundComponentAreas": [
+            27763
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.753247,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            75,
+            18,
+            228,
+            305
+          ],
+          "trimBox": [
+            69,
+            12,
+            234,
+            311
+          ],
+          "clearedLowAlphaPixels": 10917,
+          "foregroundComponentAreas": [
+            23349
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.753247,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            66,
+            13,
+            235,
+            305
+          ],
+          "trimBox": [
+            60,
+            7,
+            241,
+            311
+          ],
+          "clearedLowAlphaPixels": 15522,
+          "foregroundComponentAreas": [
+            21700
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.753247,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 0,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            57,
+            9,
+            255,
+            305
+          ],
+          "trimBox": [
+            51,
+            3,
+            261,
+            311
+          ],
+          "clearedLowAlphaPixels": 16564,
+          "foregroundComponentAreas": [
+            23570
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.753247,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            78,
+            11,
+            237,
+            305
+          ],
+          "trimBox": [
+            72,
+            5,
+            243,
+            311
+          ],
+          "clearedLowAlphaPixels": 14280,
+          "foregroundComponentAreas": [
+            23758
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            24,
+            116,
+            237,
+            357
+          ],
+          "trimBox": [
+            18,
+            110,
+            243,
+            362
+          ],
+          "clearedLowAlphaPixels": 10601,
+          "foregroundComponentAreas": [
+            28237
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 272,
+            "y": 0,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            31,
+            65,
+            237,
+            358
+          ],
+          "trimBox": [
+            25,
+            59,
+            243,
+            362
+          ],
+          "clearedLowAlphaPixels": 12705,
+          "foregroundComponentAreas": [
+            29216
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 543,
+            "y": 0,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            29,
+            9,
+            236,
+            358
+          ],
+          "trimBox": [
+            23,
+            3,
+            242,
+            362
+          ],
+          "clearedLowAlphaPixels": 14226,
+          "foregroundComponentAreas": [
+            31878
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 814,
+            "y": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            34,
+            62,
+            235,
+            359
+          ],
+          "trimBox": [
+            28,
+            56,
+            241,
+            362
+          ],
+          "clearedLowAlphaPixels": 12376,
+          "foregroundComponentAreas": [
+            29304
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.646617,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            33,
+            20,
+            267,
+            303
+          ],
+          "trimBox": [
+            27,
+            14,
+            273,
+            309
+          ],
+          "clearedLowAlphaPixels": 26694,
+          "foregroundComponentAreas": [
+            26640
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.646617,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            22,
+            21,
+            276,
+            304
+          ],
+          "trimBox": [
+            16,
+            15,
+            282,
+            310
+          ],
+          "clearedLowAlphaPixels": 33824,
+          "foregroundComponentAreas": [
+            26320
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.646617,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 315,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            29,
+            22,
+            261,
+            304
+          ],
+          "trimBox": [
+            23,
+            16,
+            267,
+            310
+          ],
+          "clearedLowAlphaPixels": 33654,
+          "foregroundComponentAreas": [
+            25715
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.646617,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            37,
+            19,
+            266,
+            304
+          ],
+          "trimBox": [
+            31,
+            13,
+            272,
+            310
+          ],
+          "clearedLowAlphaPixels": 28051,
+          "foregroundComponentAreas": [
+            25484
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.750809,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            66,
+            20,
+            223,
+            306
+          ],
+          "trimBox": [
+            60,
+            14,
+            229,
+            312
+          ],
+          "clearedLowAlphaPixels": 13791,
+          "foregroundComponentAreas": [
+            22738
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.750809,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            61,
+            15,
+            248,
+            305
+          ],
+          "trimBox": [
+            55,
+            9,
+            254,
+            311
+          ],
+          "clearedLowAlphaPixels": 16343,
+          "foregroundComponentAreas": [
+            23101
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.750809,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 315,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            59,
+            8,
+            248,
+            305
+          ],
+          "trimBox": [
+            53,
+            2,
+            254,
+            311
+          ],
+          "clearedLowAlphaPixels": 16664,
+          "foregroundComponentAreas": [
+            24689
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.750809,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            70,
+            14,
+            236,
+            306
+          ],
+          "trimBox": [
+            64,
+            8,
+            242,
+            312
+          ],
+          "clearedLowAlphaPixels": 13141,
+          "foregroundComponentAreas": [
+            22149
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 362,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            19,
+            116,
+            212,
+            356
+          ],
+          "trimBox": [
+            13,
+            110,
+            218,
+            362
+          ],
+          "clearedLowAlphaPixels": 12406,
+          "foregroundComponentAreas": [
+            25464
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 272,
+            "y": 362,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            28,
+            60,
+            232,
+            356
+          ],
+          "trimBox": [
+            22,
+            54,
+            238,
+            362
+          ],
+          "clearedLowAlphaPixels": 14867,
+          "foregroundComponentAreas": [
+            27830,
+            1
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 543,
+            "y": 362,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            13,
+            5,
+            224,
+            356
+          ],
+          "trimBox": [
+            7,
+            0,
+            230,
+            362
+          ],
+          "clearedLowAlphaPixels": 15700,
+          "foregroundComponentAreas": [
+            32095
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 814,
+            "y": 362,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            28,
+            60,
+            208,
+            356
+          ],
+          "trimBox": [
+            22,
+            54,
+            214,
+            362
+          ],
+          "clearedLowAlphaPixels": 12443,
+          "foregroundComponentAreas": [
+            26735
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.728814,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            45,
+            11,
+            269,
+            305
+          ],
+          "trimBox": [
+            39,
+            5,
+            275,
+            311
+          ],
+          "clearedLowAlphaPixels": 27743,
+          "foregroundComponentAreas": [
+            28543
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.728814,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            45,
+            10,
+            261,
+            305
+          ],
+          "trimBox": [
+            39,
+            4,
+            267,
+            311
+          ],
+          "clearedLowAlphaPixels": 34907,
+          "foregroundComponentAreas": [
+            27959
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.728814,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 630,
+            "width": 311,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            44,
+            10,
+            265,
+            305
+          ],
+          "trimBox": [
+            38,
+            4,
+            271,
+            311
+          ],
+          "clearedLowAlphaPixels": 32749,
+          "foregroundComponentAreas": [
+            27788
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.728814,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            43,
+            10,
+            260,
+            305
+          ],
+          "trimBox": [
+            37,
+            4,
+            266,
+            311
+          ],
+          "clearedLowAlphaPixels": 28341,
+          "foregroundComponentAreas": [
+            27472
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.7557,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            70,
+            19,
+            231,
+            308
+          ],
+          "trimBox": [
+            64,
+            13,
+            237,
+            314
+          ],
+          "clearedLowAlphaPixels": 13960,
+          "foregroundComponentAreas": [
+            24596
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.7557,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            62,
+            16,
+            234,
+            308
+          ],
+          "trimBox": [
+            56,
+            10,
+            240,
+            314
+          ],
+          "clearedLowAlphaPixels": 15031,
+          "foregroundComponentAreas": [
+            23696
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.7557,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 630,
+            "width": 311,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            48,
+            11,
+            241,
+            306
+          ],
+          "trimBox": [
+            42,
+            5,
+            247,
+            312
+          ],
+          "clearedLowAlphaPixels": 14340,
+          "foregroundComponentAreas": [
+            25657,
+            1
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.7557,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            75,
+            13,
+            247,
+            308
+          ],
+          "trimBox": [
+            69,
+            7,
+            253,
+            314
+          ],
+          "clearedLowAlphaPixels": 13482,
+          "foregroundComponentAreas": [
+            24534
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 724,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            22,
+            107,
+            220,
+            356
+          ],
+          "trimBox": [
+            16,
+            101,
+            226,
+            362
+          ],
+          "clearedLowAlphaPixels": 11236,
+          "foregroundComponentAreas": [
+            28347
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 272,
+            "y": 724,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            26,
+            46,
+            215,
+            356
+          ],
+          "trimBox": [
+            20,
+            40,
+            221,
+            362
+          ],
+          "clearedLowAlphaPixels": 15600,
+          "foregroundComponentAreas": [
+            29468
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 543,
+            "y": 724,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            2,
+            6,
+            235,
+            356
+          ],
+          "trimBox": [
+            0,
+            0,
+            241,
+            362
+          ],
+          "clearedLowAlphaPixels": 15821,
+          "foregroundComponentAreas": [
+            33782
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.640884,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 814,
+            "y": 724,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            26,
+            61,
+            223,
+            356
+          ],
+          "trimBox": [
+            20,
+            55,
+            229,
+            362
+          ],
+          "clearedLowAlphaPixels": 12819,
+          "foregroundComponentAreas": [
+            28690
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.669261,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            42,
+            16,
+            273,
+            298
+          ],
+          "trimBox": [
+            36,
+            10,
+            279,
+            304
+          ],
+          "clearedLowAlphaPixels": 30104,
+          "foregroundComponentAreas": [
+            25751
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.669261,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            37,
+            16,
+            282,
+            297
+          ],
+          "trimBox": [
+            31,
+            10,
+            288,
+            303
+          ],
+          "clearedLowAlphaPixels": 29197,
+          "foregroundComponentAreas": [
+            27323
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.669261,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 946,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            35,
+            14,
+            274,
+            298
+          ],
+          "trimBox": [
+            29,
+            8,
+            280,
+            304
+          ],
+          "clearedLowAlphaPixels": 33093,
+          "foregroundComponentAreas": [
+            26198
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.669261,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            32,
+            15,
+            260,
+            298
+          ],
+          "trimBox": [
+            26,
+            9,
+            266,
+            304
+          ],
+          "clearedLowAlphaPixels": 25387,
+          "foregroundComponentAreas": [
+            26584,
+            2
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.75817,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            73,
+            22,
+            241,
+            303
+          ],
+          "trimBox": [
+            67,
+            16,
+            247,
+            309
+          ],
+          "clearedLowAlphaPixels": 12564,
+          "foregroundComponentAreas": [
+            22336
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.75817,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            59,
+            16,
+            243,
+            304
+          ],
+          "trimBox": [
+            53,
+            10,
+            249,
+            310
+          ],
+          "clearedLowAlphaPixels": 16267,
+          "foregroundComponentAreas": [
+            23373
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.75817,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 946,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            61,
+            10,
+            257,
+            304
+          ],
+          "trimBox": [
+            55,
+            4,
+            263,
+            310
+          ],
+          "clearedLowAlphaPixels": 16913,
+          "foregroundComponentAreas": [
+            25130
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.75817,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit2-grid-v1.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            76,
+            16,
+            244,
+            303
+          ],
+          "trimBox": [
+            70,
+            10,
+            250,
+            309
+          ],
+          "clearedLowAlphaPixels": 12725,
+          "foregroundComponentAreas": [
+            22180
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 1086,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            41,
+            120,
+            245,
+            354
+          ],
+          "trimBox": [
+            35,
+            114,
+            251,
+            360
+          ],
+          "clearedLowAlphaPixels": 10992,
+          "foregroundComponentAreas": [
+            24624
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 272,
+            "y": 1086,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            41,
+            64,
+            236,
+            354
+          ],
+          "trimBox": [
+            35,
+            58,
+            242,
+            360
+          ],
+          "clearedLowAlphaPixels": 16676,
+          "foregroundComponentAreas": [
+            28625
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 543,
+            "y": 1086,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            37,
+            7,
+            243,
+            354
+          ],
+          "trimBox": [
+            31,
+            1,
+            249,
+            360
+          ],
+          "clearedLowAlphaPixels": 16053,
+          "foregroundComponentAreas": [
+            31897
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.64624,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/ember-combo-hit3-grid-v1.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 814,
+            "y": 1086,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            58,
+            64,
+            239,
+            354
+          ],
+          "trimBox": [
+            52,
+            58,
+            245,
+            360
+          ],
+          "clearedLowAlphaPixels": 12086,
+          "foregroundComponentAreas": [
+            25926
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        }
+      ],
       "coverage": {
-        "turnaroundViews": 4,
+        "combo1": true,
+        "combo2": true,
+        "combo3": true,
         "idle": false,
-        "run": false,
-        "combo": false,
+        "run": true,
         "dodge": false,
         "guardParry": false,
         "hurtKo": false,
-        "activationEnd": false,
-        "finisher": false
+        "bolt": false,
+        "special": false,
+        "finisher": false,
+        "activation": false,
+        "deactivation": false,
+        "dedicatedIcons": true,
+        "authoredVfx": true
+      }
+    },
+    "glass-current": {
+      "status": "PRODUCTION_CANDIDATE_OWNER_APPROVAL_PENDING",
+      "masterReference": "art-source/b05/review/glass-current-turnaround-v3.png",
+      "sourceGrids": [
+        {
+          "source": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "size": [
+            1247,
+            1261
+          ],
+          "sha256": "ba571bb2b793247d43b39c0a2d6f6318e4333f3e4c9c4a9298989a19c1bf598c",
+          "grid": {
+            "columns": 4,
+            "rows": 4,
+            "columnOrder": [
+              "phase 1",
+              "phase 2",
+              "phase 3",
+              "phase 4"
+            ],
+            "rowOrder": [
+              "front",
+              "right",
+              "back",
+              "left"
+            ]
+          }
+        },
+        {
+          "source": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "03b15e823835a8123aa2d2c252a3e719bb44ef790f67fa0f569f2836e4ab3236",
+          "grid": {
+            "columns": 4,
+            "rows": 4,
+            "columnOrder": [
+              "phase 1",
+              "phase 2",
+              "phase 3",
+              "phase 4"
+            ],
+            "rowOrder": [
+              "front",
+              "right",
+              "back",
+              "left"
+            ]
+          }
+        },
+        {
+          "source": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "36820e478077da92334d08f5c9ad9289bd0b20379a36e16581b10d32210fbc77",
+          "grid": {
+            "columns": 4,
+            "rows": 4,
+            "columnOrder": [
+              "phase 1",
+              "phase 2",
+              "phase 3",
+              "phase 4"
+            ],
+            "rowOrder": [
+              "front",
+              "right",
+              "back",
+              "left"
+            ]
+          }
+        }
+      ],
+      "runtime": "public/assets/characters/kairo/forms/glass-current/combo.webp",
+      "runtimeBytes": 1500896,
+      "run": {
+        "sourceGrid": {
+          "source": "art-source/b05/review/glass-run-grid-v1.png",
+          "size": [
+            1254,
+            1254
+          ],
+          "sha256": "cd4c07d3bb477c20345a5cd84d51b7950525d67479b3b5f032f6b55ed23a5d03",
+          "columns": 4,
+          "rows": 4,
+          "columnOrder": [
+            "push-off",
+            "stride",
+            "pass",
+            "land"
+          ],
+          "rowOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "runtime": "public/assets/characters/kairo/forms/glass-current/run.webp",
+        "runtimeBytes": 421814,
+        "runtimeGrid": {
+          "columns": 4,
+          "rows": 4,
+          "frameWidth": 192,
+          "frameHeight": 256,
+          "directionOrder": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ]
+        },
+        "uniformDirectionScales": {
+          "front": 0.750809,
+          "right": 0.768212,
+          "back": 0.760656,
+          "left": 0.773333
+        },
+        "runtimePivot": [
+          96.0,
+          248
+        ],
+        "frames": [
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.750809,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              105,
+              9,
+              223,
+              306
+            ],
+            "trimBox": [
+              99,
+              3,
+              229,
+              312
+            ],
+            "clearedLowAlphaPixels": 10497,
+            "foregroundComponentAreas": [
+              18783
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.750809,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 0,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              97,
+              18,
+              218,
+              304
+            ],
+            "trimBox": [
+              91,
+              12,
+              224,
+              310
+            ],
+            "clearedLowAlphaPixels": 7937,
+            "foregroundComponentAreas": [
+              18479
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.750809,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 0,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              104,
+              21,
+              218,
+              303
+            ],
+            "trimBox": [
+              98,
+              15,
+              224,
+              309
+            ],
+            "clearedLowAlphaPixels": 7777,
+            "foregroundComponentAreas": [
+              17308
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "front",
+            "directionRow": 0,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.750809,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 0,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              100,
+              20,
+              216,
+              303
+            ],
+            "trimBox": [
+              94,
+              14,
+              222,
+              309
+            ],
+            "clearedLowAlphaPixels": 9628,
+            "foregroundComponentAreas": [
+              17947
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.768212,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 314,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              76,
+              9,
+              256,
+              298
+            ],
+            "trimBox": [
+              70,
+              3,
+              262,
+              304
+            ],
+            "clearedLowAlphaPixels": 9858,
+            "foregroundComponentAreas": [
+              19772
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.768212,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 314,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              79,
+              10,
+              226,
+              298
+            ],
+            "trimBox": [
+              73,
+              4,
+              232,
+              304
+            ],
+            "clearedLowAlphaPixels": 9736,
+            "foregroundComponentAreas": [
+              15763
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.768212,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 314,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              93,
+              10,
+              226,
+              300
+            ],
+            "trimBox": [
+              87,
+              4,
+              232,
+              306
+            ],
+            "clearedLowAlphaPixels": 7935,
+            "foregroundComponentAreas": [
+              16291
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "right",
+            "directionRow": 1,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.768212,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 314,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              78,
+              11,
+              234,
+              299
+            ],
+            "trimBox": [
+              72,
+              5,
+              240,
+              305
+            ],
+            "clearedLowAlphaPixels": 10872,
+            "foregroundComponentAreas": [
+              17883
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.760656,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 627,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              103,
+              8,
+              232,
+              301
+            ],
+            "trimBox": [
+              97,
+              2,
+              238,
+              307
+            ],
+            "clearedLowAlphaPixels": 13155,
+            "foregroundComponentAreas": [
+              19418
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.760656,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 627,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              103,
+              10,
+              230,
+              286
+            ],
+            "trimBox": [
+              97,
+              4,
+              236,
+              292
+            ],
+            "clearedLowAlphaPixels": 9809,
+            "foregroundComponentAreas": [
+              17621
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.760656,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 627,
+              "width": 313,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              101,
+              13,
+              216,
+              302
+            ],
+            "trimBox": [
+              95,
+              7,
+              222,
+              308
+            ],
+            "clearedLowAlphaPixels": 10424,
+            "foregroundComponentAreas": [
+              17780
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "back",
+            "directionRow": 2,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.760656,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 627,
+              "width": 314,
+              "height": 313
+            },
+            "sourceAlphaBounds": [
+              101,
+              11,
+              217,
+              302
+            ],
+            "trimBox": [
+              95,
+              5,
+              223,
+              308
+            ],
+            "clearedLowAlphaPixels": 10788,
+            "foregroundComponentAreas": [
+              18654
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 0,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 0,
+              "y": 940,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              70,
+              9,
+              244,
+              296
+            ],
+            "trimBox": [
+              64,
+              3,
+              250,
+              302
+            ],
+            "clearedLowAlphaPixels": 13715,
+            "foregroundComponentAreas": [
+              19879
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 1,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 314,
+              "y": 940,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              88,
+              8,
+              236,
+              295
+            ],
+            "trimBox": [
+              82,
+              2,
+              242,
+              301
+            ],
+            "clearedLowAlphaPixels": 7688,
+            "foregroundComponentAreas": [
+              16132
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 2,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 627,
+              "y": 940,
+              "width": 313,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              87,
+              10,
+              231,
+              295
+            ],
+            "trimBox": [
+              81,
+              4,
+              237,
+              301
+            ],
+            "clearedLowAlphaPixels": 8948,
+            "foregroundComponentAreas": [
+              16141
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "direction": "left",
+            "directionRow": 3,
+            "frame": 3,
+            "runtimePivot": [
+              96.0,
+              248
+            ],
+            "uniformDirectionScale": 0.773333,
+            "durationMs": 70,
+            "componentsDeleted": 0,
+            "sourceCell": {
+              "x": 940,
+              "y": 940,
+              "width": 314,
+              "height": 314
+            },
+            "sourceAlphaBounds": [
+              84,
+              8,
+              241,
+              296
+            ],
+            "trimBox": [
+              78,
+              2,
+              247,
+              302
+            ],
+            "clearedLowAlphaPixels": 12175,
+            "foregroundComponentAreas": [
+              18974
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          }
+        ],
+        "contactSheet": "tests/evidence/b05/glass-current-run-contact.jpg",
+        "atSpeedPreview": "tests/evidence/b05/glass-current-run-at-speed.gif"
       },
-      "review": "PROPOSED DESIGN ONLY; rejected for runtime due to baked light backdrop and insufficient silhouette change",
-      "width": 1774,
-      "height": 887,
-      "bitDepth": 8,
-      "pngColorType": 6,
-      "alphaChannelEncoded": true,
-      "bytes": 2794539,
-      "sha256": "a56c06d0503529124b43c2a853458bb9f4176b3d7ead9b98eb824301a71c06f5"
+      "icons": {
+        "source": "art-source/b05/review/glass-ability-icons-v1.png",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "b8ba3c59e3d6194539e9c1e70dfcacb599b23a5fe2ceab6970dcb6b893e578f3",
+        "sourceGrid": {
+          "columns": 3,
+          "rows": 2,
+          "cellSize": [
+            512.0,
+            512.0
+          ]
+        },
+        "runtimeCell": [
+          128,
+          128
+        ],
+        "icons": [
+          {
+            "name": "identity",
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/glass-current/identity.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 16648,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              39,
+              21,
+              489,
+              480
+            ],
+            "trimBox": [
+              33,
+              15,
+              495,
+              486
+            ],
+            "clearedLowAlphaPixels": 15749,
+            "foregroundComponentAreas": [
+              136197
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "activation",
+            "sourceCell": {
+              "x": 512,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/glass-current/activation.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 15310,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              28,
+              21,
+              483,
+              480
+            ],
+            "trimBox": [
+              22,
+              15,
+              489,
+              486
+            ],
+            "clearedLowAlphaPixels": 16753,
+            "foregroundComponentAreas": [
+              135935
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "bolt",
+            "sourceCell": {
+              "x": 1024,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/glass-current/bolt.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 15308,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              23,
+              21,
+              479,
+              478
+            ],
+            "trimBox": [
+              17,
+              15,
+              485,
+              484
+            ],
+            "clearedLowAlphaPixels": 9931,
+            "foregroundComponentAreas": [
+              136633
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "special",
+            "sourceCell": {
+              "x": 0,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/glass-current/special.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 15516,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              34,
+              23,
+              493,
+              480
+            ],
+            "trimBox": [
+              28,
+              17,
+              499,
+              486
+            ],
+            "clearedLowAlphaPixels": 23377,
+            "foregroundComponentAreas": [
+              137589
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "finisher",
+            "sourceCell": {
+              "x": 512,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/glass-current/finisher.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 16776,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              27,
+              23,
+              484,
+              480
+            ],
+            "trimBox": [
+              21,
+              17,
+              490,
+              486
+            ],
+            "clearedLowAlphaPixels": 17675,
+            "foregroundComponentAreas": [
+              137787
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "combo",
+            "sourceCell": {
+              "x": 1024,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-ability-icons-v1.png",
+            "runtime": "public/assets/ui/b05/glass-current/combo.webp",
+            "runtimeSize": [
+              128,
+              128
+            ],
+            "runtimeBytes": 15534,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              20,
+              23,
+              480,
+              481
+            ],
+            "trimBox": [
+              14,
+              17,
+              486,
+              487
+            ],
+            "clearedLowAlphaPixels": 12822,
+            "foregroundComponentAreas": [
+              138557
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          }
+        ],
+        "contactSheet": "tests/evidence/b05/glass-current-ability-icons-contact.jpg"
+      },
+      "vfx": {
+        "source": "art-source/b05/review/glass-vfx-sheet-v1.png",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "b65f2c4caea2cf4425ee99a702d0fca98775168ff3545aa24366ab9f8dc3effb",
+        "sourceGrid": {
+          "columns": 3,
+          "rows": 2,
+          "cellSize": [
+            512.0,
+            512.0
+          ]
+        },
+        "runtimeCell": [
+          256,
+          256
+        ],
+        "textures": [
+          {
+            "name": "activation",
+            "sourceCell": {
+              "x": 0,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/glass-current/activation.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 33428,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              116,
+              49,
+              406,
+              468
+            ],
+            "trimBox": [
+              110,
+              43,
+              412,
+              474
+            ],
+            "clearedLowAlphaPixels": 137277,
+            "foregroundComponentAreas": [
+              20761,
+              20181,
+              290,
+              1
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "contact",
+            "sourceCell": {
+              "x": 512,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/glass-current/contact.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 22676,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              98,
+              160,
+              392,
+              353
+            ],
+            "trimBox": [
+              92,
+              154,
+              398,
+              359
+            ],
+            "clearedLowAlphaPixels": 89341,
+            "foregroundComponentAreas": [
+              12762,
+              408,
+              276,
+              181,
+              117
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "bolt",
+            "sourceCell": {
+              "x": 1024,
+              "y": 0,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/glass-current/bolt.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 12498,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              68,
+              214,
+              438,
+              299
+            ],
+            "trimBox": [
+              62,
+              208,
+              444,
+              305
+            ],
+            "clearedLowAlphaPixels": 77319,
+            "foregroundComponentAreas": [
+              12461
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "special",
+            "sourceCell": {
+              "x": 0,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/glass-current/special.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 24424,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              84,
+              87,
+              436,
+              385
+            ],
+            "trimBox": [
+              78,
+              81,
+              442,
+              391
+            ],
+            "clearedLowAlphaPixels": 96240,
+            "foregroundComponentAreas": [
+              17969,
+              132,
+              70,
+              1
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "finisher",
+            "sourceCell": {
+              "x": 512,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/glass-current/finisher.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 21630,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              42,
+              127,
+              477,
+              349
+            ],
+            "trimBox": [
+              36,
+              121,
+              483,
+              355
+            ],
+            "clearedLowAlphaPixels": 96159,
+            "foregroundComponentAreas": [
+              27075,
+              150,
+              138,
+              2
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          },
+          {
+            "name": "transition",
+            "sourceCell": {
+              "x": 1024,
+              "y": 512,
+              "width": 512,
+              "height": 512
+            },
+            "source": "art-source/b05/review/glass-vfx-sheet-v1.png",
+            "runtime": "public/assets/vfx/b05/glass-current/transition.webp",
+            "runtimeSize": [
+              256,
+              256
+            ],
+            "runtimeBytes": 33874,
+            "componentsDeleted": 0,
+            "sourceAlphaBounds": [
+              75,
+              60,
+              418,
+              423
+            ],
+            "trimBox": [
+              69,
+              54,
+              424,
+              429
+            ],
+            "clearedLowAlphaPixels": 108636,
+            "foregroundComponentAreas": [
+              14243,
+              13773,
+              591,
+              474,
+              170,
+              9
+            ],
+            "cellBorderPixelsAboveAlphaFloor": 0
+          }
+        ],
+        "contactSheet": "tests/evidence/b05/glass-current-vfx-contact.jpg"
+      },
+      "runtimeGrid": {
+        "columns": 12,
+        "rows": 4,
+        "frameWidth": 192,
+        "frameHeight": 256,
+        "directionOrder": [
+          "front",
+          "right",
+          "back",
+          "left"
+        ],
+        "hitColumns": {
+          "hit1": [
+            0,
+            3
+          ],
+          "hit2": [
+            4,
+            7
+          ],
+          "hit3": [
+            8,
+            11
+          ]
+        }
+      },
+      "directionTargetSourceHeights": {
+        "front": 286.0,
+        "right": 282.0,
+        "back": 287.0,
+        "left": 281.5
+      },
+      "uniformHitDirectionScales": {
+        "front-hit1": 0.736508,
+        "front-hit2": 0.770764,
+        "front-hit3": 0.939271,
+        "right-hit1": 0.736508,
+        "right-hit2": 0.764444,
+        "right-hit3": 0.928,
+        "back-hit1": 0.736508,
+        "back-hit2": 0.770764,
+        "back-hit3": 0.935484,
+        "left-hit1": 0.741214,
+        "left-hit2": 0.751092,
+        "left-hit3": 0.928
+      },
+      "runtimePivot": [
+        96.0,
+        248
+      ],
+      "cleanup": {
+        "alphaFloor": 32,
+        "clearedLowAlphaPixelsPerSourceCell": true,
+        "disconnectedComponentsAutomaticallyDeleted": false,
+        "rule": "All components above alpha floor are retained; source-cell edge contact blocks export."
+      },
+      "contactSheet": "tests/evidence/b05/glass-current-combo-contact.jpg",
+      "atSpeedPreview": "tests/evidence/b05/glass-current-combo-at-speed.gif",
+      "frames": [
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            99,
+            3,
+            244,
+            309
+          ],
+          "trimBox": [
+            93,
+            0,
+            250,
+            315
+          ],
+          "clearedLowAlphaPixels": 13556,
+          "foregroundComponentAreas": [
+            25125
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            89,
+            4,
+            232,
+            309
+          ],
+          "trimBox": [
+            83,
+            0,
+            238,
+            315
+          ],
+          "clearedLowAlphaPixels": 15782,
+          "foregroundComponentAreas": [
+            24386
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 0,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            85,
+            4,
+            229,
+            309
+          ],
+          "trimBox": [
+            79,
+            0,
+            235,
+            315
+          ],
+          "clearedLowAlphaPixels": 11293,
+          "foregroundComponentAreas": [
+            23846
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 0,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            77,
+            4,
+            223,
+            309
+          ],
+          "trimBox": [
+            71,
+            0,
+            229,
+            315
+          ],
+          "clearedLowAlphaPixels": 12991,
+          "foregroundComponentAreas": [
+            25045
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 0,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            89,
+            16,
+            236,
+            305
+          ],
+          "trimBox": [
+            83,
+            10,
+            242,
+            311
+          ],
+          "clearedLowAlphaPixels": 14649,
+          "foregroundComponentAreas": [
+            23817
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 0,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            73,
+            20,
+            227,
+            306
+          ],
+          "trimBox": [
+            67,
+            14,
+            233,
+            312
+          ],
+          "clearedLowAlphaPixels": 13595,
+          "foregroundComponentAreas": [
+            24708
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 0,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            48,
+            23,
+            224,
+            309
+          ],
+          "trimBox": [
+            42,
+            17,
+            230,
+            314
+          ],
+          "clearedLowAlphaPixels": 9889,
+          "foregroundComponentAreas": [
+            21835
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 0,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            70,
+            19,
+            234,
+            305
+          ],
+          "trimBox": [
+            64,
+            13,
+            240,
+            311
+          ],
+          "clearedLowAlphaPixels": 10193,
+          "foregroundComponentAreas": [
+            25013
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.939271,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 0,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            106,
+            56,
+            206,
+            291
+          ],
+          "trimBox": [
+            100,
+            50,
+            212,
+            297
+          ],
+          "clearedLowAlphaPixels": 53855,
+          "foregroundComponentAreas": [
+            14322
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.939271,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 0,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            96,
+            62,
+            210,
+            292
+          ],
+          "trimBox": [
+            90,
+            56,
+            216,
+            298
+          ],
+          "clearedLowAlphaPixels": 64553,
+          "foregroundComponentAreas": [
+            14099
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.939271,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 0,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            94,
+            57,
+            211,
+            291
+          ],
+          "trimBox": [
+            88,
+            51,
+            217,
+            297
+          ],
+          "clearedLowAlphaPixels": 61542,
+          "foregroundComponentAreas": [
+            13424
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "front",
+          "directionRow": 0,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.939271,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 0,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            96,
+            59,
+            209,
+            291
+          ],
+          "trimBox": [
+            90,
+            53,
+            215,
+            297
+          ],
+          "clearedLowAlphaPixels": 57542,
+          "foregroundComponentAreas": [
+            14392
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            106,
+            6,
+            234,
+            309
+          ],
+          "trimBox": [
+            100,
+            0,
+            240,
+            315
+          ],
+          "clearedLowAlphaPixels": 11709,
+          "foregroundComponentAreas": [
+            21646
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            92,
+            7,
+            247,
+            310
+          ],
+          "trimBox": [
+            86,
+            1,
+            253,
+            315
+          ],
+          "clearedLowAlphaPixels": 14202,
+          "foregroundComponentAreas": [
+            21923
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 315,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            83,
+            7,
+            244,
+            310
+          ],
+          "trimBox": [
+            77,
+            1,
+            250,
+            315
+          ],
+          "clearedLowAlphaPixels": 17230,
+          "foregroundComponentAreas": [
+            22389
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 315,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            88,
+            7,
+            217,
+            310
+          ],
+          "trimBox": [
+            82,
+            1,
+            223,
+            315
+          ],
+          "clearedLowAlphaPixels": 11251,
+          "foregroundComponentAreas": [
+            21200
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.764444,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 314,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            88,
+            13,
+            233,
+            301
+          ],
+          "trimBox": [
+            82,
+            7,
+            239,
+            307
+          ],
+          "clearedLowAlphaPixels": 11325,
+          "foregroundComponentAreas": [
+            22471
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.764444,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 314,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            64,
+            21,
+            226,
+            299
+          ],
+          "trimBox": [
+            58,
+            15,
+            232,
+            305
+          ],
+          "clearedLowAlphaPixels": 11574,
+          "foregroundComponentAreas": [
+            21360
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.764444,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 314,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            40,
+            24,
+            253,
+            304
+          ],
+          "trimBox": [
+            34,
+            18,
+            259,
+            310
+          ],
+          "clearedLowAlphaPixels": 12097,
+          "foregroundComponentAreas": [
+            25014
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.764444,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 314,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            76,
+            17,
+            230,
+            301
+          ],
+          "trimBox": [
+            70,
+            11,
+            236,
+            307
+          ],
+          "clearedLowAlphaPixels": 9042,
+          "foregroundComponentAreas": [
+            23144
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 314,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            121,
+            55,
+            188,
+            293
+          ],
+          "trimBox": [
+            115,
+            49,
+            194,
+            299
+          ],
+          "clearedLowAlphaPixels": 67573,
+          "foregroundComponentAreas": [
+            10384
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 314,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            87,
+            63,
+            219,
+            290
+          ],
+          "trimBox": [
+            81,
+            57,
+            225,
+            296
+          ],
+          "clearedLowAlphaPixels": 73399,
+          "foregroundComponentAreas": [
+            13942
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 314,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            91,
+            59,
+            232,
+            294
+          ],
+          "trimBox": [
+            85,
+            53,
+            238,
+            300
+          ],
+          "clearedLowAlphaPixels": 68923,
+          "foregroundComponentAreas": [
+            13965
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "right",
+          "directionRow": 1,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 314,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            96,
+            59,
+            209,
+            293
+          ],
+          "trimBox": [
+            90,
+            53,
+            215,
+            299
+          ],
+          "clearedLowAlphaPixels": 62363,
+          "foregroundComponentAreas": [
+            13102
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            103,
+            5,
+            255,
+            309
+          ],
+          "trimBox": [
+            97,
+            0,
+            261,
+            315
+          ],
+          "clearedLowAlphaPixels": 17294,
+          "foregroundComponentAreas": [
+            24605
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            91,
+            5,
+            277,
+            309
+          ],
+          "trimBox": [
+            85,
+            0,
+            283,
+            315
+          ],
+          "clearedLowAlphaPixels": 15832,
+          "foregroundComponentAreas": [
+            25430
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 630,
+            "width": 311,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            83,
+            6,
+            282,
+            309
+          ],
+          "trimBox": [
+            77,
+            0,
+            288,
+            315
+          ],
+          "clearedLowAlphaPixels": 16611,
+          "foregroundComponentAreas": [
+            25899
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.736508,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 630,
+            "width": 312,
+            "height": 316
+          },
+          "sourceAlphaBounds": [
+            78,
+            6,
+            220,
+            309
+          ],
+          "trimBox": [
+            72,
+            0,
+            226,
+            315
+          ],
+          "clearedLowAlphaPixels": 15296,
+          "foregroundComponentAreas": [
+            24599
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 627,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            87,
+            14,
+            236,
+            303
+          ],
+          "trimBox": [
+            81,
+            8,
+            242,
+            309
+          ],
+          "clearedLowAlphaPixels": 14995,
+          "foregroundComponentAreas": [
+            23673
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 627,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            72,
+            17,
+            231,
+            302
+          ],
+          "trimBox": [
+            66,
+            11,
+            237,
+            308
+          ],
+          "clearedLowAlphaPixels": 11936,
+          "foregroundComponentAreas": [
+            22588
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 627,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            73,
+            23,
+            239,
+            304
+          ],
+          "trimBox": [
+            67,
+            17,
+            245,
+            310
+          ],
+          "clearedLowAlphaPixels": 11352,
+          "foregroundComponentAreas": [
+            22058
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.770764,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 627,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            72,
+            15,
+            236,
+            304
+          ],
+          "trimBox": [
+            66,
+            9,
+            242,
+            310
+          ],
+          "clearedLowAlphaPixels": 12750,
+          "foregroundComponentAreas": [
+            24370
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.935484,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 627,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            107,
+            55,
+            206,
+            291
+          ],
+          "trimBox": [
+            101,
+            49,
+            212,
+            297
+          ],
+          "clearedLowAlphaPixels": 60047,
+          "foregroundComponentAreas": [
+            14623
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.935484,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 627,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            93,
+            63,
+            216,
+            291
+          ],
+          "trimBox": [
+            87,
+            57,
+            222,
+            297
+          ],
+          "clearedLowAlphaPixels": 68280,
+          "foregroundComponentAreas": [
+            14486
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.935484,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 627,
+            "width": 313,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            100,
+            55,
+            228,
+            291
+          ],
+          "trimBox": [
+            94,
+            49,
+            234,
+            297
+          ],
+          "clearedLowAlphaPixels": 63948,
+          "foregroundComponentAreas": [
+            14049
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "back",
+          "directionRow": 2,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.935484,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 627,
+            "width": 314,
+            "height": 313
+          },
+          "sourceAlphaBounds": [
+            104,
+            55,
+            212,
+            291
+          ],
+          "trimBox": [
+            98,
+            49,
+            218,
+            297
+          ],
+          "clearedLowAlphaPixels": 61675,
+          "foregroundComponentAreas": [
+            14408
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 0,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.741214,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            106,
+            7,
+            237,
+            308
+          ],
+          "trimBox": [
+            100,
+            1,
+            243,
+            314
+          ],
+          "clearedLowAlphaPixels": 10354,
+          "foregroundComponentAreas": [
+            20596
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 1,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.741214,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 312,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            59,
+            7,
+            226,
+            308
+          ],
+          "trimBox": [
+            53,
+            1,
+            232,
+            314
+          ],
+          "clearedLowAlphaPixels": 13497,
+          "foregroundComponentAreas": [
+            21829
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 2,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.741214,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 624,
+            "y": 946,
+            "width": 311,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            46,
+            7,
+            222,
+            308
+          ],
+          "trimBox": [
+            40,
+            1,
+            228,
+            314
+          ],
+          "clearedLowAlphaPixels": 12644,
+          "foregroundComponentAreas": [
+            21988
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 3,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.741214,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit1-grid-v1.png",
+          "sourceHit": "hit1",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 935,
+            "y": 946,
+            "width": 312,
+            "height": 315
+          },
+          "sourceAlphaBounds": [
+            82,
+            7,
+            215,
+            308
+          ],
+          "trimBox": [
+            76,
+            1,
+            221,
+            314
+          ],
+          "clearedLowAlphaPixels": 10510,
+          "foregroundComponentAreas": [
+            20884,
+            2
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 4,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.751092,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 940,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            85,
+            14,
+            235,
+            302
+          ],
+          "trimBox": [
+            79,
+            8,
+            241,
+            308
+          ],
+          "clearedLowAlphaPixels": 11623,
+          "foregroundComponentAreas": [
+            21315
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 5,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.751092,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 940,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            67,
+            21,
+            256,
+            298
+          ],
+          "trimBox": [
+            61,
+            15,
+            262,
+            304
+          ],
+          "clearedLowAlphaPixels": 9943,
+          "foregroundComponentAreas": [
+            21902
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 6,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.751092,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 940,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            47,
+            24,
+            264,
+            301
+          ],
+          "trimBox": [
+            41,
+            18,
+            270,
+            307
+          ],
+          "clearedLowAlphaPixels": 14800,
+          "foregroundComponentAreas": [
+            24797
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 7,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.751092,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit2-grid-v3.png",
+          "sourceHit": "hit2",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 940,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            79,
+            16,
+            236,
+            302
+          ],
+          "trimBox": [
+            73,
+            10,
+            242,
+            308
+          ],
+          "clearedLowAlphaPixels": 10354,
+          "foregroundComponentAreas": [
+            21966
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 8,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 0,
+          "sourceCell": {
+            "x": 0,
+            "y": 940,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            119,
+            56,
+            188,
+            294
+          ],
+          "trimBox": [
+            113,
+            50,
+            194,
+            300
+          ],
+          "clearedLowAlphaPixels": 58718,
+          "foregroundComponentAreas": [
+            10063
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 9,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 1,
+          "sourceCell": {
+            "x": 314,
+            "y": 940,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            85,
+            69,
+            222,
+            291
+          ],
+          "trimBox": [
+            79,
+            63,
+            228,
+            297
+          ],
+          "clearedLowAlphaPixels": 71000,
+          "foregroundComponentAreas": [
+            14672
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 10,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 2,
+          "sourceCell": {
+            "x": 627,
+            "y": 940,
+            "width": 313,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            70,
+            59,
+            219,
+            295
+          ],
+          "trimBox": [
+            64,
+            53,
+            225,
+            301
+          ],
+          "clearedLowAlphaPixels": 65905,
+          "foregroundComponentAreas": [
+            14469
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        },
+        {
+          "direction": "left",
+          "directionRow": 3,
+          "frame": 11,
+          "runtimePivot": [
+            96.0,
+            248
+          ],
+          "uniformHitDirectionScale": 0.928,
+          "durationMs": 85,
+          "sourceImage": "art-source/b05/review/glass-combo-hit3-grid-v3.png",
+          "sourceHit": "hit3",
+          "sourcePhase": 3,
+          "sourceCell": {
+            "x": 940,
+            "y": 940,
+            "width": 314,
+            "height": 314
+          },
+          "sourceAlphaBounds": [
+            100,
+            59,
+            210,
+            294
+          ],
+          "trimBox": [
+            94,
+            53,
+            216,
+            300
+          ],
+          "clearedLowAlphaPixels": 58452,
+          "foregroundComponentAreas": [
+            12818
+          ],
+          "componentsDeleted": 0,
+          "cellBorderPixelsAboveAlphaFloor": 0
+        }
+      ],
+      "coverage": {
+        "combo1": true,
+        "combo2": true,
+        "combo3": true,
+        "idle": false,
+        "run": true,
+        "dodge": false,
+        "guardParry": false,
+        "hurtKo": false,
+        "bolt": false,
+        "special": false,
+        "finisher": false,
+        "activation": false,
+        "deactivation": false,
+        "dedicatedIcons": true,
+        "authoredVfx": true
+      }
+    }
+  },
+  "rejectedDrafts": [
+    {
+      "source": "art-source/b05/rejected/glass-combo-hit2-grid-top-edge-rejected.png",
+      "sha256": "7ce522f0c8e0ec8871f2f74059395b8789666ae8c2f2cbe4fdc000e1547a3fcf",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
     },
     {
-      "form": "glass-current",
-      "source": "art-source/b05/proposed/glass-current-four-view-master.png",
-      "status": "PROPOSED_REFERENCE_ONLY",
-      "runtimeExport": null,
-      "coverage": {
-        "turnaroundViews": 4,
-        "idle": false,
-        "run": false,
-        "combo": false,
-        "dodge": false,
-        "guardParry": false,
-        "hurtKo": false,
-        "activationEnd": false,
-        "finisher": false
-      },
-      "review": "PROPOSED DESIGN ONLY; rejected for runtime due to view-label artifacts and inconsistent echo accessory geometry",
-      "width": 1774,
-      "height": 887,
-      "bitDepth": 8,
-      "pngColorType": 6,
-      "alphaChannelEncoded": true,
-      "bytes": 1429302,
-      "sha256": "39d0be84035514fca493c88ea78761fc192db6e44346fbb668b0e1aff7b62b83"
+      "source": "art-source/b05/rejected/glass-combo-hit2-grid-white-background-rejected.png",
+      "sha256": "5cca9cc01dbe5010b4f4dce24993db0e82eec41ad245c931f2e36b6d268403f6",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/glass-combo-hit3-grid-foot-edge-rejected.png",
+      "sha256": "2b868621bb8519dc868afd09f2227b571088e31537e9a94a46a8db406ceeade4",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
+    },
+    {
+      "source": "art-source/b05/rejected/glass-combo-hit3-grid-trailing-cut-rejected.png",
+      "sha256": "31f53e07ea8c4383d818a05e2793d80d2d2f9f7068ac0d9ebf94319eb51f97d0",
+      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
     }
+  ],
+  "missingCoverage": [
+    "idle",
+    "dodge",
+    "guard/parry character animation",
+    "hurt/KO character animation",
+    "fluid activation/deactivation character animation",
+    "active loop character animation",
+    "fluid authored animation beyond 4 key poses",
+    "dedicated form audio and active loops",
+    "Glass piercing projectile/finisher character animation"
+  ],
+  "limitations": [
+    "These 12-frame action atlases are production candidates, not owner-approved art.",
+    "Generated 4-frame hit and run clips are illustrative key poses; fluidity and timing are not approved.",
+    "B04 live Chrome gate and B05 live Vite gameplay/audio/performance checks remain blocked by unavailable CUA host.",
+    "The animation GIFs are offline previews, not gameplay or human visual/game-feel signoff."
   ]
 }

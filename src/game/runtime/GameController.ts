@@ -11,7 +11,7 @@ const SOUND_BY_EVENT: Partial<Record<CombatEvent['id'], string>> = {
   parry: 'parry', block: 'block', 'dash-start': 'dash-start', 'dash-land': 'dash-land', 'pulse-gain': 'pulse-gain',
   'pulse-ready': 'pulse-ready', 'action-unavailable': 'action-unavailable', 'finisher-build': 'finisher-build',
   'finisher-hit': 'finisher-hit', 'finisher-fade': 'finisher-fade', hurt: 'hurt', kill: 'kill',
-  'ember-start': 'ember-start', 'ember-end': 'ember-end', reward: 'ui-confirm', 'room-clear': 'ui-confirm',
+  'ember-start': 'ember-start', 'ember-end': 'ember-end', 'glass-start': 'glass-start', 'glass-end': 'glass-end', reward: 'ui-confirm', 'room-clear': 'ui-confirm',
 };
 
 /** Runtime binding: Canvas implementation can be replaced without replacing game rules. */
@@ -63,6 +63,18 @@ export class GameController {
   private playEvent(event: CombatEvent): void {
     let soundId = SOUND_BY_EVENT[event.id];
     if (event.id === 'combo-contact') soundId = event.intensity && event.intensity >= 3 ? 'punch-three' : event.intensity && event.intensity >= 2 ? 'punch-two' : 'punch-one';
+    if(event.formId==='ember-drive'){
+      if(event.id==='combo-contact')soundId=`ember-hit${Math.max(1,Math.min(3,event.comboIndex??1))}`;
+      else if(event.id==='bolt-cast')soundId='ember-bolt-cast';else if(event.id==='bolt-hit')soundId='ember-bolt-hit';
+      else if(event.id==='shockwave-release'||event.id==='glass-counter')soundId='ember-special';
+      else if(event.id==='finisher-build')soundId='ember-finisher-build';else if(event.id==='finisher-hit')soundId='ember-finisher-hit';
+    }else if(event.formId==='glass-current'){
+      if(event.id==='combo-contact')soundId='glass-contact';
+      else if(event.id==='bolt-cast')soundId='glass-bolt-cast';else if(event.id==='bolt-hit')soundId='glass-bolt-hit';
+      else if(event.id==='shockwave-release'||event.id==='glass-counter'||event.id==='parry')soundId=event.id==='shockwave-release'?'glass-special':'glass-counter';
+      else if(event.id==='finisher-build')soundId='glass-finisher-build';else if(event.id==='finisher-hit')soundId='glass-finisher-hit';else if(event.id==='finisher-fade')soundId='glass-finisher-fade';
+      else if(event.id==='dash-start'||event.id==='dash-land')soundId='glass-dodge';
+    }
     if (soundId) this.sound.play(soundId, this.session.clock, event.intensity ?? 1);
   }
 

@@ -102,19 +102,20 @@
 
 **B04 gate:** Code and source assets are reviewable, but B04 is **not approved**. Missing visible Chrome gameplay, sound/feel review, visual consistency checks at target sizes and owner signoff prevent a production-ready claim.
 
-## B05 Kairo transformation gate — 2026-11-06
+## B05 Kairo transformation gate — 2026-11-06 (continuation)
 
 | B05 criterion | Status | Evidence / limitation |
 |---|---|---|
 | Kairo form selection and persistence | PASS (automated), PARTIAL (UI review) | Hub form screen, v3 equipped form and v1/v2 migration tests; visible Chrome navigation not run. |
 | Glass unlock challenge | PASS (automated) | Five successful parries persist unlock progress; no player usability review. |
-| Ember transformed combat distinction | PARTIAL | Mark detonation, splash projectile, forward special and tradeoffs are deterministic; no unique animation/VFX/audio or playtest. |
-| Glass transformed combat distinction | PARTIAL | One-shot avoided-hit counter, counter-gated special and piercing shot are deterministic; no unique animation/VFX/audio or playtest. |
-| Form master art | PARTIAL / REJECTED FOR RUNTIME | Two generated reference sheets retained under `art-source/b05/proposed`; both need regeneration before animation production. |
-| Full four-direction action art, dedicated icons, VFX/audio | NOT IMPLEMENTED | No B05 runtime atlases or authored sound/effects package. |
+| Ember transformed combat distinction | PARTIAL | Mark detonation, splash projectile, forward special and tradeoffs are deterministic. Candidate combo/run atlases, six icons/VFX textures and form-specific synthesized event cues are integrated; no playtest or sound review. |
+| Glass transformed combat distinction | PARTIAL | One-shot avoided-hit counter, counter-gated special and piercing shot are deterministic. Candidate combo/run atlases, six icons/VFX textures and form-specific synthesized event cues are integrated; no playtest or sound review. |
+| Form turnaround art | PARTIAL | Replacement four-view turnaround candidates in `art-source/b05/review/` inspected on dark composites; no owner, grayscale, gameplay-scale or external originality approval. Earlier failed attempts are retained. |
+| Form character action art | PARTIAL | Four-direction run and 12-frame combo candidate atlases exported, boundary audited and shown in contact/GIF previews. Idle, dodge, guard, hurt/KO, active loop, form-specific ability animation and fluid activation/reversion character art are missing. |
+| Dedicated icons, authored VFX and original audio | PARTIAL | Six icons and six purpose-built VFX textures per form are exported and wired to HUD/events. Audio cues are procedural synthesis. No in-game visual check, layered VFX, active loop, sound listening or approval. |
 | B04 visible Chrome Gate 0 | BLOCKED | CUA host unavailable; headless standalone smoke is not a substitute. |
 | B05 normal-speed gameplay videos / audio / viewport / controller | NOT RUN | No live browser surfaces or physical controller validation. |
 | Owner visual/game-feel approval | NOT RUN / REQUIRED | Both forms remain partial proposals. |
 | B06 major appearance-swap readiness | UNVERIFIED | No alternate form animation library has been integrated or inspected. |
 
-**Gate:** B05 is **PARTIAL / BLOCKED**. No complete-transformation, production-art, performance or owner-approval claim is made. See `docs/qa/b05-evidence.md` for commands and local Chrome instructions.
+**Gate:** B05 is **PARTIAL / BLOCKED**. No complete-transformation, production-art, performance or owner-approval claim is made. See `docs/qa/b05-completion-evidence.md` for current results and the owner-run visible Chrome checklist. `docs/qa/b05-evidence.md` records the inherited B04 live gate.

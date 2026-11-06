@@ -52,7 +52,7 @@ Open the local address printed by Vite. This initializes the React + TypeScript 
 | Shift | Short invulnerable dodge |
 | E (hold) | Guard, short initial parry opportunity |
 | Q | Radial pulse blast |
-| R | Experimental Ember Drive (40 Pulse) |
+| R | Activate/end equipped form (40 Pulse plus upkeep reserve) |
 | F | Prototype finisher (75 Pulse) |
 | Esc | Pause / resume |
 
@@ -99,9 +99,9 @@ tests/                  Deterministic core test suite and Chromium smoke
 - **B02**: Kairo combat-feel vertical slice - **IMPLEMENTED AS A PROTOTYPE; owner visual/game-feel approval pending**.
 - **B03**: Kairo four-direction animation source, runtime pipeline and live browser proof - **IMPLEMENTED; generated art/game-feel approval pending; visual gates partial**.
 - **B04**: Kairo base combat catalog, HUD/pause integration, generated art/VFX/audio, automated tests - **IMPLEMENTED AS A REVIEWABLE PROPOSAL; visible Chrome gameplay evidence and owner approval pending**.
-- **B05**: two incomplete Kairo form prototypes; art/gameplay verification gates remain blocked.
+- **B05**: two Kairo form prototypes with candidate run/combo atlases, icons and authored VFX wired into presentation; full animation/audio/live visual acceptance remains blocked.
 - **B06-B13**: Gravity Break, encounters, multiple heroes, bosses, room paths and exhaustive release signoff - **NOT DONE**.
-- **42 forms**: long-term design target, **not** an MVP deliverable. MVP ambition: two heroes, four mechanically complete premium forms.
+- **42 forms**: long-term design target, **not** an MVP deliverable. First complete-release target: two fully polished heroes, three complete forms per hero, six total (see [roadmap addendum](docs/technical/roadmap-addendum-2026-11-06.md)).
 
 ## Originality and licensing
 
@@ -109,4 +109,4 @@ Hades and Dragon Ball are high-level feel references only. Do not copy character
 
 ## B05 Kairo forms — prototype only
 
-The current Forms screen lets the player equip Ember Drive or unlock/equip Glass Current after five parries. Save schema v3 migrates the prior save formats. Ember and Glass combat prototypes have bounded differences and are described in `docs/technical/adr-012-formweaving-runtime-save-contract.md`. They are **not complete transformations**: their generated reference masters are rejected for runtime, and alternate animation atlases, dedicated icons, authored VFX/audio and live gameplay approval are still missing. Follow the local Chrome steps in `docs/qa/b05-evidence.md` before evaluating. B05 remains partial; do not claim B06 appearance-swap readiness.
+The current Forms screen lets the player equip Ember Drive or unlock/equip Glass Current after five parries. Save schema v3 migrates the prior save formats. Ember and Glass combat prototypes have bounded differences and are described in `docs/technical/adr-012-formweaving-runtime-save-contract.md`. The B05 continuation adds candidate four-direction run/combo atlases, dedicated icons, purpose-built VFX textures and form-specific synthesized combat cues. These are **not complete transformations**: idle, dodge, guard, hurt/KO, active-loop and fluid activation/reversion character animation remain uncovered; the generated clips are short key-pose sequences; sound and visual approval, normal-speed Chrome gameplay and performance checks are unrun. See [B05 completion evidence](docs/qa/b05-completion-evidence.md) and the owner Chrome procedure in `docs/qa/b05-evidence.md`. B05 remains partial; do not claim B06 appearance-swap readiness.

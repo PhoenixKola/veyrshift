@@ -9,7 +9,7 @@ import { CombatSession } from '../dist-preview/src/game/runtime/CombatSession.js
 import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/runtime/gamepadMapping.js';
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
 import { facingFromAngle, facingFromVector } from '../dist-preview/src/game/core/direction.js';
-import { resolveAtlasSource, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
+import { resolveAtlasSource, resolveFormComboAtlas, resolveFormRunAtlas, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
 import { KAIRO_COMBO_HITS } from '../dist-preview/src/game/data/kairoAbilities.js';
 import { existsSync, readFileSync } from 'node:fs';
 
@@ -45,6 +45,13 @@ test('animation resolver respects state priority, combo contact timing, and reco
  h.ko=true;assert.equal(resolveHeroAnimation(h,.2).state,'ko');
  h.ko=false;h.hurtTime=0;h.guardTime=0;h.transformVisualTime=.3;h.transformVisualDuration=.72;assert.equal(resolveHeroAnimation(h,.2).state,'ember');
 });
+test('form-specific run animation advances at each form movement speed',()=>{
+ const s=new CombatSession(initialSave());s.newRun(407);const h=s.hero;
+ h.transformed=true;h.formId='ember-drive';h.vx=322;h.step=322*.07*2.2;
+ let pose=resolveHeroAnimation(h,.2);assert.equal(pose.state,'run');assert.equal(pose.frame,2);
+ h.formId='glass-current';h.vx=260;h.step=260*.07*3.2;
+ pose=resolveHeroAnimation(h,.3);assert.equal(pose.state,'run');assert.equal(pose.frame,3);
+});
 test('finisher animation advances four phases while holding its selected facing row',()=>{
  const s=new CombatSession(initialSave());s.newRun(406);const h=s.hero;h.currentAbility='finisher';h.abilityAnimDuration=.8;
  for(const [direction,row] of [['right',1],['left',3],['front',0],['back',2]]){
@@ -65,6 +72,49 @@ test('directional atlas fallback is safe and B03 manifest references real runtim
  assert.deepEqual(manifest.directions,['front','right','back','left']);
  for(const clip of Object.values(manifest.clips)){assert.equal(clip.frameWidth,192);assert.equal(clip.frameHeight,256);for(const path of Array.isArray(clip.runtime)?clip.runtime:[clip.runtime])assert.ok(existsSync(path),`missing ${path}`);}
  for(const name of ['idle','run','dodge','combo','states'])assert.ok(existsSync(`dist-preview/assets/characters/kairo/b03/${name}.png`),`offline preview missing B03 ${name} atlas`);
+});
+test('B05 selects form combo atlases only when active and loaded, and exports clean four-direction candidates',()=>{
+ assert.equal(resolveFormComboAtlas('ember-drive',true,true),'ember-drive');
+ assert.equal(resolveFormComboAtlas('glass-current',true,true),'glass-current');
+ assert.equal(resolveFormRunAtlas('ember-drive',true,true),'ember-drive');
+ assert.equal(resolveFormRunAtlas('glass-current',true,true),'glass-current');
+ assert.equal(resolveFormComboAtlas('ember-drive',false,true),null);
+ assert.equal(resolveFormComboAtlas('glass-current',true,false),null,'missing form art falls back to the authored base combo');
+ assert.equal(resolveFormRunAtlas('glass-current',true,false),null,'missing form locomotion falls back to B03');
+ assert.equal(resolveFormComboAtlas('base',true,true),null);
+ const manifest=JSON.parse(readFileSync('docs/art/b05-animation-manifest.json','utf8'));
+ assert.equal(manifest.runtimeAssetsExported,true);
+ assert.deepEqual(manifest.directions,['front','right','back','left']);
+ for(const formId of ['ember-drive','glass-current']){
+  const form=manifest.forms[formId];
+  assert.equal(form.status,'PRODUCTION_CANDIDATE_OWNER_APPROVAL_PENDING');
+  assert.equal(form.runtimeGrid.columns,12);assert.equal(form.runtimeGrid.rows,4);
+  assert.deepEqual(form.runtimePivot,[96,248]);
+  assert.equal(form.frames.length,48);
+  assert.ok(existsSync(form.runtime),`missing ${form.runtime}`);
+  assert.ok(existsSync(form.contactSheet),`missing ${form.contactSheet}`);
+  assert.ok(existsSync(form.run.runtime),`missing ${form.run.runtime}`);
+  assert.ok(existsSync(form.run.contactSheet),`missing ${form.run.contactSheet}`);
+  assert.equal(form.run.frames.length,16);
+  assert.deepEqual(form.run.runtimePivot,[96,248]);
+  for(const frame of form.run.frames){assert.equal(frame.componentsDeleted,0);assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);}
+  assert.equal(form.coverage.dedicatedIcons,true);
+  assert.equal(form.icons.icons.length,6);
+  for(const icon of form.icons.icons){assert.ok(existsSync(icon.runtime),`missing ${icon.runtime}`);assert.equal(icon.componentsDeleted,0);assert.equal(icon.cellBorderPixelsAboveAlphaFloor,0);}
+  assert.ok(existsSync(form.icons.contactSheet),`missing ${form.icons.contactSheet}`);
+  assert.equal(form.coverage.authoredVfx,true);
+  assert.equal(form.vfx.textures.length,6);
+  for(const texture of form.vfx.textures){assert.ok(existsSync(texture.runtime),`missing ${texture.runtime}`);assert.equal(texture.componentsDeleted,0);assert.equal(texture.cellBorderPixelsAboveAlphaFloor,0);}
+  assert.ok(existsSync(form.vfx.contactSheet),`missing ${form.vfx.contactSheet}`);
+  for(const sheet of form.sourceGrids)assert.ok(existsSync(sheet.source),`missing ${sheet.source}`);
+  for(const frame of form.frames){
+   assert.equal(frame.componentsDeleted,0);
+   assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);
+   assert.deepEqual(frame.runtimePivot,[96,248]);
+  }
+  assert.equal(form.coverage.run,true);
+  for(const state of ['idle','dodge','guardParry','hurtKo','bolt','special','finisher','activation','deactivation'])assert.equal(form.coverage[state],false);
+ }
 });
 test('planned forms are catalog records, not claimed implemented assets',()=>{
  assert.equal(HEROES.length,6);
@@ -188,11 +238,13 @@ test('form prototype consumes Pulse, is time-limited and expires',()=>{
  s.hero.pulse=55;
  s.update(.016,action(['transform']));
  assert.equal(s.hero.transformed,true);
+ assert.equal(s.events.find(event=>event.id==='ember-start')?.formId,'ember-drive');
  assert.ok(s.hero.pulse<55);
  // Simulate form timeout without enemy interference.
  s.enemies=[];s.hero.formTime=.025;
  s.update(.034,action());
  assert.equal(s.hero.transformed,false);
+ assert.equal(s.events.find(event=>event.id==='ember-end')?.formId,'ember-drive');
 });
 test('equipped form loads for a new run and its finisher remains affordable after activation',()=>{
  const save=initialSave();save.shards=13;save.unlockedForms.push('glass-current');save.equippedForm='ember-drive';
@@ -217,14 +269,19 @@ test('Ember combo marks detonate only on the third contact',()=>{
  const s=new CombatSession(initialSave());s.newRun(114);s.hero.formId='ember-drive';s.hero.transformed=true;
  const foe=s.enemies[0];foe.x=s.hero.x+40;foe.y=s.hero.y;foe.hp=1000;foe.maxHp=1000;
  s.hitArc(0,'combo',KAIRO_COMBO_HITS[0],'combo-contact',1);assert.equal(foe.emberMarks,1);
+ assert.equal(s.snapshot.formMarks,1);
  s.hitArc(0,'combo',KAIRO_COMBO_HITS[1],'combo-contact',2);assert.equal(foe.emberMarks,2);
+ assert.equal(s.snapshot.formMarks,2);
  s.hitArc(0,'combo',KAIRO_COMBO_HITS[2],'combo-contact',3);assert.equal(foe.emberMarks,0);assert.equal(foe.hp,915);
+ assert.equal(s.snapshot.formMarks,0);
 });
 test('Glass special is unavailable without a counter window and consumes a valid window once',()=>{
  const s=new CombatSession(initialSave());s.newRun(115);s.save.unlockedForms.push('glass-current');s.hero.formId='glass-current';s.hero.transformed=true;s.hero.pulse=20;s.hero.formTime=5;
  const foe=s.enemies[0];foe.x=s.hero.x+50;foe.y=s.hero.y;foe.hp=300;foe.maxHp=300;
  assert.equal(s.getAbilityReason('shockwave'),'recovery');s.hero.glassCounterTime=.4;
+ assert.equal(s.snapshot.counterWindow,.4);
  s.update(.016,action(['shockwave']));assert.equal(foe.hp,264);assert.equal(s.hero.glassCounterTime,0);
+ assert.equal(s.snapshot.counterWindow,0);
 });
 test('defeat records KO animation state after real incoming damage',()=>{
  const s=new CombatSession(initialSave());s.newRun(333);const e=s.enemies[0];
