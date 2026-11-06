@@ -27,12 +27,18 @@
 
 V2 proposes React + TypeScript + Vite with a renderer such as Phaser 3. B00 verified the React/Vite install, lockfile, build and actual Chrome render. B01 added a measured, bounded Phaser 3.90.0 comparison; it did not show a production-scale reason to migrate. Canvas2D remains the **proposed interim renderer** under ADR-008, not a final engine lock. Phaser is a dev-only dependency and its spike is excluded from production `dist/`.
 
-**Current known debts after B01:** Runtime delta and attack timing are not fixed-timestep; collision obstacles, broadphase, input buffering, replay serialization and rebind UI are absent. Keyboard/mouse plus standard gamepad mapping now exist, but physical gamepad, controller reconnect and human feel testing remain pending. Generated Kairo art consists of individual poses with no locomotion loop, multi-frame attacks, all-direction animation or hitbox-alignment validation. Basic enemy AI and telegraphs are placeholders, and the three-room chain is far shorter than the 10-14 encounters envisioned for MVP. Browser data is local-only.
+**Current known debts after B04:** The runtime adapter advances the simulation in fixed 1/60-second steps with a bounded accumulator; exact replay serialization and long-frame stress behavior are absent. Collision obstacles and broadphase, rebind UI and physical controller evidence are absent. Generated Kairo motion and effects are multi-frame and four-directional, but diagonal views, per-frame hitbox geometry, sustained effects-load profiling and human visual/game-feel approval remain open. Enemy AI and the three-room chain are prototypes far short of MVP scale. Browser data is local-only.
 
 ## Determinism constraints
 
-All encounter selections use `SeededRandom`, and run seed can be passed to `newRun`. The current simulation uses frame-step delta for movement, so precise physics determinism across different frame schedules is **not yet guaranteed**. B02 should establish a fixed-step simulation, input event buffering and replayable combat before claiming reproducible run inputs.
+All encounter selections use `SeededRandom`, and run seed can be passed to `newRun`. B04 routes gameplay through a fixed 1/60-second update and edge-buffered actions; same seed plus same sampled actions is deterministic in current core tests. Replay serialization, cross-browser floating-point guarantees and recovery from prolonged tab suspension are not implemented.
 
 ## Original assets
 
-`public/assets` contains intentionally empty category folders; each must receive approved original master and derived files with a ledger entry. The character shown in the preview is a **programmatically drawn stand-in**. It is not approved final art, final silhouette, or sprite source to blindly upscale.
+`public/assets` now includes generated B01–B04 proposals and runtime exports. Sources remain in `art-source/` with manifests and rejected drafts; none is approved by its presence in the runtime tree. The renderer still retains a **programmatically drawn stand-in** as fallback; it is not final silhouette art or a sprite source to blindly upscale.
+
+## B04 base-combat data and event pipeline (2026-11-06)
+
+`src/game/data/kairoAbilities.ts` owns the Kairo base-kit definitions, action timings, costs, ranges, target caps, asset ids and SFX ids. `CombatSession` remains presentation-agnostic and emits typed combat events; `animationResolver` maps timers and facing to four cardinal atlas rows; `CanvasRenderer` layers character atlases and generated painted effects; `GameController` routes the same events to `SoundBus` and React snapshots. The HUD reads the session's ability availability/cooldowns and does not maintain independent clocks. See [ADR-011](adr-011-b04-base-combat-ability-contract.md).
+
+The animation pipeline keeps authored views in front/right/back/left order. B04 art sources, directional overrides, cell trim/pivots, component cleanup and optimized WebP output are reproducible with `tools/build-b04-art.py`; generated artifacts remain proposed until visual/gameplay review. The runtime does not claim separately authored diagonal art. Visible Chrome gameplay validation was unavailable for this batch; this limitation is recorded in `docs/qa/b04-evidence.md`.

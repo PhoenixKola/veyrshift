@@ -7,7 +7,7 @@ A clean, original, browser-first 2.5D fully manual anime-inspired action rogueli
 
 ## What is *actually playable now*
 
-- Kairo remains the only playable hero. B03 adds four authored cardinal views in generated prototype animation atlases for idle, run, a 3-hit combo, dodge, guard, hurt, and KO; Ember activation remains a brief prototype. The art is still **unapproved feasibility work**, not a polished master or production animation set.
+- Kairo remains the only playable hero. B03/B04 add four authored cardinal views for movement, distinct combo hits, guard/parry and base abilities. Generated art remains **unapproved feasibility work**, not a polished master or production animation set; Ember activation remains a brief prototype.
 - One hero, three short seeded encounter chambers, three enemy archetypes (wisp, striker, sentinel), enemy telegraphs, manual angled melee string, directional ranged projectile, dash and invulnerability, guard/parry, an area attack, an ultimate and a short experimental Ember Drive transformation.
 - Selection from three generated room-clear upgrades; full mini-loop with defeat/victory, shard banking, persistent local save (versioned schema), pause/retry/hub.
 - Prototype combat VFX/audio, damage feedback, seeded RNG, reusable core combat simulator, runtime/UI decoupling and a strong starting UI shell.
@@ -28,7 +28,7 @@ Install Node.js 22+, run `npm ci`, then run `npm run dev`. The title menu opens 
 
 Keyboard arrows/Tab/Enter navigate menus. Standard gamepad baseline: left stick moves, right stick aims, A attacks, B dodges, X special, Y interact, LB guard, RB ranged shot, LT finisher, RT form preview, Start pauses; d-pad/left stick navigates menus, A confirms, B backs out. PlayStation labels are shown when the device ID identifies PlayStation hardware. Fullscreen is available from the pre-run hub. Settings persist locally; music stays disabled because no music track is included.
 
-The B01 shell flow remains. B03 adds four authored cardinal animation views for Kairo's idle, run, dodge, combo, and supporting states. The dominant-axis direction policy does not supply separate diagonal art; combo pose contrast and generated-art review remain open. Source grids, repeatable atlas exports, pivots, rejected drafts and provenance notes are in `art-source/b03/`, `docs/art/b03-runtime-pipeline.md`, and `docs/art/b03-animation-manifest.json`. Ember Drive is still a brief presentation/mechanical prototype and does not meet the full form contract. Owner visual and game-feel approval remains pending. See `docs/qa/b03-evidence.md` for real Chrome evidence and remaining gates.
+The B01 shell flow remains. B03 adds four authored cardinal animation views for Kairo's idle, run, dodge, combo and supporting states. B04 adds the typed base ability kit, separate cooldowns, generated painted VFX and combat HUD/pause details. Attacks still select the dominant cardinal view; separate diagonal art is not present. Source masters, rejected drafts, generated contact sheets and the ability contract are in `art-source/b04/`, `docs/art/b04-asset-manifest.json`, `docs/art/b04-ability-visual-bible.md` and ADR-011. The finisher's corrected right-facing row keeps its head aligned through all four phases. Visible Chrome gameplay evidence, audio/game-feel review and owner art approval remain pending. See `docs/qa/b04-evidence.md` for current results and blockers.
 
 Install Node.js 22+.
 
@@ -39,7 +39,7 @@ npm run dev
 
 Open the local address printed by Vite. This initializes the React + TypeScript frontend using **the exact same** game simulation and rendering code. `npm run build` runs the React/TypeScript production compilation and Vite bundle.
 
-**Current B01 verification:** The project has a clean dependency lock and was checked with `npm ci`, `npm run typecheck`, `npm run build`, `npm test` (16/16) and `npm audit`. The actual Vite/React app was exercised in visible Google Chrome; details and current limitations are in `docs/qa/b01-evidence.md`.
+**Current B04 verification:** `npm ci`, `npm run typecheck`, `npm run build`, `npm test` (25/25) and `npm audit` pass. The CUA browser host was unavailable for this batch, so the visible Chrome gameplay gate remains unrun; details and other open checks are in `docs/qa/b04-evidence.md`.
 
 ## Controls (desktop keyboard and mouse)
 
@@ -56,7 +56,7 @@ Open the local address printed by Vite. This initializes the React + TypeScript 
 | F | Prototype finisher (75 Pulse) |
 | Esc | Pause / resume |
 
-This is a **first-pass input scheme**, not a finished combo/launcher system. Light attacks now have startup/impact/recovery animation timing, a short press buffer, hitstop, and one directional arc check per swing. The third hit uses the launcher pose. There are no per-frame hitbox shapes or verified frame-by-frame hitbox alignment yet.
+The combat slice uses fixed-step action timing, one press per basic strike, a short press buffer and one directional arc check per swing. Hit one, hit two and the final launcher have separate catalog timings and authored animation sections. Per-frame hitbox shapes and frame-by-frame visual alignment remain unverified.
 
 ## Local verification (works without installing npm dependencies if global `tsc` is available)
 
@@ -98,7 +98,8 @@ tests/                  Deterministic core test suite and Chromium smoke
 - **B01**: premium game shell, input foundation and bounded renderer/art feasibility - **IMPLEMENTED, owner approval pending**.
 - **B02**: Kairo combat-feel vertical slice - **IMPLEMENTED AS A PROTOTYPE; owner visual/game-feel approval pending**.
 - **B03**: Kairo four-direction animation source, runtime pipeline and live browser proof - **IMPLEMENTED; generated art/game-feel approval pending; visual gates partial**.
-- **B04-B13**: production combat/VFX/audio, encounters, complete forms, multiple heroes, bosses, room paths and exhaustive signoff - **NOT DONE**.
+- **B04**: Kairo base combat catalog, HUD/pause integration, generated art/VFX/audio, automated tests - **IMPLEMENTED AS A REVIEWABLE PROPOSAL; visible Chrome gameplay evidence and owner approval pending**.
+- **B05-B13**: transformations, encounters, multiple heroes, bosses, room paths and exhaustive release signoff - **NOT DONE**.
 - **42 forms**: long-term design target, **not** an MVP deliverable. MVP ambition: two heroes, four mechanically complete premium forms.
 
 ## Originality and licensing

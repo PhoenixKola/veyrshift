@@ -37,12 +37,26 @@ test('animation resolver respects state priority, combo contact timing, and reco
  assert.equal(resolveHeroAnimation(h,0).state,'idle');
  h.vx=120;h.moveFacing='back';assert.equal(resolveHeroAnimation(h,.1).state,'run');assert.equal(resolveHeroAnimation(h,.1).direction,'back');
  h.vx=0;h.attackTime=.36;h.attackDuration=.36;h.attackStartup=.075;h.combo=2;h.attackAnimTime=.06;
- assert.equal(resolveHeroAnimation(h,.2).frame,5);h.attackAnimTime=.08;const contact=resolveHeroAnimation(h,.2);assert.equal(contact.frame,6);assert.equal(contact.state,'combo');
+ assert.equal(resolveHeroAnimation(h,.2).frame,5);h.attackAnimTime=.1;const contact=resolveHeroAnimation(h,.2);assert.equal(contact.frame,6);assert.equal(contact.state,'combo');
  h.dashTime=.1;h.vx=-300;h.attackTime=0;const dodge=resolveHeroAnimation(h,.2);assert.equal(dodge.state,'dodge');assert.equal(dodge.direction,'left');
  h.dashTime=0;h.guardTime=.1;h.parryWindow=.1;assert.equal(resolveHeroAnimation(h,.2).state,'parry');
  h.hurtTime=.2;h.hurtFacing='front';assert.equal(resolveHeroAnimation(h,.2).state,'hurt');assert.equal(resolveHeroAnimation(h,.2).direction,'front');
  h.ko=true;assert.equal(resolveHeroAnimation(h,.2).state,'ko');
  h.ko=false;h.hurtTime=0;h.guardTime=0;h.transformVisualTime=.3;h.transformVisualDuration=.72;assert.equal(resolveHeroAnimation(h,.2).state,'ember');
+});
+test('finisher animation advances four phases while holding its selected facing row',()=>{
+ const s=new CombatSession(initialSave());s.newRun(406);const h=s.hero;h.currentAbility='finisher';h.abilityAnimDuration=.8;
+ for(const [direction,row] of [['right',1],['left',3],['front',0],['back',2]]){
+  h.attackFacing=direction;
+  for(const [time,frame] of [[0,0],[.21,1],[.41,2],[.61,3]]){
+   h.abilityAnimTime=time;const pose=resolveHeroAnimation(h,0);
+   assert.equal(pose.direction,direction);assert.equal(pose.directionRow,row);assert.equal(pose.frame,frame);
+  }
+ }
+ const manifest=JSON.parse(readFileSync('docs/art/b04-asset-manifest.json','utf8'));
+ assert.deepEqual(manifest.clips.finisher.runtimeGrid.rowOrder,['front','right','back','left']);
+ assert.equal(manifest.clips.finisher.directionOverrides.right,'kairo-finisher-right-strip.png');
+ assert.ok(existsSync('public/assets/characters/kairo/b04/finisher.webp'));
 });
 test('directional atlas fallback is safe and B03 manifest references real runtime assets',()=>{
  assert.equal(resolveAtlasSource(true,true),'b03');assert.equal(resolveAtlasSource(false,true),'b02');assert.equal(resolveAtlasSource(false,false),'vector');
@@ -86,7 +100,7 @@ test('standard gamepad actions are edge-triggered, preserve aim at rest, and res
 });
 test('Xbox-style shoulder/trigger/start and d-pad baseline maps to distinct actions',()=>{
  const mapper=new StandardGamepadMapper();const pressed=[1,2,3,4,5,6,7,9,13];const pad={id:'Xbox Wireless Controller',axes:[0,0,0,0],buttons:Array.from({length:16},(_,i)=>({pressed:pressed.includes(i),value:pressed.includes(i)?1:0}))};
- const sample=mapper.sample(pad,1000);for(const actionName of ['dash','special','interact','guard','heavy','ultimate','transform','pause'])assert.ok(sample.actions.pressed.has(actionName),actionName);
+ const sample=mapper.sample(pad,1000);for(const actionName of ['dash','shockwave','interact','guard','bolt','finisher','transform','pause'])assert.ok(sample.actions.pressed.has(actionName),actionName);
  assert.ok(sample.menuPressed.has('down'));assert.ok(sample.menuPressed.has('back'));assert.equal(sample.deviceLabel,'Xbox');
 });
 test('new run has seeded encounter, manual attack and successful enemy damage',()=>{
@@ -115,6 +129,31 @@ test('Kairo chains three distinct buffered combo hits with delayed active frames
  advance(s,12);s.update(1/60,action(['attack']));advance(s,7);assert.equal(s.hero.combo,2);
  advance(s,12);s.update(1/60,action(['attack']));advance(s,18);assert.equal(s.hero.combo,3);
  assert.ok(target.hp<=starting-60);assert.ok(s.hero.attackDuration>=.48);
+});
+test('one attack press plus a held input produces exactly one strike; one bolt press produces one projectile',()=>{
+ const melee=new CombatSession(initialSave());melee.newRun(891);const target=melee.enemies[0];
+ target.x=melee.hero.x+50;target.y=melee.hero.y;target.hp=1000;target.maxHp=1000;target.attackCooldown=20;
+ for(const other of melee.enemies.slice(1))other.hp=0;
+ melee.update(1/60,action(['attack'],['attack']));advance(melee,40,action([],['attack']));
+ const contacts=melee.events.filter(event=>event.id==='combo-contact');
+ assert.equal(contacts.length,1);assert.equal(contacts[0].comboIndex,1);assert.equal(melee.hero.combo,1);
+
+ const ranged=new CombatSession(initialSave());ranged.newRun(892);const foe=ranged.enemies[0];
+ foe.x=ranged.hero.x+240;foe.y=ranged.hero.y;foe.hp=1000;foe.maxHp=1000;foe.attackCooldown=20;
+ for(const other of ranged.enemies.slice(1))other.hp=0;
+ ranged.update(1/60,action(['bolt'],['bolt']));advance(ranged,50,action([],['bolt']));
+ assert.equal(ranged.events.filter(event=>event.id==='bolt-cast').length,1);
+ assert.equal(ranged.events.filter(event=>event.id==='bolt-hit').length,1);
+ assert.equal(ranged.events.filter(event=>event.id==='combo-contact').length,0);
+});
+test('finisher affordability and shockwave cooldown are independent',()=>{
+ const s=new CombatSession(initialSave());s.newRun(893);s.hero.pulse=74;
+ assert.equal(s.getAbilityReason('finisher'),'insufficient-pulse');
+ s.update(1/60,action(['finisher']));assert.equal(s.hero.currentAbility,null);assert.equal(s.hero.abilityCooldowns.finisher,0);
+ s.hero.pulse=100;s.update(1/60,action(['shockwave']));assert.equal(s.hero.currentAbility,'shockwave');
+ advance(s,55);assert.ok(s.hero.abilityCooldowns.shockwave>3);assert.equal(s.getAbilityReason('finisher'),'ready');
+ s.update(1/60,action(['finisher']));assert.equal(s.hero.currentAbility,'finisher');assert.equal(s.hero.pulse,25);
+ assert.equal(s.getAbilityReason('shockwave'),'cooldown');assert.ok(s.hero.abilityCooldowns.shockwave>0);
 });
 test('attack input buffers briefly through recovery and stays directional',()=>{
  const s=new CombatSession(initialSave());s.newRun(889);s.hero.face=0;

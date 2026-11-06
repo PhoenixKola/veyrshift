@@ -57,8 +57,8 @@ export class StandardGamepadMapper {
     const pressed = new Set<KeyAction>();
     const held = new Set<KeyAction>();
     const actionButtons: [number, KeyAction][] = [
-      [0, 'attack'], [1, 'dash'], [2, 'special'], [3, 'interact'],
-      [5, 'heavy'], [6, 'ultimate'], [7, 'transform'], [9, 'pause'],
+      [0, 'attack'], [1, 'dash'], [2, 'shockwave'], [3, 'interact'],
+      [5, 'bolt'], [6, 'finisher'], [7, 'transform'], [9, 'pause'],
     ];
     for (const [index, action] of actionButtons) {
       if (pressedButton(index)) pressed.add(action);

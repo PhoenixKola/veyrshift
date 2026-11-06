@@ -5,13 +5,15 @@ import { mergeActions, StandardGamepadMapper } from './gamepadMapping.js';
 export type InputDevice = 'Keyboard + Mouse' | 'Xbox' | 'PlayStation' | 'Gamepad';
 const BINDINGS: Readonly<Record<string, KeyAction>> = {
   KeyW: 'up', ArrowUp: 'up', KeyS: 'down', ArrowDown: 'down', KeyA: 'left', ArrowLeft: 'left', KeyD: 'right', ArrowRight: 'right',
-  Space: 'attack', KeyJ: 'attack', KeyK: 'heavy', KeyQ: 'special', KeyE: 'guard', ShiftLeft: 'dash', ShiftRight: 'dash',
-  KeyR: 'transform', KeyF: 'ultimate', Escape: 'pause', Enter: 'interact',
+  Space: 'attack', KeyJ: 'attack', KeyK: 'bolt', KeyQ: 'shockwave', KeyE: 'guard', ShiftLeft: 'dash', ShiftRight: 'dash',
+  KeyR: 'transform', KeyF: 'finisher', Escape: 'pause', Enter: 'interact',
 };
 
 export class InputController {
   private held = new Set<KeyAction>();
   private pressed = new Set<KeyAction>();
+  private blocked = new Set<KeyAction>();
+  private lastSampleHeld = new Set<KeyAction>();
   private pointer = { x: 0, y: 0 };
   private pointerValid = false;
   private pointerDirty = false;
@@ -29,6 +31,7 @@ export class InputController {
     private height: number,
     private onDeviceChange: (device: InputDevice) => void = () => undefined,
     private onFocusLost: () => void = () => undefined,
+    private onUserGesture: () => void = () => undefined,
   ) {}
 
   private isEditableTarget(target: EventTarget | null): boolean {
@@ -41,6 +44,9 @@ export class InputController {
     const action = BINDINGS[event.code];
     if (!action) return;
     if (this.active) event.preventDefault();
+    this.onUserGesture();
+    if (this.blocked.has(action) && event.repeat) return;
+    this.blocked.delete(action);
     if (!this.held.has(action)) this.pressed.add(action);
     this.held.add(action);
     this.setDevice('Keyboard + Mouse');
@@ -48,7 +54,7 @@ export class InputController {
 
   private keyup = (event: KeyboardEvent): void => {
     const action = BINDINGS[event.code];
-    if (action) this.held.delete(action);
+    if (action) { this.held.delete(action); this.blocked.delete(action); }
   };
 
   private move = (event: PointerEvent): void => {
@@ -65,7 +71,8 @@ export class InputController {
     if (event.button !== 0 && event.button !== 2) return;
     event.preventDefault();
     this.move(event);
-    const action = event.button === 0 ? 'attack' : 'heavy';
+    const action = event.button === 0 ? 'attack' : 'bolt';
+    this.onUserGesture(); this.blocked.delete(action);
     this.pressed.add(action);
     this.held.add(action);
     this.canvas.focus({ preventScroll: true });
@@ -73,7 +80,8 @@ export class InputController {
   };
 
   private pointerUp = (event: PointerEvent): void => {
-    this.held.delete(event.button === 0 ? 'attack' : 'heavy');
+    const action = event.button === 0 ? 'attack' : 'bolt';
+    this.held.delete(action); this.blocked.delete(action);
   };
 
   private blur = (): void => {
@@ -164,7 +172,17 @@ export class InputController {
     if (useGamepadMovement && Math.hypot(mapped.actions.aim.x, mapped.actions.aim.y) > 0.001 && (Math.abs(pad?.axes[2] ?? 0) > 0.22 || Math.abs(pad?.axes[3] ?? 0) > 0.22)) this.lastAim = mapped.actions.aim;
 
     if (!this.lastAim && Math.hypot(combined.movement.x, combined.movement.y) > 0.001) this.lastAim = normalize(combined.movement);
+    this.lastSampleHeld = new Set(combined.held);
+    for (const action of this.blocked) if (!combined.held.has(action)) this.blocked.delete(action);
+    for (const action of this.blocked) { combined.held.delete(action); combined.pressed.delete(action); }
     combined.aim = this.lastAim ?? { x: 0, y: -1 };
     return combined;
+  }
+
+  /** Discard any action held across pause/focus changes until it is released. */
+  clearCombatInput(): void {
+    for (const action of this.lastSampleHeld) this.blocked.add(action);
+    for (const action of this.held) this.blocked.add(action);
+    this.held.clear(); this.pressed.clear(); this.lastSampleHeld.clear();
   }
 }

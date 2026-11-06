@@ -1,5 +1,5 @@
 import { ARENA } from '../data/encounters.js';
-import type { Enemy, Hero } from '../core/types.js';
+import type { CombatEvent, Enemy, GameSettings, Hero } from '../core/types.js';
 import type { CombatSession } from '../runtime/CombatSession.js';
 import { resolveAtlasSource, resolveHeroAnimation, type ResolvedAnimation } from '../animation/animationResolver.js';
 import { clamp } from '../core/math.js';
@@ -20,6 +20,20 @@ export class CanvasRenderer {
   combo:this.load('/assets/characters/kairo/b03/combo.png'),
   states:this.load('/assets/characters/kairo/b03/states.png'),
  };
+ private authored={
+  combo:this.load('/assets/characters/kairo/b04/combo.webp'),
+  transitions:this.load('/assets/characters/kairo/b04/locomotion-transitions.webp'),
+  bolt:this.load('/assets/characters/kairo/b04/bolt-cast.webp'),
+  shockwave:this.load('/assets/characters/kairo/b04/shockwave.webp'),
+  guardParry:this.load('/assets/characters/kairo/b04/guard-parry.webp'),
+  finisher:this.load('/assets/characters/kairo/b04/finisher.webp'),
+ };
+ private vfx={
+  bolt:this.load('/assets/vfx/b04/boltFlight.webp'), combo:this.load('/assets/vfx/b04/comboImpact.webp'),
+  shockwave:this.load('/assets/vfx/b04/shockwave.webp'), parry:this.load('/assets/vfx/b04/parry.webp'),
+  dodge:this.load('/assets/vfx/b04/dodge.webp'), finisher:this.load('/assets/vfx/b04/finisher.webp'),
+ };
+ private effects:{event:CombatEvent;start:number;duration:number}[]=[];
  readonly assetsReady:Promise<void>;
  private lastAnimation:ResolvedAnimation|null=null;
  private previousAnimation:ResolvedAnimation|null=null;
@@ -30,7 +44,14 @@ export class CanvasRenderer {
   this.forceB02=forceB02;
   canvas.width=ARENA.width;canvas.height=ARENA.height;
   const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D support is required');this.ctx=ctx;
-  this.assetsReady=Promise.all([...Object.values(this.directional),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
+  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.vfx),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
+ }
+ emit(events:CombatEvent[],clock:number):void {
+  const durations:Partial<Record<CombatEvent['id'],number>>={'bolt-cast':.22,'bolt-hit':.23,'bolt-dissipate':.2,'combo-contact':.23,swing:.19,
+   'shockwave-charge':.24,'shockwave-release':.48,'shockwave-hit':.22,parry:.23,block:.17,'dash-start':.24,'dash-land':.22,
+   'finisher-build':.3,'finisher-hit':.38,'finisher-fade':.32,'ember-start':.5,'ember-end':.28};
+  for(const event of events){const duration=durations[event.id];if(duration)this.effects.push({event,start:clock,duration});}
+  if(this.effects.length>80)this.effects.splice(0,this.effects.length-80);
  }
  private load(src:string):HTMLImageElement {const image=new Image();image.decoding='async';image.src=location.protocol==='file:'?new URL(`.${src}`,location.href).href:src;return image;}
  render(game:CombatSession):void {
@@ -48,12 +69,12 @@ export class CanvasRenderer {
   for(const p of game.particles){if(!game.save.settings.particles)continue;const a=clamp(p.life/p.maxLife,0,1);c.globalAlpha=game.save.settings.reducedFlash?Math.min(.55,a):a;
    c.fillStyle=p.color;c.beginPath();c.arc(p.x,p.y,p.size*(1.2-a*.45),0,Math.PI*2);c.fill();}
   c.globalAlpha=1;
-  for(const p of game.projectiles){c.save();c.shadowBlur=22;c.shadowColor=p.color;c.fillStyle=p.color;
-   c.beginPath();c.arc(p.x,p.y,p.radius,0,Math.PI*2);c.fill();c.restore();}
+  this.drawVfx(game.clock,true,game.save.settings);
+  for(const p of game.projectiles){if(p.source==='hero'&&this.ready(this.vfx.bolt)){const angle=Math.atan2(p.vy,p.vx);this.drawSprite(this.vfx.bolt,p.x,p.y,angle,57,35,1,game.save.settings);}}
   const actors:[number,()=>void][]=[...game.enemies.map(e=>[e.y,()=>this.drawEnemy(e,game.clock)] as [number,()=>void]),
    [game.hero.y,()=>this.drawHero(game.hero,game.clock,true)]];
   actors.sort((a,b)=>a[0]-b[0]);for(const [,draw] of actors)draw();
-  this.drawAttackArc(game.hero);c.restore();
+  this.drawVfx(game.clock,false,game.save.settings);c.restore();
   if(game.mode==='reward'||game.mode==='victory'||game.mode==='defeat'||game.mode==='paused'){
    c.fillStyle='rgba(2,7,17,.48)';c.fillRect(0,0,w,h);
   }
@@ -133,20 +154,20 @@ export class CanvasRenderer {
   this.previousRenderAt=now;
   const blend=this.transitionRemaining>0?1-this.transitionRemaining/.07:1;
   const heroAlpha=h.invuln>0&&Math.sin(t*32)>0?.62:1;
-  const sprite=this.directional[resolved.atlas];
+  const sprite=this.fallbackAtlas(resolved.atlas);
+  const authored=this.authoredAtlas(resolved.atlas);
   const legacy=this.legacyAtlas(resolved.atlas);
-  const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):resolveAtlasSource(this.ready(sprite),this.ready(legacy));
+  const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):authored!==null&&this.ready(authored)?'b04':resolveAtlasSource(this.ready(sprite),this.ready(legacy));
   const bob=this.reducedMotion?0:(resolved.state==='idle'?Math.sin(h.step*.018)*.7:0);
   c.translate(0,bob-17);
-  if(atlasSource==='b03'){
+  if(atlasSource==='b04'||atlasSource==='b03'){
    if(h.transformVisualTime>0)this.drawIgnition(h,t);
-   if(h.dashTime>0)this.drawDashStreak(h);
    const animationDelta=this.transitionRemaining>0?blend:1;
    if(this.previousAnimation&&this.transitionRemaining>0){
-    const oldImage=this.directional[this.previousAnimation.atlas];
+    const oldImage=this.authoredAtlas(this.previousAnimation.atlas)??this.fallbackAtlas(this.previousAnimation.atlas);
     if(this.ready(oldImage))this.drawDirectionalFrame(oldImage,this.previousAnimation,heroAlpha*(1-animationDelta));
    }
-   this.drawDirectionalFrame(sprite,resolved,heroAlpha*animationDelta);
+   this.drawDirectionalFrame(atlasSource==='b04'?authored!:sprite,resolved,heroAlpha*animationDelta);
    this.transitionRemaining=Math.max(0,this.transitionRemaining-renderDelta);
    this.lastAnimation=resolved;
    if(this.transitionRemaining===0)this.previousAnimation=null;
@@ -156,7 +177,6 @@ export class CanvasRenderer {
   if(atlasSource==='b02'){
    if(Math.cos(h.face)<0)c.scale(-1,1);
    if(h.transformVisualTime>0)this.drawIgnition(h,t);
-   if(h.dashTime>0)this.drawDashStreak(h);
    const frames=resolved.atlas==='idle'||resolved.atlas==='run'?8:resolved.atlas==='combo'?12:resolved.atlas==='dodge'?6:8;
    const fw=legacy.naturalWidth/frames;
    c.globalAlpha=heroAlpha;
@@ -183,6 +203,8 @@ export class CanvasRenderer {
   c.restore();
  }
  private ready(image:HTMLImageElement):boolean {return image.complete&&image.naturalWidth>0;}
+ private fallbackAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {if(atlas==='idle')return this.directional.idle;if(atlas==='run')return this.directional.run;if(atlas==='dodge')return this.directional.dodge;if(atlas==='combo')return this.directional.combo;return this.directional.states;}
+ private authoredAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement|null {if(atlas==='combo')return this.authored.combo;if(atlas==='locomotionTransitions')return this.authored.transitions;if(atlas==='bolt')return this.authored.bolt;if(atlas==='shockwave')return this.authored.shockwave;if(atlas==='guardParry')return this.authored.guardParry;if(atlas==='finisher')return this.authored.finisher;return null;}
  private legacyAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {
   if(atlas==='idle')return this.idle;if(atlas==='run')return this.run;if(atlas==='dodge')return this.dodge;
   if(atlas==='combo')return this.combo;return this.states;
@@ -193,12 +215,6 @@ export class CanvasRenderer {
   c.save();c.globalAlpha=alpha;
   if(this.reducedFlash&&this.directional.states===image&&animation.state==='hurt')c.globalAlpha*=.72;
   c.drawImage(image,animation.frame*frameWidth,animation.directionRow*frameHeight,frameWidth,frameHeight,-50,-103,100,140);
-  c.restore();
- }
- private drawDashStreak(h:Hero):void {
-  const c=this.ctx;c.save();c.globalAlpha=this.reducedFlash?.3:.45;c.strokeStyle='#a1e8f2';c.lineWidth=3;
-  const dx=-Math.cos(h.face),dy=-Math.sin(h.face);
-  for(let i=1;i<=3;i++){c.beginPath();c.ellipse(dx*i*9,dy*i*7,24+i*4,8+i*1.5,h.face,0,Math.PI*2);c.stroke();}
   c.restore();
  }
  private drawIgnition(h:Hero,t:number):void {
@@ -220,18 +236,38 @@ export class CanvasRenderer {
   for(let i=0;i<3;i++){const a=(this.reducedMotion?0:t*.9)+i*Math.PI*2/3;const x=Math.cos(a)*(51+i*4),y=Math.sin(a)*(31+i*3);c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,-6);c.lineTo(4,0);c.lineTo(0,6);c.lineTo(-4,0);c.closePath();c.fill();c.restore();}
   c.restore();
  }
- private drawAttackArc(h:Hero):void {
-  const progress=h.attackDuration>0?h.attackAnimTime/h.attackDuration:0;
-  const activeStart=h.attackDuration>0?h.attackStartup/h.attackDuration:0;
-  if(h.attackTime<=0||progress<activeStart||progress>.66)return;
-  const c=this.ctx;c.save();c.translate(h.x,h.y-14);c.rotate(h.face);
-  const age=clamp((progress-activeStart)/Math.max(.01,.66-activeStart),0,1);c.globalAlpha=1-age*.45;
-  c.strokeStyle=h.transformed?'rgba(255,214,159,.92)':h.combo===2?'rgba(156,231,238,.92)':h.combo===3?'rgba(255,187,117,.95)':'rgba(206,225,240,.9)';
-  c.lineWidth=h.combo===3?13:9;c.lineCap='round';c.shadowBlur=20;c.shadowColor=c.strokeStyle;
-  const radius=h.combo===3?88:h.combo===2?72:62;
-  c.beginPath();c.arc(0,0,radius,h.combo===3?-.15:-.8,h.combo===3?1.1:.8);c.stroke();
-  if(h.combo===3){c.strokeStyle='rgba(255,226,169,.8)';c.lineWidth=3;c.beginPath();c.arc(0,0,radius+10,-.2,.8);c.stroke();}
-  c.restore();
+ private drawSprite(image:HTMLImageElement,x:number,y:number,angle:number,width:number,height:number,alpha:number,settings:GameSettings):void {
+  if(!this.ready(image)||alpha<=.01)return;const c=this.ctx;c.save();c.translate(x,y);c.rotate(angle);
+  c.globalAlpha=alpha*(settings.reducedFlash ? .58 : 1);c.shadowColor='#79dce4';c.shadowBlur=settings.reducedFlash?0:12;
+  c.drawImage(image,-width/2,-height/2,width,height);c.restore();
+ }
+ private drawVfx(clock:number,behind:boolean,settings:GameSettings):void {
+  this.effects=this.effects.filter(effect=>clock-effect.start<=effect.duration);
+  for(const effect of this.effects){
+   const id=effect.event.id;const isBehind=['shockwave-charge','shockwave-release','dash-start','dash-land'].includes(id);
+   if(isBehind!==behind)continue;
+   const p=clamp((clock-effect.start)/effect.duration,0,1),motion=settings.reducedMotion ? .48 : p;
+   let image:HTMLImageElement;let width:number;let height:number;let angle=effect.event.angle??0;let x=effect.event.x;let y=effect.event.y;let alpha=1;
+   if(id==='shockwave-charge'||id==='shockwave-release'){
+    image=this.vfx.shockwave;width=95+motion*300;height=47+motion*106;alpha=id==='shockwave-charge'?.74*(1-p*.3):.9*(1-p);
+    y+=8;
+   }else if(id==='dash-start'||id==='dash-land'){
+    image=this.vfx.dodge;width=id==='dash-start'?118+motion*44:130;height=54;alpha=id==='dash-start'?.76*(1-p):.62*(1-p);
+    angle+=Math.PI/4;x-=Math.cos(angle)*7;y-=Math.sin(angle)*5;
+   }else if(id==='parry'||id==='block'){
+    image=this.vfx.parry;width=id==='parry'?118:78;height=id==='parry'?105:70;alpha=(id==='parry'?.98:.58)*(1-p);
+   }else if(id==='finisher-build'||id==='finisher-hit'||id==='finisher-fade'){
+    image=this.vfx.finisher;width=(id==='finisher-hit'?210:155)+motion*(id==='finisher-hit'?80:25);height=width*.66;
+    alpha=(id==='finisher-build'?.72:id==='finisher-hit'?1:.7)*(1-p*.78);angle+=Math.PI/4;
+   }else if(id==='bolt-cast'){
+    image=this.vfx.bolt;width=74;height=43;alpha=.9*(1-p);angle+=Math.PI/4;
+   }else{
+    image=this.vfx.combo;const hit=effect.event.comboIndex??1;
+    width=(id==='combo-contact'?72+hit*22:60)*(1+motion*.22);height=width*.72;alpha=(id==='combo-contact'?1:.5)*(1-p);
+    angle+=Math.PI/4;
+   }
+   this.drawSprite(image,x,y,angle,width,height,alpha,settings);
+  }
  }
  private decorativeTitle(title:string,sub:string,x:number,y:number):void {
   const c=this.ctx;c.save();c.textAlign='center';c.fillStyle='#a4c8cf';c.font='600 12px sans-serif';c.letterSpacing='6px';c.fillText(title,x,y);

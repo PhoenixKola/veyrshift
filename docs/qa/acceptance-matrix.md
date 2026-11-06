@@ -82,3 +82,22 @@
 | Owner visual and game-feel approval | NOT RUN / REQUIRED | Review the proposed master, contact sheets, equal-scale comparison and live video before production-art acceptance. |
 
 **B03 gate:** IMPLEMENTED AS A REVIEWABLE DIRECTIONAL ANIMATION PROPOSAL; important visual gates remain PARTIAL. Owner signoff is required before the assets are treated as approved production art.
+
+## B04 Kairo base-combat and presentation gate — 2026-11-06
+
+| B04 criterion | Status | Evidence / limitation |
+|---|---|---|
+| Typed Kairo base-ability contract and separate cooldown/resource rules | PASS (automated) | `kairoAbilities.ts`, per-ability snapshots, and tests for Pulse affordability and shockwave/finisher cooldown independence. |
+| One press = one strike/bolt; repeated presses chain combo | PASS (automated) | Core test verifies held input does not auto-repeat and exactly one bolt cast/contact occurs; 3-hit progression tests pass. |
+| Combo hit-one/hit-two/hit-three and start/stop source clips | PARTIAL | Separate generated directional sequences and runtime routing/contact sheets exist; foot contacts, normal-speed motion and B03→B04 visual comparison are not captured. |
+| Finisher head direction and cell-boundary neighbor artifacts | PASS (source/contact-sheet review); PARTIAL (live game) | Corrected right-facing four-pose strip and rebuilt runtime atlas; automated direction-row progression test. Visible gameplay confirmation remains unavailable. |
+| Original generated ability motion/VFX | PARTIAL | Generated masters, VFX contact board, runtime exports and typed event integration exist. No owner style approval or combined in-game clip. |
+| Audio and accessibility mix | PARTIAL | Original event-driven WebAudio synthesis and settings integration exist. No audible Chrome review; no music track. |
+| Cooldown HUD, input labels, pause tabs and settings | PARTIAL | Snapshot-driven implementation and pause UI present; no live keyboard/gamepad navigation, persistence, responsiveness or visual check in Chrome. |
+| Build, tests, offline preview, audit | PASS | `npm ci`, typecheck, build, `npm test` 25/25 (offline preview is produced), `npm audit` zero vulnerabilities. |
+| Visible Chrome gameplay, normal-speed clips, viewport/reduced-effects review | BLOCKED / NOT RUN | CUA browser host unavailable in this batch; no actual gameplay screenshot/recording. See `docs/qa/b04-evidence.md`. |
+| Physical controller | NOT RUN | No controller hardware exercised. Mapper tests are not hardware evidence. |
+| Ember Drive complete transformation contract | FAIL / PROTOTYPE | Ember preview remains a short prototype and does not satisfy the full form requirements. |
+| Owner visual/game-feel and external likeness/IP approval | NOT RUN / REQUIRED | All generated assets remain proposals; no legal/name clearance performed. |
+
+**B04 gate:** Code and source assets are reviewable, but B04 is **not approved**. Missing visible Chrome gameplay, sound/feel review, visual consistency checks at target sizes and owner signoff prevent a production-ready claim.
