@@ -1,0 +1,60 @@
+{
+  "batch": "B05",
+  "generatedDate": "2026-11-06",
+  "pipeline": "python tools/build-b05-art.py",
+  "status": "PARTIAL_ART_GATE_BLOCKED",
+  "runtimeAssetsExported": false,
+  "transparencyPolicy": "Only PNG color types 4/6 encode an alpha channel; an alpha channel alone does not prove clean cutout edges.",
+  "forms": [
+    {
+      "form": "ember-drive",
+      "source": "art-source/b05/proposed/ember-drive-four-view-master.png",
+      "status": "PROPOSED_REFERENCE_ONLY",
+      "runtimeExport": null,
+      "coverage": {
+        "turnaroundViews": 4,
+        "idle": false,
+        "run": false,
+        "combo": false,
+        "dodge": false,
+        "guardParry": false,
+        "hurtKo": false,
+        "activationEnd": false,
+        "finisher": false
+      },
+      "review": "PROPOSED DESIGN ONLY; rejected for runtime due to baked light backdrop and insufficient silhouette change",
+      "width": 1774,
+      "height": 887,
+      "bitDepth": 8,
+      "pngColorType": 6,
+      "alphaChannelEncoded": true,
+      "bytes": 2794539,
+      "sha256": "a56c06d0503529124b43c2a853458bb9f4176b3d7ead9b98eb824301a71c06f5"
+    },
+    {
+      "form": "glass-current",
+      "source": "art-source/b05/proposed/glass-current-four-view-master.png",
+      "status": "PROPOSED_REFERENCE_ONLY",
+      "runtimeExport": null,
+      "coverage": {
+        "turnaroundViews": 4,
+        "idle": false,
+        "run": false,
+        "combo": false,
+        "dodge": false,
+        "guardParry": false,
+        "hurtKo": false,
+        "activationEnd": false,
+        "finisher": false
+      },
+      "review": "PROPOSED DESIGN ONLY; rejected for runtime due to view-label artifacts and inconsistent echo accessory geometry",
+      "width": 1774,
+      "height": 887,
+      "bitDepth": 8,
+      "pngColorType": 6,
+      "alphaChannelEncoded": true,
+      "bytes": 1429302,
+      "sha256": "39d0be84035514fca493c88ea78761fc192db6e44346fbb668b0e1aff7b62b83"
+    }
+  ]
+}

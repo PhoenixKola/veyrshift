@@ -7,8 +7,8 @@ A clean, original, browser-first 2.5D fully manual anime-inspired action rogueli
 
 ## What is *actually playable now*
 
-- Kairo remains the only playable hero. B03/B04 add four authored cardinal views for movement, distinct combo hits, guard/parry and base abilities. Generated art remains **unapproved feasibility work**, not a polished master or production animation set; Ember activation remains a brief prototype.
-- One hero, three short seeded encounter chambers, three enemy archetypes (wisp, striker, sentinel), enemy telegraphs, manual angled melee string, directional ranged projectile, dash and invulnerability, guard/parry, an area attack, an ultimate and a short experimental Ember Drive transformation.
+- Kairo remains the only playable hero. B03/B04 add four authored cardinal views for movement, distinct combo hits, guard/parry and base abilities. B05 adds form selection and bounded Ember/Glass combat prototypes. Generated art remains **unapproved feasibility work**, not a polished master or production animation set.
+- One hero, three short seeded encounter chambers, three enemy archetypes (wisp, striker, sentinel), enemy telegraphs, manual angled melee string, directional ranged projectile, dash and invulnerability, guard/parry, an area attack, an ultimate and two partial form prototypes.
 - Selection from three generated room-clear upgrades; full mini-loop with defeat/victory, shard banking, persistent local save (versioned schema), pause/retry/hub.
 - Prototype combat VFX/audio, damage feedback, seeded RNG, reusable core combat simulator, runtime/UI decoupling and a strong starting UI shell.
 - **Six heroes and 42 form names are typed *catalog records*, not 42 implemented playable heroes/forms.** This differentiation is explicit in `src/game/data/heroes.ts` and `src/game/data/forms.ts`.
@@ -24,7 +24,7 @@ If your browser blocks local files, from the repository root run `python3 -m htt
 
 ### B01 player flow
 
-Install Node.js 22+, run `npm ci`, then run `npm run dev`. The title menu opens first. Choose **New Run**, then **Start Run** in the pre-run hub. WASD or arrow keys move; mouse aim + left click attacks; right click fires a ranged shot; Shift dodges; Q uses the special; hold E to guard; R triggers the brief Ember Drive prototype preview when Pulse is available; F uses the finisher when charged; Escape pauses. The pause screen can resume or abandon to the hub.
+Install Node.js 22+, run `npm ci`, then run `npm run dev`. The title menu opens first. Choose **New Run**, then **Start Run** in the pre-run hub. Equip Ember Drive by default or unlock Glass Current with five successful parries in the Forms screen. WASD or arrow keys move; mouse aim + left click attacks; right click fires a ranged shot; Shift dodges; Q uses the special; hold E to guard; R activates or ends the equipped form when Pulse is available; F uses the finisher when charged; Escape pauses. The pause screen can resume or abandon to the hub.
 
 Keyboard arrows/Tab/Enter navigate menus. Standard gamepad baseline: left stick moves, right stick aims, A attacks, B dodges, X special, Y interact, LB guard, RB ranged shot, LT finisher, RT form preview, Start pauses; d-pad/left stick navigates menus, A confirms, B backs out. PlayStation labels are shown when the device ID identifies PlayStation hardware. Fullscreen is available from the pre-run hub. Settings persist locally; music stays disabled because no music track is included.
 
@@ -99,9 +99,14 @@ tests/                  Deterministic core test suite and Chromium smoke
 - **B02**: Kairo combat-feel vertical slice - **IMPLEMENTED AS A PROTOTYPE; owner visual/game-feel approval pending**.
 - **B03**: Kairo four-direction animation source, runtime pipeline and live browser proof - **IMPLEMENTED; generated art/game-feel approval pending; visual gates partial**.
 - **B04**: Kairo base combat catalog, HUD/pause integration, generated art/VFX/audio, automated tests - **IMPLEMENTED AS A REVIEWABLE PROPOSAL; visible Chrome gameplay evidence and owner approval pending**.
-- **B05-B13**: transformations, encounters, multiple heroes, bosses, room paths and exhaustive release signoff - **NOT DONE**.
+- **B05**: two incomplete Kairo form prototypes; art/gameplay verification gates remain blocked.
+- **B06-B13**: Gravity Break, encounters, multiple heroes, bosses, room paths and exhaustive release signoff - **NOT DONE**.
 - **42 forms**: long-term design target, **not** an MVP deliverable. MVP ambition: two heroes, four mechanically complete premium forms.
 
 ## Originality and licensing
 
 Hades and Dragon Ball are high-level feel references only. Do not copy characters, outfits, UI, sound, music, shaders, locations or signature animations from existing IP. Existing hero names and `Project Veyrshift` must be checked for conflicts before public release. Provenance and visual approval belong in `docs/art/asset-provenance.md`.
+
+## B05 Kairo forms — prototype only
+
+The current Forms screen lets the player equip Ember Drive or unlock/equip Glass Current after five parries. Save schema v3 migrates the prior save formats. Ember and Glass combat prototypes have bounded differences and are described in `docs/technical/adr-012-formweaving-runtime-save-contract.md`. They are **not complete transformations**: their generated reference masters are rejected for runtime, and alternate animation atlases, dedicated icons, authored VFX/audio and live gameplay approval are still missing. Follow the local Chrome steps in `docs/qa/b05-evidence.md` before evaluating. B05 remains partial; do not claim B06 appearance-swap readiness.

@@ -10,6 +10,7 @@ import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
 import { facingFromAngle, facingFromVector } from '../dist-preview/src/game/core/direction.js';
 import { resolveAtlasSource, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
+import { KAIRO_COMBO_HITS } from '../dist-preview/src/game/data/kairoAbilities.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 const action=(pressed=[], held=[], movement={x:0,y:0}, aim={x:1,y:0})=>({pressed:new Set(pressed),held:new Set(held),movement,aim});
@@ -79,9 +80,16 @@ test('invalid save data fails closed and safe schema v1 round-trips',()=>{
  const save=initialSave();save.shards=84;save.runs=3;
  assert.deepEqual(parseSave(JSON.stringify(save)),save);
 });
-test('version 1 saves migrate into version 2 settings without losing records',()=>{
+test('version 1 and 2 saves migrate into version 3 forms/settings without losing records',()=>{
  const migrated=parseSave(JSON.stringify({version:1,shards:41,bestRoom:2,runs:7,totalDefeats:3,unlockedHeroes:['kairo'],unlockedForms:[]}));
- assert.equal(migrated.version,2);assert.equal(migrated.shards,41);assert.equal(migrated.runs,7);assert.equal(migrated.settings.masterVolume,.75);assert.equal(migrated.settings.reducedMotion,false);
+ assert.equal(migrated.version,3);assert.equal(migrated.shards,41);assert.equal(migrated.runs,7);assert.equal(migrated.equippedForm,'ember-drive');assert.deepEqual(migrated.unlockedForms,['ember-drive']);assert.equal(migrated.settings.masterVolume,.75);assert.equal(migrated.settings.reducedMotion,false);
+ const v2=parseSave(JSON.stringify({version:2,shards:84,bestRoom:3,runs:9,totalDefeats:2,unlockedHeroes:['kairo'],unlockedForms:['kairo-1'],settings:initialSave().settings}));
+ assert.equal(v2.version,3);assert.equal(v2.shards,84);assert.equal(v2.runs,9);assert.equal(v2.equippedForm,'ember-drive');assert.equal(v2.unlockedForms.includes('glass-current'),false);
+});
+test('Glass Current unlock progress and equipped form survive v3 save round-trip',()=>{
+ const save=initialSave();save.precisionTrials=5;save.unlockedForms.push('glass-current');save.equippedForm='glass-current';
+ const loaded=parseSave(JSON.stringify(save));assert.equal(loaded.precisionTrials,5);assert.equal(loaded.equippedForm,'glass-current');assert.ok(loaded.unlockedForms.includes('glass-current'));
+ const unsafe=parseSave(JSON.stringify({...save,equippedForm:'not-a-form'}));assert.equal(unsafe.equippedForm,'ember-drive');
 });
 test('player navigation transitions guard title, hub, run, back, and locked pages',()=>{
  assert.equal(transitionScreen('title',{type:'start-run'}),'title');assert.equal(transitionScreen('title',{type:'new-run'}),'hub');
@@ -185,6 +193,38 @@ test('form prototype consumes Pulse, is time-limited and expires',()=>{
  s.enemies=[];s.hero.formTime=.025;
  s.update(.034,action());
  assert.equal(s.hero.transformed,false);
+});
+test('equipped form loads for a new run and its finisher remains affordable after activation',()=>{
+ const save=initialSave();save.shards=13;save.unlockedForms.push('glass-current');save.equippedForm='ember-drive';
+ const s=new CombatSession(save);s.newRun(1111);assert.equal(s.hero.formId,'ember-drive');s.hero.pulse=100;
+ s.update(.016,action(['transform']));assert.equal(s.hero.transformed,true);assert.equal(s.hero.pulse,60);
+ assert.equal(s.snapshot.abilities.finisher.pulseCost,50);assert.equal(s.getAbilityReason('finisher'),'ready');
+ s.update(.016,action(['finisher']));assert.ok(s.hero.pulse<15);assert.equal(s.save.shards,13);
+});
+test('Glass Current perfect dodge and earned counter use a bounded one-shot window',()=>{
+ const s=new CombatSession(initialSave());s.newRun(112);s.save.unlockedForms.push('glass-current');s.save.equippedForm='glass-current';s.hero.formId='glass-current';s.hero.transformed=true;s.hero.formTime=5;
+ const foe=s.enemies[0];foe.x=s.hero.x+45;foe.y=s.hero.y;const before=foe.hp;
+ s.hero.invuln=.2;s.hero.glassCounterTime=.2;s.damageHero(12,foe);
+ assert.ok(foe.hp<before);assert.equal(s.hero.glassCounterTime,0);const after=foe.hp;
+ s.hero.invuln=.2;s.damageHero(12,foe);assert.equal(foe.hp,after);
+});
+test('five earned perfect parries unlock Glass Current without resetting run records',()=>{
+ const s=new CombatSession(initialSave());s.newRun(113);const foe=s.enemies[0];foe.x=s.hero.x+35;foe.y=s.hero.y;
+ for(let i=0;i<5;i++){s.hero.invuln=0;s.hero.guardTime=.1;s.hero.parryWindow=.2;s.damageHero(12,foe);}
+ assert.equal(s.save.precisionTrials,5);assert.ok(s.save.unlockedForms.includes('glass-current'));assert.equal(s.save.shards,0);
+});
+test('Ember combo marks detonate only on the third contact',()=>{
+ const s=new CombatSession(initialSave());s.newRun(114);s.hero.formId='ember-drive';s.hero.transformed=true;
+ const foe=s.enemies[0];foe.x=s.hero.x+40;foe.y=s.hero.y;foe.hp=1000;foe.maxHp=1000;
+ s.hitArc(0,'combo',KAIRO_COMBO_HITS[0],'combo-contact',1);assert.equal(foe.emberMarks,1);
+ s.hitArc(0,'combo',KAIRO_COMBO_HITS[1],'combo-contact',2);assert.equal(foe.emberMarks,2);
+ s.hitArc(0,'combo',KAIRO_COMBO_HITS[2],'combo-contact',3);assert.equal(foe.emberMarks,0);assert.equal(foe.hp,915);
+});
+test('Glass special is unavailable without a counter window and consumes a valid window once',()=>{
+ const s=new CombatSession(initialSave());s.newRun(115);s.save.unlockedForms.push('glass-current');s.hero.formId='glass-current';s.hero.transformed=true;s.hero.pulse=20;s.hero.formTime=5;
+ const foe=s.enemies[0];foe.x=s.hero.x+50;foe.y=s.hero.y;foe.hp=300;foe.maxHp=300;
+ assert.equal(s.getAbilityReason('shockwave'),'recovery');s.hero.glassCounterTime=.4;
+ s.update(.016,action(['shockwave']));assert.equal(foe.hp,264);assert.equal(s.hero.glassCounterTime,0);
 });
 test('defeat records KO animation state after real incoming damage',()=>{
  const s=new CombatSession(initialSave());s.newRun(333);const e=s.enemies[0];
