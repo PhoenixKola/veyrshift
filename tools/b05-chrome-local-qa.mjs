@@ -12,7 +12,7 @@ const viewport = { width: 1280, height: 720 };
 const cli = parseArgs(process.argv.slice(2));
 const report = {
   label: 'AUTOMATED / HUMAN REVIEW PENDING',
-  scope: 'B05 local Chrome recovery; automation evidence only, never owner visual/audio approval',
+  scope: 'B05 premium form animation/VFX gameplay evidence; automation only, never owner visual/audio approval',
   runId,
   startedAt: new Date().toISOString(),
   mode: cli.headless ? 'headless supplementary' : 'headed local Chrome',
@@ -24,7 +24,7 @@ const report = {
   browser: { channel: 'chrome', launch: 'not attempted' },
   audio: { capture: 'not captured', note: 'Playwright recordVideo is video-only. Owner must record system sound and listen.' },
   acceptance: {
-    automation: 'PENDING', humanVisual: 'PENDING', humanAudio: 'PENDING', fluidAnimation: 'FAIL — existing eight-pose drafts have no in-betweens', layeredVfx: 'NOT STARTED — blocked on motion gate',
+    automation: 'PENDING', humanVisual: 'PENDING', humanAudio: 'PENDING', fluidAnimation: 'PENDING — new playable atlas motion requires owner review; old eight-pose draft remains rejected', layeredVfx: 'IMPLEMENTED CANDIDATE — visual review pending',
   },
 };
 
@@ -240,11 +240,13 @@ async function readDebugState(page) {
     return {
       mode: s.mode, room: s.room, formId: h.formId, transformed: h.transformed,
       hero: { x: h.x, y: h.y, hp: h.hp, pulse: h.pulse, dashTime: h.dashTime, guardTime: h.guardTime,
-        attackTime: h.attackTime, attackAnimTime: h.attackAnimTime, formTime: h.formTime,
-        glassCounterTime: h.glassCounterTime, locomotion: h.locomotion },
+        attackTime: h.attackTime, attackAnimTime: h.attackAnimTime, attackFormId: h.attackFormId,
+        currentAbility: h.currentAbility, abilityFormId: h.abilityFormId, formTime: h.formTime,
+        transformVisualTime: h.transformVisualTime, glassCounterTime: h.glassCounterTime, locomotion: h.locomotion },
       enemies: s.enemies.map(enemy => ({ id: enemy.id, x: enemy.x, y: enemy.y, hp: enemy.hp, telegraph: enemy.telegraph, emberMarks: enemy.emberMarks ?? 0 })),
       snapshot: s.snapshot,
       proof: c.visualProof ? { form: c.visualProof.form, elapsed: c.visualProof.elapsed } : null,
+      premiumShowcase: c.premiumShowcase ? { ...c.premiumShowcase, held: [...c.premiumShowcase.held] } : null,
       rigProof: c.rigCutoutProof ? { ...c.rigCutoutProof } : null,
       sounds: c.sound.eventLog.slice(-80).map(sound => ({ id: sound.id, gameTime: sound.gameTime, audioTime: sound.audioTime, audioState: sound.audioState })),
     };
@@ -265,7 +267,9 @@ async function measureAndSample(page, durationMs) {
         const s = c?.session, h = s?.hero;
         samples.push({ atMs: Math.round(now - first), proof: c?.visualProof ? { ...c.visualProof } : null,
           rigProof: c?.rigCutoutProof ? { ...c.rigCutoutProof } : null,
+          premiumShowcase: c?.premiumShowcase ? { form: c.premiumShowcase.form, elapsed: c.premiumShowcase.elapsed } : null,
           mode: s?.mode, formId: h?.formId, transformed: h?.transformed, formTime: h?.formTime,
+          currentAbility: h?.currentAbility, abilityFormId: h?.abilityFormId, combo: h?.combo, attackFormId: h?.attackFormId,
           dashTime: h?.dashTime, guardTime: h?.guardTime, glassCounterTime: h?.glassCounterTime,
           heroHp: h?.hp, targetHp: s?.enemies?.[0]?.hp ?? null, targetTelegraph: s?.enemies?.[0]?.telegraph ?? null });
         lastSample = now;
@@ -311,6 +315,9 @@ async function runOrdinaryGame(baseUrl) {
     if (!passed) exitCode = 1;
   };
   try {
+    await page.addInitScript(() => localStorage.setItem('veyrshift-save-v1', JSON.stringify({ version: 3, shards: 0, bestRoom: 0, runs: 0,
+      totalDefeats: 0, unlockedHeroes: ['kairo'], unlockedForms: ['ember-drive', 'glass-current'], equippedForm: 'ember-drive', precisionTrials: 5,
+      settings: { masterVolume: .75, musicVolume: .35, effectsVolume: .8, screenshake: true, particles: true, reducedFlash: false, reducedMotion: false } })));
     await page.goto(withQuery(baseUrl, { dev: '1' }), { waitUntil: 'domcontentloaded' });
     await capture(page, 'ordinary-01-title');
     await page.getByRole('button', { name: 'New Run' }).click();
@@ -323,15 +330,25 @@ async function runOrdinaryGame(baseUrl) {
     assertion('form selection reached', await page.getByRole('heading', { name: 'FORMS' }).isVisible());
     const formCards = await page.locator('.form-select-card').count();
     assertion('two prototype forms listed', formCards === 2, `Found ${formCards} form cards.`);
+    const glassCard = page.locator('.form-select-card').filter({ hasText: 'Glass Current' });
+    await glassCard.getByRole('button', { name: /EQUIP FORM/ }).click();
+    const glassSave = await page.evaluate(() => JSON.parse(localStorage.getItem('veyrshift-save-v1') ?? '{}'));
+    assertion('Glass is selected through the real form UI and saved', glassSave.equippedForm === 'glass-current', `equippedForm: ${glassSave.equippedForm}`);
+    const emberCard = page.locator('.form-select-card').filter({ hasText: 'Ember Drive' });
+    await emberCard.getByRole('button', { name: /EQUIP FORM/ }).click();
+    const emberSave = await page.evaluate(() => JSON.parse(localStorage.getItem('veyrshift-save-v1') ?? '{}'));
+    assertion('Ember form selection persists to v3 local save', emberSave.equippedForm === 'ember-drive' && emberSave.version === 3, `version: ${emberSave.version}, equippedForm: ${emberSave.equippedForm}`);
     await capture(page, 'ordinary-04-form-selection');
     await page.getByRole('button', { name: /BACK/ }).click();
     await page.getByRole('button', { name: 'Character' }).click();
     await page.getByRole('button', { name: /PLAY KAIRO/ }).click();
     const canvas = page.locator('canvas[aria-label="Combat arena"]');
     await canvas.waitFor({ state: 'visible' });
-    await page.getByRole('button', { name: /DEV.*TEST TARGET/i }).click();
+    await page.getByRole('button', { name: /DEV.*VFX CROWD/i }).click();
     await page.getByRole('button', { name: /DEV.*SET PULSE/i }).click();
     await wait(180);
+    const crowd = await readDebugState(page);
+    assertion('populated combat encounter created for VFX/frame sampling', crowd.enemies.length >= 8, `active enemies: ${crowd.enemies.length}`);
     assertion('ability HUD visible', await page.locator('.ability-ribbon').isVisible());
     assertion('form status HUD visible', await page.locator('.form-live').isVisible());
     await capture(page, 'ordinary-05-game-start');
@@ -373,11 +390,23 @@ async function runOrdinaryGame(baseUrl) {
     result.states.form = formState;
     await capture(page, 'ordinary-08-form-active');
 
+    await page.getByRole('button', { name: /DEV.*SET PULSE/i }).click();
+    await page.keyboard.press('q'); await wait(520);
+    const emberSpecial = await readDebugState(page);
+    await page.keyboard.press('f'); await wait(900);
+    const emberFinisher = await readDebugState(page);
+    assertion('ordinary Ember gameplay resolves special and finisher events', emberFinisher.sounds.some(sound => sound.id === 'ember-special') && emberFinisher.sounds.some(sound => sound.id === 'ember-finisher-hit'),
+      `recent form cues: ${emberFinisher.sounds.filter(sound => sound.id.startsWith('ember-')).map(sound => sound.id).slice(-8).join(', ')}`);
+    result.states.emberSpecial = emberSpecial; result.states.emberFinisher = emberFinisher;
+
     await page.getByRole('button', { name: /PAUSE/i }).first().click();
     assertion('pause menu opens', await page.getByRole('heading', { name: /TAKE A BREATH/ }).isVisible());
     await capture(page, 'ordinary-09-pause');
     await page.getByRole('button', { name: 'SETTINGS' }).click();
     assertion('pause settings panel opens', await page.getByRole('heading', { name: /SETTINGS.*RUN REMAINS PAUSED/ }).isVisible());
+    await page.getByLabel('Reduced flash').check();
+    const settingSave = await page.evaluate(() => JSON.parse(localStorage.getItem('veyrshift-save-v1') ?? '{}'));
+    assertion('pause setting change persists in local save', settingSave.settings?.reducedFlash === true, `reducedFlash: ${settingSave.settings?.reducedFlash}`);
     await capture(page, 'ordinary-10-pause-settings');
     await page.getByRole('button', { name: /PAUSE MENU/ }).click();
     await page.getByRole('button', { name: 'RESUME' }).click();
@@ -386,6 +415,41 @@ async function runOrdinaryGame(baseUrl) {
     await capture(page, 'ordinary-11-game-960x540');
     result.frameStats = await measureAndSample(page, 1100);
     result.states.final = await readDebugState(page);
+
+    await page.getByRole('button', { name: /PAUSE/i }).first().click();
+    await page.getByRole('button', { name: /ABANDON RUN/ }).click();
+    await page.getByRole('button', { name: /ABANDON RUN/ }).click();
+    assertion('paused run returns cleanly to the hub', await page.getByRole('button', { name: 'Forms' }).isVisible());
+    await capture(page, 'ordinary-12-return-hub');
+    await page.getByRole('button', { name: 'Forms' }).click();
+    const glassCardAgain = page.locator('.form-select-card').filter({ hasText: 'Glass Current' });
+    await glassCardAgain.getByRole('button', { name: /EQUIP FORM/ }).click();
+    const selectedGlass = await page.evaluate(() => JSON.parse(localStorage.getItem('veyrshift-save-v1') ?? '{}'));
+    assertion('Glass selection survives hub return and is saved', selectedGlass.equippedForm === 'glass-current', `equippedForm: ${selectedGlass.equippedForm}`);
+    await page.getByRole('button', { name: /BACK/ }).click();
+    await page.getByRole('button', { name: 'Character' }).click();
+    await page.getByRole('button', { name: /PLAY KAIRO/ }).click();
+    await page.locator('canvas[aria-label="Combat arena"]').waitFor({ state: 'visible' });
+    await wait(180);
+    await page.getByRole('button', { name: /DEV.*TEST TARGET/i }).click();
+    await page.getByRole('button', { name: /DEV.*SET PULSE/i }).click();
+    const glassLoad = await readDebugState(page);
+    assertion('normal run loads the newly selected Glass form', glassLoad.formId === 'glass-current', `loaded form: ${glassLoad.formId}`);
+    await page.keyboard.press('r'); await wait(250);
+    await page.getByRole('button', { name: /DEV.*SHOW TELEGRAPH/i }).click();
+    await wait(235);
+    await page.keyboard.down('ArrowRight'); await page.keyboard.down('Shift'); await wait(245);
+    await page.keyboard.up('Shift'); await page.keyboard.up('ArrowRight'); await wait(110);
+    const glassCounter = await readDebugState(page);
+    assertion('Glass dodge earns a real counter window in ordinary play', glassCounter.hero.glassCounterTime > 0, `counter window: ${glassCounter.hero.glassCounterTime.toFixed(3)}s`);
+    assertion('Glass counter is earned from the dodge event', glassCounter.sounds.some(sound => sound.id === 'glass-counter'),
+      `recent Glass cues: ${glassCounter.sounds.filter(sound => sound.id.startsWith('glass-')).map(sound => sound.id).slice(-6).join(', ')}`);
+    await page.keyboard.press('q'); await wait(620);
+    const glassSpecial = await readDebugState(page);
+    assertion('Glass counter special consumes its earned window', glassSpecial.hero.glassCounterTime === 0 && glassSpecial.sounds.some(sound => sound.id === 'glass-special'),
+      `counter: ${glassSpecial.hero.glassCounterTime.toFixed(3)}s`);
+    result.states.glassLoad = glassLoad; result.states.glassCounter = glassCounter; result.states.glassSpecial = glassSpecial;
+    await capture(page, 'ordinary-13-glass-counter');
   } catch (error) {
     assertion('ordinary flow completes without automation exception', false, error.stack ?? error.message);
   } finally {
@@ -399,46 +463,53 @@ async function runShowcase(baseUrl, form, durationMs) {
   const label = `showcase-${form}`;
   const recording = await newRecordingPage(label);
   const { page } = recording;
-  const result = { form, durationMs, assertions: [], stateSamples: [], frameStats: null };
+  const result = { form, durationMs, actualGameplay: true, cycles: 3, assertions: [], stateSamples: [], frameStats: null };
   const assertion = (name, passed, detail = '') => {
     result.assertions.push({ name, status: passed ? 'PASS' : 'FAIL', detail });
     check(`${label}: ${name}`, passed ? 'PASS' : 'FAIL', detail);
     if (!passed) exitCode = 1;
   };
   try {
-    await page.goto(withQuery(baseUrl, { b05showcase: '1' }), { waitUntil: 'domcontentloaded' });
-    const buttonName = form === 'ember-drive' ? /PLAY EMBER DRAFT/ : /PLAY GLASS DRAFT/;
+    await page.goto(withQuery(baseUrl, { b05showcase: '1', b05scale: '100', b05bg: 'dark' }), { waitUntil: 'domcontentloaded' });
+    const buttonName = form === 'ember-drive' ? /PLAY EMBER SHOWCASE/ : /PLAY GLASS SHOWCASE/;
     const button = page.getByRole('button', { name: buttonName });
     await button.waitFor({ state: 'visible' });
     const routeInitial = await readDebugState(page);
     assertion('real Vite showcase route opened', await page.locator('canvas[aria-label="Combat arena"]').isVisible());
     await capture(page, `${label}-before`);
     await button.click();
-    const proofInitial = await readDebugState(page);
-    const measurePromise = measureAndSample(page, durationMs + 450);
+    const showcaseInitial = await readDebugState(page);
+    const measurePromise = measureAndSample(page, durationMs + 400);
     await wait(250); await capture(page, `${label}-start`);
-    await wait(2100); await capture(page, `${label}-mid`);
+    await wait(durationMs / 2); await capture(page, `${label}-mid`);
     const measured = await measurePromise;
     result.frameStats = { viewport, ...measured };
     result.stateSamples = measured.samples;
     await capture(page, `${label}-end`);
     const final = await readDebugState(page);
-    result.initial = proofInitial; result.final = final;
-    assertion('proof timeline advanced', measured.samples.some(sample => sample.proof && sample.proof.elapsed > 0));
+    result.initial = showcaseInitial; result.final = final;
+    assertion('36-second normal-speed gameplay replay advanced', measured.samples.some(sample => sample.premiumShowcase && sample.premiumShowcase.elapsed > 1));
     assertion('form transformation was active during replay', measured.samples.some(sample => sample.transformed));
+    const activations = measured.samples.reduce((count, sample, index) => count + (sample.transformed && !measured.samples[index - 1]?.transformed ? 1 : 0), 0);
+    assertion('three form activations and reversions were exercised', activations >= 3 && measured.samples.some(sample => !sample.transformed), `observed activations: ${activations}`);
+    assertion('crowded encounter remained populated during the clip', measured.samples.some(sample => sample.targetHp !== null) && final.enemies.length >= 5, `remaining targets: ${final.enemies.length}`);
+    const formCuePrefix = form === 'ember-drive' ? 'ember-' : 'glass-';
+    assertion('form-specific audio events were emitted by the real event path', final.sounds.some(sound => sound.id.startsWith(formCuePrefix)),
+      `recent cues: ${final.sounds.map(sound => sound.id).slice(-12).join(', ')}`);
     if (form === 'ember-drive') {
-      const startHp = proofInitial.enemies[0]?.hp;
+      const startHp = showcaseInitial.enemies[0]?.hp;
       const endHp = final.enemies[0]?.hp;
-      assertion('Ember replay landed a real combat hit', Number.isFinite(startHp) && Number.isFinite(endHp) && endHp < startHp, `target HP: ${startHp} → ${endHp}`);
+      assertion('Ember combo and finisher landed real hitbox damage', Number.isFinite(startHp) && Number.isFinite(endHp) && endHp < startHp, `target HP: ${startHp} → ${endHp}`);
     } else {
-      assertion('Glass replay opened a counter window', measured.samples.some(sample => sample.glassCounterTime > 0));
-      const startHp = proofInitial.enemies[0]?.hp;
+      assertion('Glass dodge earned a counter window during its real gameplay segment', measured.samples.some(sample =>
+        sample.premiumShowcase?.elapsed >= 3.65 && sample.premiumShowcase?.elapsed <= 4.15 && sample.glassCounterTime > 0));
+      const startHp = showcaseInitial.enemies[0]?.hp;
       const endHp = final.enemies[0]?.hp;
       assertion('Glass counter special damaged the real target', Number.isFinite(startHp) && Number.isFinite(endHp) && endHp < startHp, `target HP: ${startHp} → ${endHp}`);
     }
-    assertion('replay completed and reverted to base state', final.proof === null && final.transformed === false, `proof active: ${Boolean(final.proof)}, transformed: ${final.transformed}`);
+    assertion('showcase completed and reverted to base state', final.premiumShowcase === null && final.transformed === false, `showcase active: ${Boolean(final.premiumShowcase)}, transformed: ${final.transformed}`);
     result.routeInitial = routeInitial;
-    result.initial = proofInitial;
+    result.initial = showcaseInitial;
     result.soundEvents = final.sounds;
     result.audioStateObserved = [...new Set(final.sounds.map(sound => sound.audioState))];
     result.audioClaim = 'Event log only; no sound was captured or heard by this automated run.';
@@ -448,6 +519,80 @@ async function runShowcase(baseUrl, form, durationMs) {
     result.telemetry = recording.telemetry;
     report.showcases ??= [];
     report.showcases.push(result);
+    await closeRecordingPage(recording, `${label}.webm`);
+  }
+}
+
+async function captureShowcaseMatrix(baseUrl, form) {
+  const label = `showcase-matrix-${form}`;
+  const cases = [
+    { scale: '100', bg: 'dark', effects: 'normal' },
+    { scale: '100', bg: 'midtone', effects: 'reduced' },
+    { scale: '75', bg: 'dark', effects: 'reduced' },
+    { scale: '75', bg: 'midtone', effects: 'normal' },
+  ];
+  const result = { form, screenshots: [], assertions: [] };
+  for (const variant of cases) {
+    const name = `${label}-${variant.scale}-${variant.bg}-${variant.effects}`;
+    const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
+    const page = await context.newPage();
+    page.setDefaultTimeout(9000);
+    const telemetry = makePageTelemetry(page, name);
+    try {
+      await page.goto(withQuery(baseUrl, { b05showcase: '1', b05scale: variant.scale, b05bg: variant.bg,
+        ...(variant.effects === 'reduced' ? { b05effects: 'reduced' } : {}) }), { waitUntil: 'domcontentloaded' });
+      const button = page.getByRole('button', { name: form === 'ember-drive' ? /PLAY EMBER SHOWCASE/ : /PLAY GLASS SHOWCASE/ });
+      await button.click(); await wait(1050);
+      const state = await readDebugState(page);
+      const pass = state?.transformed === true && state?.premiumShowcase?.form === form;
+      result.assertions.push({ name, status: pass ? 'PASS' : 'FAIL', state: { formId: state?.formId, transformed: state?.transformed, scale: variant.scale, background: variant.bg, effects: variant.effects } });
+      check(`${name}: active gameplay frame captured`, pass ? 'PASS' : 'FAIL');
+      if (!pass) exitCode = 1;
+      const fileName = `${name}.png`;
+      await capture(page, name);
+      result.screenshots.push({ path: `tests/evidence/b05/live-chrome/${runDir.split(path.sep).at(-1)}/${fileName}`, scale: variant.scale, background: variant.bg, effects: variant.effects });
+    } catch (error) {
+      result.assertions.push({ name, status: 'FAIL', error: error.stack ?? error.message });
+      check(`${name}: screenshot matrix completes`, 'FAIL', error.message); exitCode = 1;
+    } finally {
+      try { await page.close(); } catch { /* page may already be closed */ }
+      try { await context.close(); } catch { /* no-op after page close */ }
+      mergeTelemetry(telemetry);
+    }
+  }
+  report.showcasePresentationMatrix ??= [];
+  report.showcasePresentationMatrix.push(result);
+}
+
+async function runShortTransformationClip(baseUrl) {
+  const label = 'transformation-attack-reversion-short';
+  const recording = await newRecordingPage(label);
+  const { page } = recording;
+  const result = { durationMs: 7600, form: 'ember-drive', assertions: [], frameStats: null };
+  const assertion = (name, passed, detail = '') => {
+    result.assertions.push({ name, status: passed ? 'PASS' : 'FAIL', detail });
+    check(`${label}: ${name}`, passed ? 'PASS' : 'FAIL', detail);
+    if (!passed) exitCode = 1;
+  };
+  try {
+    await page.goto(withQuery(baseUrl, { b05showcase: '1', b05scale: '100', b05bg: 'dark' }), { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /PLAY EMBER SHOWCASE/ }).click();
+    const initial = await readDebugState(page);
+    const measurePromise = measureAndSample(page, result.durationMs);
+    await wait(900); await capture(page, `${label}-activation`);
+    await wait(1800); await capture(page, `${label}-attack`);
+    result.frameStats = await measurePromise;
+    result.final = await readDebugState(page);
+    assertion('clip shows an activated form during the real Vite run', result.frameStats.samples.some(sample => sample.transformed));
+    assertion('clip includes confirmed combat damage', result.final.enemies[0]?.hp < initial.enemies[0]?.hp,
+      `target HP: ${initial.enemies[0]?.hp} → ${result.final.enemies[0]?.hp}`);
+    assertion('clip includes a form reversion', result.final.transformed === false && result.final.premiumShowcase?.elapsed > 6.8,
+      `transformed: ${result.final.transformed}; timeline: ${result.final.premiumShowcase?.elapsed}`);
+  } catch (error) {
+    assertion('short transformation clip completes', false, error.stack ?? error.message);
+  } finally {
+    result.telemetry = recording.telemetry;
+    report.transformationClip = result;
     await closeRecordingPage(recording, `${label}.webm`);
   }
 }
@@ -549,8 +694,11 @@ async function run() {
   }
 
   await runOrdinaryGame(baseUrl);
-  await runShowcase(baseUrl, 'ember-drive', 5020);
-  await runShowcase(baseUrl, 'glass-current', 5060);
+  await runShowcase(baseUrl, 'ember-drive', 36000);
+  await captureShowcaseMatrix(baseUrl, 'ember-drive');
+  await runShowcase(baseUrl, 'glass-current', 36000);
+  await captureShowcaseMatrix(baseUrl, 'glass-current');
+  await runShortTransformationClip(baseUrl);
   await runRigCutoutProof(baseUrl, 1);
   await runRigCutoutProof(baseUrl, .75);
   const hasFailures = report.checks.some(item => item.status === 'FAIL');
@@ -563,7 +711,7 @@ async function run() {
     report.acceptance.automation = cli.headless ? 'SUPPLEMENTARY AUTOMATED RUN PASS — owner headed run pending' : 'AUTOMATED CHECKS PASS — human review pending';
     check('browser telemetry', 'PASS', 'No browser console errors, page exceptions, failed requests or >=400 responses were observed.');
   }
-  report.acceptance.humanVisual = 'PENDING — owner must watch the normal-speed Vite recordings/screenshots.';
+  report.acceptance.humanVisual = 'PENDING — owner must watch the normal-speed Vite recordings/screenshots at 100%/75% scale and judge animation/VFX quality.';
   report.acceptance.humanAudio = 'PENDING — Playwright video has no audio; owner must record system sound and listen.';
   report.reportStatus = report.acceptance.automation;
 }

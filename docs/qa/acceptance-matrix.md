@@ -172,3 +172,20 @@
 | Layered motion VFX | NOT STARTED | Still blocked on one successful motion-method clip. |
 
 **Recovery gate:** local automation pathway is implemented and its headless supplementary run passes. Human visual/audio acceptance, fluid animation, layered motion VFX and complete-form quality remain open; do not claim B05 complete or begin B06.
+
+## B05 premium motion/VFX playable showcase — 2026-11-06
+
+| B05 criterion | Status | Evidence / limitation |
+|---|---|---|
+| Actual Vite Ember/Glass gameplay replays | PASS (automated candidate) | Continuous normal-speed 36s videos, three cycles each, with real `CombatSession`, hitboxes, cooldowns and form events; human review pending. |
+| Ordinary equipped-form integration and save selection | PASS (automated candidate) | Both forms selected through the real Forms screen; save v3, movement, mouse hit, guard/dodge, Ember special/finisher, pause/settings/hub and Glass dodge-counter-special exercised. |
+| Ember/Glass form sprite phase routing | IMPLEMENTED CANDIDATE | Four-direction idle/run/dodge/guard/bolt/combo atlases; special/finisher reuse form combo phases. Dedicated action and hurt/KO atlases remain missing. |
+| Layered event-timed VFX | IMPLEMENTED CANDIDATE | Existing generated textures composed with moving trails and bounded deterministic visual particles; reduced effects exercised. Owner visual quality review pending. |
+| Glass counter timing | PASS (automated) | A real telegraph is dodged within Glass's simulation iframe/window; counter special consumes the earned window and damages a target. |
+| 100%/75%, dark/midtone and effects matrix | PASS (capture) | Four screenshots per form at normal/reduced effects; captures are headless proof, not aesthetic approval. |
+| Populated encounter timing and browser errors | PASS (bounded automated sample) | Seven targets remain; Chrome 156 headless timing plus report show zero console/page/network/HTTP errors. RAF values are not hardware acceptance. |
+| Audio and owner visual/game-feel signoff | NOT RUN / REQUIRED | Video is silent; event IDs/AudioContext are not listening evidence. No headed owner session or physical controller test. |
+| Selected Glass A/Ember reinterpretation runtime art | OPEN / GAP | Current runtime body art still uses B05 turnaround v3/v2 sources; selected concept proposals are not yet converted to the four-direction runtime atlases. |
+| Full V2 form contract / B06 readiness | FAIL / NOT READY | Dedicated transitions, special/finisher, hurt/KO and audio work plus owner visual/game-feel approval remain open. |
+
+**Current gate:** PARTIAL / PLAYABLE CANDIDATE / HUMAN REVIEW REQUIRED. The previous eight-pose GIFs remain rejected for motion quality; the newer atlas-based in-game sequence is a separate candidate and has not been accepted by the owner. See [`b05-animation-vfx-production-evidence.md`](b05-animation-vfx-production-evidence.md).

@@ -5,15 +5,23 @@ import { resolveAtlasSource, resolveFormAnimationAtlas, resolveHeroAnimation, ty
 import { clamp } from '../core/math.js';
 import { visualProofFrameIndex, visualRigCutoutPose, type VisualProofForm } from '../animation/visualBreakthrough.js';
 type FormVfxKey = 'activation'|'contact'|'bolt'|'special'|'finisher'|'transition';
+type FormShift = { formId: Exclude<KairoFormId,'base'>; phase: 'activate'|'deactivate'; start: number; duration: number };
+type FormParticle = { formId: Exclude<KairoFormId,'base'>; start: number; duration: number; x: number; y: number; vx: number; vy: number; size: number; angle: number; spin: number; source: 'contact'|'transition'; behind: boolean };
+const heroAlphaFor = (hero:Hero,time:number):number => hero.invuln>0&&Math.sin(time*32)>0?.62:1;
 export class CanvasRenderer {
  private ctx:CanvasRenderingContext2D;
  private reducedMotion=false;
  private reducedFlash=false;
+ private particlesEnabled=true;
  private forceB02:boolean;
  private proofAtlases:Partial<Record<VisualProofForm,HTMLImageElement>>={};
  private visualProof:{form:VisualProofForm;elapsed:number}|null=null;
  private rigCutout:HTMLImageElement|null=null;
  private rigCutoutProof:{elapsed:number;duration:number;scale:number}|null=null;
+ private formShift:FormShift|null=null;
+ private formParticles:FormParticle[]=[];
+ private proofScale=1;
+ private proofBackground:'dark'|'midtone'='dark';
  private idle=this.load('/assets/characters/kairo/b02/idle.png');
  private run=this.load('/assets/characters/kairo/b02/run.png');
  private combo=this.load('/assets/characters/kairo/b02/combo.png');
@@ -98,31 +106,90 @@ export class CanvasRenderer {
  }
  setVisualProof(form:VisualProofForm|null,elapsed=0):void {this.visualProof=form?{form,elapsed}:null;}
  setRigCutoutProof(elapsed:number|null,duration=1.7,scale=1):void {this.rigCutoutProof=elapsed===null?null:{elapsed,duration,scale};}
+ setProofDisplay(scale:1|.75,background:'dark'|'midtone'='dark'):void {this.proofScale=scale;this.proofBackground=background;}
  emit(events:CombatEvent[],clock:number):void {
   const durations:Partial<Record<CombatEvent['id'],number>>={'bolt-cast':.22,'bolt-hit':.23,'bolt-dissipate':.2,'combo-contact':.23,swing:.19,
    'shockwave-charge':.24,'shockwave-release':.48,'shockwave-hit':.22,parry:.23,block:.17,'dash-start':.24,'dash-land':.22,
    'finisher-build':.3,'finisher-hit':.38,'finisher-fade':.32,'ember-start':.5,'ember-end':.28,'ember-detonate':.36,'glass-start':.5,'glass-end':.28,'glass-counter':.3};
-  for(const event of events){const duration=durations[event.id];if(duration)this.effects.push({event,start:clock,duration});}
+  for(const event of events){
+   const duration=durations[event.id];if(duration)this.effects.push({event,start:clock,duration});
+   if((event.id==='ember-start'||event.id==='glass-start')&&event.formId&&event.formId!=='base')this.formShift={formId:event.formId,phase:'activate',start:clock,duration:.52};
+   if((event.id==='ember-end'||event.id==='glass-end')&&event.formId&&event.formId!=='base')this.formShift={formId:event.formId,phase:'deactivate',start:clock,duration:.42};
+   if(event.formId&&event.formId!=='base')this.spawnFormParticles(event,clock);
+  }
   if(this.effects.length>80)this.effects.splice(0,this.effects.length-80);
+  if(this.formParticles.length>140)this.formParticles.splice(0,this.formParticles.length-140);
+ }
+ private spawnFormParticles(event:CombatEvent,clock:number):void {
+  const formId=event.formId;if(!formId||formId==='base')return;
+  const activation=event.id==='ember-start'||event.id==='glass-start';
+  const impact=event.id==='combo-contact'||event.id==='ember-detonate'||event.id==='bolt-hit'||event.id==='shockwave-hit'||event.id==='glass-counter'||event.id==='finisher-hit'||event.id==='parry';
+  const count=activation?16:event.id==='finisher-hit'?22:event.id==='ember-detonate'?18:impact?9:event.id==='dash-start'?7:0;
+  if(!count)return;
+  let seed=(Math.floor(event.x*17+event.y*31+clock*997+(event.comboIndex??0)*211+event.id.length*73)>>>0)||1;
+  const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+  const direction=event.angle??0,behind=activation||event.id==='dash-start'||event.id==='finisher-build';
+  for(let i=0;i<count;i++){
+   const spread=(random()-.5)*(formId==='ember-drive'?1.35:1.8),angle=direction+spread;
+   const speed=(formId==='ember-drive'?42:28)+random()*(formId==='ember-drive'?154:104);
+   this.formParticles.push({formId,start:clock,duration:.34+random()*.42,x:event.x,y:event.y,
+    vx:Math.cos(angle)*speed+(formId==='glass-current'?-Math.sin(angle)*24:0),
+    vy:Math.sin(angle)*speed-(formId==='glass-current'?Math.cos(angle)*18:0),size:10+random()*13,
+    angle,spin:(random()-.5)*(formId==='ember-drive'?7:4),source:formId==='ember-drive'?'contact':'transition',behind});
+  }
+ }
+ private drawFormParticles(clock:number,behind:boolean,settings:GameSettings):void {
+  this.formParticles=this.formParticles.filter(particle=>clock-particle.start<particle.duration);
+  if(!settings.particles)return;
+  for(const particle of this.formParticles){
+   if(particle.behind!==behind)continue;
+   const progress=clamp((clock-particle.start)/particle.duration,0,1);
+   if(settings.reducedMotion&&progress>.18)continue;
+   const age=settings.reducedMotion?0:Math.max(0,clock-particle.start);
+   const gravity=particle.formId==='ember-drive'?135:8;
+   const driftX=particle.formId==='glass-current'?Math.sin(age*9+particle.angle)*8:0;
+   const image=this.formVfx[particle.formId][particle.source];
+   this.drawFormVfx(image,particle.formId,particle.x+particle.vx*age+driftX,
+    particle.y+particle.vy*age+gravity*age*age*.5,particle.angle+particle.spin*age,
+    particle.size*(1-progress*.45),particle.size*(.7+progress*.3),Math.sin(Math.PI*progress)*.58,settings);
+  }
+ }
+ private drawHeroProjectile(projectile:import('../core/types.js').Projectile,settings:GameSettings):void {
+  const angle=Math.atan2(projectile.vy,projectile.vx),formId=projectile.formId;
+  if(!formId||formId==='base'||!this.ready(this.formVfx[formId].bolt)){
+   this.drawSprite(this.vfx.bolt,projectile.x,projectile.y,angle,57,35,1,settings);return;
+  }
+  const image=this.formVfx[formId].bolt,travel=projectile.age;
+  if(settings.particles&&!settings.reducedMotion){
+   const layers=formId==='glass-current'?4:3;
+   for(let i=layers;i>0;i--){
+    const lag=.013*i,decay=1-i/(layers+1);
+    this.drawFormVfx(this.formVfx[formId].transition,formId,projectile.x-projectile.vx*lag,projectile.y-projectile.vy*lag,
+     angle+(formId==='glass-current'?-.03:.06),formId==='ember-drive'?86:70,formId==='ember-drive'?30:20,.13+decay*.16,settings);
+   }
+  }
+  const width=(formId==='ember-drive'?72:88)*(1+Math.min(.12,travel*.3));
+  this.drawFormVfx(image,formId,projectile.x,projectile.y,angle,width,formId==='ember-drive'?32:22,.94,settings);
  }
  private load(src:string):HTMLImageElement {const image=new Image();image.decoding='async';image.src=location.protocol==='file:'?new URL(`.${src}`,location.href).href:src;return image;}
  render(game:CombatSession):void {
   const c=this.ctx,w=ARENA.width,h=ARENA.height;
-  this.reducedMotion=game.save.settings.reducedMotion;this.reducedFlash=game.save.settings.reducedFlash;
+  this.reducedMotion=game.save.settings.reducedMotion;this.reducedFlash=game.save.settings.reducedFlash;this.particlesEnabled=game.save.settings.particles;
   c.clearRect(0,0,w,h);this.drawEnvironment(game.clock);
   if(game.mode==='hub'){
    this.drawHero(game.hero,0,false);this.decorativeTitle('THE WEAVE AWAITS','Activate a run from the control panel',w*.5,100);
    return;
   }
   c.save();
+  if(this.proofScale!==1){c.translate(w*(1-this.proofScale)*.5,h*(1-this.proofScale));c.scale(this.proofScale,this.proofScale);}
   const s=game.save.settings.screenshake?game.shake:0;
   if(s>.2)c.translate(Math.sin(game.clock*79)*s*.55,Math.cos(game.clock*97)*s*.55);
-  if(game.hero.transformed)this.drawFormAura(game.hero,game.clock);
+  if(game.hero.transformed)this.drawFormAura(game.hero,game.clock,game.save.settings);
   for(const p of game.particles){if(!game.save.settings.particles)continue;const a=clamp(p.life/p.maxLife,0,1);c.globalAlpha=game.save.settings.reducedFlash?Math.min(.55,a):a;
    c.fillStyle=p.color;c.beginPath();c.arc(p.x,p.y,p.size*(1.2-a*.45),0,Math.PI*2);c.fill();}
   c.globalAlpha=1;
   this.drawVfx(game.clock,true,game.save.settings);
-  for(const p of game.projectiles){if(p.source==='hero'){const angle=Math.atan2(p.vy,p.vx);const id=p.formId;if(id&&id!=='base'&&this.ready(this.formVfx[id].bolt))this.drawFormVfx(this.formVfx[id].bolt,id,p.x,p.y,angle,72,34,1,game.save.settings);else this.drawSprite(this.vfx.bolt,p.x,p.y,angle,57,35,1,game.save.settings);}}
+  for(const p of game.projectiles){if(p.source==='hero')this.drawHeroProjectile(p,game.save.settings);}
   const actors:[number,()=>void][]=[...game.enemies.map(e=>[e.y,()=>this.drawEnemy(e,game.clock,game.save.settings)] as [number,()=>void]),
    [game.hero.y,()=>this.drawHero(game.hero,game.clock,true)]];
   actors.sort((a,b)=>a[0]-b[0]);for(const [,draw] of actors)draw();
@@ -133,15 +200,16 @@ export class CanvasRenderer {
  }
  private drawEnvironment(t:number):void {
   const c=this.ctx,w=ARENA.width,h=ARENA.height;
-  const gradient=c.createLinearGradient(0,0,w,h);gradient.addColorStop(0,'#102030');gradient.addColorStop(.52,'#101a2a');gradient.addColorStop(1,'#07111e');
+  const midtone=this.proofBackground==='midtone';
+  const gradient=c.createLinearGradient(0,0,w,h);gradient.addColorStop(0,midtone?'#56535b':'#102030');gradient.addColorStop(.52,midtone?'#45444f':'#101a2a');gradient.addColorStop(1,midtone?'#343744':'#07111e');
   c.fillStyle=gradient;c.fillRect(0,0,w,h);
   // Projected 2.5D stage with layered, original floor pattern and parallax fragments.
-  const f=c.createLinearGradient(0,70,0,h);f.addColorStop(0,'#203349');f.addColorStop(1,'#142337');
+  const f=c.createLinearGradient(0,70,0,h);f.addColorStop(0,midtone?'#686572':'#203349');f.addColorStop(1,midtone?'#494956':'#142337');
   c.beginPath();c.moveTo(0,90);c.lineTo(w,90);c.lineTo(w,h);c.lineTo(0,h);c.closePath();c.fillStyle=f;c.fill();
-  c.strokeStyle='rgba(115,161,185,.105)';c.lineWidth=1;
+  c.strokeStyle=midtone?'rgba(24,27,38,.17)':'rgba(115,161,185,.105)';c.lineWidth=1;
   for(let i=-12;i<21;i++){c.beginPath();c.moveTo(i*92,-10);c.lineTo(i*92+210,h);c.stroke();}
   for(let j=0;j<12;j++){const y=94+j*j*5.0;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
-  c.strokeStyle='rgba(122,218,212,.15)';c.lineWidth=2;
+  c.strokeStyle=midtone?'rgba(30,35,48,.20)':'rgba(122,218,212,.15)';c.lineWidth=2;
   for(const [x,y,r] of [[190,178,81],[1010,510,130],[622,440,200]]){
    c.beginPath();c.ellipse(x,y,r,r*.48,-.17,0,Math.PI*2);c.stroke();
   }
@@ -207,9 +275,11 @@ export class CanvasRenderer {
    c.globalAlpha=h.invuln>0&&Math.sin(t*32)>0?.62:1;
    c.drawImage(this.rigCutout,1040,0,372,887,-29.35,-103,58.7,140);c.restore();return;
   }
+  const heroAlpha=heroAlphaFor(h,t);
+  if(this.formShift&&this.drawFormShift(h,t,heroAlpha)){c.restore();return;}
   const resolved=resolveHeroAnimation(h,t);
   const committedAbility=resolved.state==='bolt'||resolved.state==='shockwave'||resolved.state==='finisher';
-  const currentForm=committedAbility?h.abilityFormId:h.transformed?h.formId:'base';
+  const currentForm=committedAbility?h.abilityFormId:resolved.state==='combo'&&h.attackTime>0?h.attackFormId:h.transformed?h.formId:'base';
   const key=`${resolved.state}:${resolved.direction}:${currentForm}`;
   if(!this.lastAnimation){this.lastAnimation=resolved;this.lastAnimationForm=currentForm;}
   else if(`${this.lastAnimation.state}:${this.lastAnimation.direction}:${this.lastAnimationForm}`!==key){
@@ -221,11 +291,10 @@ export class CanvasRenderer {
   const renderDelta=this.previousRenderAt?Math.min(.05,Math.max(0,(now-this.previousRenderAt)/1000)):0;
   this.previousRenderAt=now;
   const blend=this.transitionRemaining>0?1-this.transitionRemaining/.07:1;
-  const heroAlpha=h.invuln>0&&Math.sin(t*32)>0?.62:1;
   const sprite=this.fallbackAtlas(resolved.atlas);
   const authored=this.authoredAtlas(resolved.atlas);
   const legacy=this.legacyAtlas(resolved.atlas);
-  const formAtlasImages:Partial<Record<Exclude<KairoFormId,'base'>,HTMLImageElement>>|null=resolved.state==='combo'?this.formCombos:resolved.state==='run'?this.formRuns:resolved.state==='idle'?this.formIdles:resolved.state==='dodge'?this.formDodges:resolved.state==='guard'||resolved.state==='parry'?this.formGuards:resolved.state==='bolt'?this.formBolts:null;
+  const formAtlasImages:Partial<Record<Exclude<KairoFormId,'base'>,HTMLImageElement>>|null=resolved.atlas==='combo'?this.formCombos:resolved.atlas==='run'?this.formRuns:resolved.atlas==='idle'?this.formIdles:resolved.atlas==='dodge'?this.formDodges:resolved.atlas==='guardParry'||resolved.atlas==='states'?resolved.state==='ember'?this.formIdles:this.formGuards:resolved.atlas==='bolt'?this.formBolts:null;
   const candidate=currentForm!=='base'?formAtlasImages?.[currentForm]:undefined;
   const formAtlasId=resolveFormAnimationAtlas(currentForm,currentForm!=='base',!!candidate&&this.ready(candidate));
   const formAtlas=formAtlasId?candidate:null;
@@ -239,6 +308,7 @@ export class CanvasRenderer {
     const oldImage=this.animationImage(this.previousAnimation,this.previousAnimationForm);
     if(this.ready(oldImage))this.drawDirectionalFrame(oldImage,this.previousAnimation,heroAlpha*(1-animationDelta));
    }
+   if(resolved.state==='dodge'&&currentForm==='glass-current')this.drawGlassAfterimages(formAtlas!,resolved,h,heroAlpha);
    this.drawDirectionalFrame(formAtlas!,resolved,heroAlpha*animationDelta);
    this.transitionRemaining=Math.max(0,this.transitionRemaining-renderDelta);
    this.lastAnimation=resolved;this.lastAnimationForm=currentForm;
@@ -287,11 +357,48 @@ export class CanvasRenderer {
    c.beginPath();c.arc(0,-12,43,h.face-.95,h.face+.95);c.stroke();}
   c.restore();
  }
+ private drawFormShift(h:Hero,t:number,alpha:number):boolean {
+  const shift=this.formShift;if(!shift)return false;
+  const state=resolveHeroAnimation(h,t).state;
+  const committed=state==='combo'&&h.attackTime>0||['bolt','shockwave','finisher'].includes(h.currentAbility??'');
+  if(shift.phase==='deactivate'&&committed){shift.start=t;return false;}
+  const raw=clamp((t-shift.start)/shift.duration,0,1);
+  if(raw>=1){this.formShift=null;return false;}
+  const blend=raw*raw*(3-2*raw);
+  const clean={...h,transformVisualTime:0};
+  const baseHero={...clean,transformed:false};
+  const formHero={...clean,transformed:true,formId:shift.formId};
+  const baseAnimation=resolveHeroAnimation(baseHero,t),formAnimation=resolveHeroAnimation(formHero,t);
+  const fromAnimation=shift.phase==='activate'?baseAnimation:formAnimation;
+  const toAnimation=shift.phase==='activate'?formAnimation:baseAnimation;
+  const fromForm=shift.phase==='activate'?'base':shift.formId;
+  const toForm=shift.phase==='activate'?shift.formId:'base';
+  const c=this.ctx;c.translate(0,-17);
+  const fromImage=this.animationImage(fromAnimation,fromForm),toImage=this.animationImage(toAnimation,toForm);
+  if(this.ready(fromImage))this.drawDirectionalFrame(fromImage,fromAnimation,alpha*(1-blend));
+  if(this.ready(toImage))this.drawDirectionalFrame(toImage,toAnimation,alpha*blend);
+  this.lastAnimation=toAnimation;this.lastAnimationForm=toForm;this.previousAnimation=null;this.previousAnimationForm=toForm;this.transitionRemaining=0;
+  return true;
+ }
+ private drawGlassAfterimages(image:HTMLImageElement,animation:ResolvedAnimation,h:Hero,alpha:number):void {
+  if(!this.particlesEnabled||this.reducedMotion||h.dashTime<=0)return;
+  const c=this.ctx;
+  for(let index=2;index>=1;index--){
+   const lag=.014*index;
+   c.save();c.globalCompositeOperation='screen';
+   c.translate(-h.vx*lag,-h.vy*lag);
+   this.drawDirectionalFrame(image,animation,alpha*(index===1?.17:.10));
+   c.restore();
+  }
+ }
  private ready(image:HTMLImageElement):boolean {return image.complete&&image.naturalWidth>0;}
  private fallbackAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {if(atlas==='idle')return this.directional.idle;if(atlas==='run')return this.directional.run;if(atlas==='dodge')return this.directional.dodge;if(atlas==='combo')return this.directional.combo;return this.directional.states;}
  private authoredAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement|null {if(atlas==='combo')return this.authored.combo;if(atlas==='locomotionTransitions')return this.authored.transitions;if(atlas==='bolt')return this.authored.bolt;if(atlas==='shockwave')return this.authored.shockwave;if(atlas==='guardParry')return this.authored.guardParry;if(atlas==='finisher')return this.authored.finisher;return null;}
  private animationImage(animation:ResolvedAnimation,formId:KairoFormId):HTMLImageElement {
-  if(formId!=='base') {const candidate=animation.atlas==='combo'?this.formCombos[formId]:animation.atlas==='run'?this.formRuns[formId]:animation.atlas==='idle'?this.formIdles[formId]:animation.atlas==='dodge'?this.formDodges[formId]:animation.atlas==='guardParry'?this.formGuards[formId]:animation.atlas==='bolt'?this.formBolts[formId]:null;if(candidate&&this.ready(candidate))return candidate;}
+  if(formId!=='base') {
+   const candidate=animation.atlas==='combo'?this.formCombos[formId]:animation.atlas==='run'?this.formRuns[formId]:animation.atlas==='idle'?this.formIdles[formId]:animation.atlas==='dodge'?this.formDodges[formId]:animation.atlas==='guardParry'?this.formGuards[formId]:animation.atlas==='states'?animation.state==='ember'?this.formIdles[formId]:this.formGuards[formId]:animation.atlas==='bolt'?this.formBolts[formId]:null;
+   if(candidate&&this.ready(candidate))return candidate;
+  }
   const authored=this.authoredAtlas(animation.atlas);return authored&&this.ready(authored)?authored:this.fallbackAtlas(animation.atlas);
  }
  private legacyAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {
@@ -311,12 +418,23 @@ export class CanvasRenderer {
   const c=this.ctx,progress=clamp(1-h.transformVisualTime/h.transformVisualDuration,0,1);const size=this.reducedMotion?110:95+progress*45;
   c.save();c.globalAlpha=(this.reducedFlash?.3:.55)*(1-progress*.55);c.drawImage(image,-size/2,-size*.55,size,size);c.restore();
  }
- private drawFormAura(h:Hero,t:number):void {
-  if(h.formId==='base')return;const images=this.formVfx[h.formId],c=this.ctx;
-  const image=h.formId==='glass-current'?images.transition:images.activation;if(!this.ready(image))return;
-  c.save();c.translate(h.x,h.y-24);c.globalAlpha=this.reducedFlash?.14:.23;
-  const pulse=this.reducedMotion?0:Math.sin(t*(h.formId==='glass-current'?2:4))*3;
-  c.drawImage(image,-66-pulse,-67-pulse,132+pulse*2,124+pulse*2);c.restore();
+ private drawFormAura(h:Hero,t:number,settings:GameSettings):void {
+  if(h.formId==='base')return;
+  const images=this.formVfx[h.formId],c=this.ctx;
+  if(!this.ready(images.activation)||!this.ready(images.transition))return;
+  const moving=settings.particles&&!settings.reducedMotion,phase=moving?t*(h.formId==='ember-drive'?1.9:-1.35):0;
+  const pulse=moving?Math.sin(t*(h.formId==='ember-drive'?3.2:1.6)):0;
+  c.save();c.translate(h.x,h.y-29);
+  if(h.formId==='ember-drive'){
+   this.drawFormVfx(images.transition,h.formId,Math.cos(phase)*8,-4+Math.sin(phase)*6,phase*.32,142+pulse*7,84+pulse*5,this.reducedFlash?.12:.20,settings);
+   this.drawFormVfx(images.activation,h.formId,0,-5,phase*.12,110+pulse*5,116+pulse*5,this.reducedFlash?.10:.16,settings);
+   if(moving)this.drawFormVfx(images.contact,h.formId,30+Math.cos(phase*1.4)*5,-31+Math.sin(phase*1.4)*5,phase*.55,46,40,.20,settings);
+  }else{
+   this.drawFormVfx(images.transition,h.formId,Math.cos(phase)*8,-2,phase*.18,134+pulse*4,120+pulse*4,this.reducedFlash?.12:.19,settings);
+   this.drawFormVfx(images.activation,h.formId,0,-7,-phase*.12,93,102,this.reducedFlash?.08:.13,settings);
+   if(moving)this.drawFormVfx(images.contact,h.formId,-24+Math.cos(phase*1.3)*7,-29+Math.sin(phase*1.3)*7,-phase*.42,42,36,.18,settings);
+  }
+  c.restore();
  }
  private drawSprite(image:HTMLImageElement,x:number,y:number,angle:number,width:number,height:number,alpha:number,settings:GameSettings):void {
   if(!this.ready(image)||alpha<=.01)return;const c=this.ctx;c.save();c.translate(x,y);c.rotate(angle);
@@ -335,34 +453,91 @@ export class CanvasRenderer {
  }
  private drawFormVfx(image:HTMLImageElement,formId:Exclude<KairoFormId,'base'>,x:number,y:number,angle:number,width:number,height:number,alpha:number,settings:GameSettings):void {
   if(!this.ready(image)||alpha<=.01)return;const c=this.ctx;c.save();c.translate(x,y);c.rotate(angle);
-  c.globalAlpha=alpha*(settings.reducedFlash ? .58 : 1);c.shadowColor=formId==='ember-drive'?'#ff995d':'#80dcf0';c.shadowBlur=settings.reducedFlash?0:5;
+  c.globalCompositeOperation='screen';c.globalAlpha=alpha*(settings.reducedFlash ? .58 : 1);c.shadowColor=formId==='ember-drive'?'#ff995d':'#80dcf0';c.shadowBlur=settings.reducedFlash?0:5;
   c.drawImage(image,-width/2,-height/2,width,height);c.restore();
  }
+ private drawLayeredFormEffect(event:CombatEvent,key:FormVfxKey,image:HTMLImageElement,progress:number,settings:GameSettings,behind:boolean):void {
+  if(!event.formId||event.formId==='base')return;
+  const formId=event.formId,images=this.formVfx[formId],moving=!settings.reducedMotion;
+  const beat=moving?Math.sin(progress*Math.PI):0,angle=event.angle??0,x=event.x,y=event.y;
+  const drift=moving?progress:0;
+  if(key==='activation'){
+   if(behind){
+    this.drawFormVfx(images.transition,formId,x,y,angle+(formId==='ember-drive'?.12:-.08),198+beat*32,154+beat*22,.54*(1-progress*.55),settings);
+    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?-.18:.12),150+beat*22,156+beat*22,.66*(1-progress*.55),settings);
+   }else if(settings.particles){
+    const orbit=moving?drift*5.5:0;
+    this.drawFormVfx(images.contact,formId,x+Math.cos(orbit)*30,y+Math.sin(orbit)*26,angle+orbit,58,48,.34*(1-progress),settings);
+    if(formId==='glass-current')this.drawFormVfx(images.bolt,formId,x-Math.cos(orbit)*28,y-Math.sin(orbit)*28,angle-orbit,48,24,.30*(1-progress),settings);
+   }
+   return;
+  }
+  if(key==='transition'){
+   if(behind){
+    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?.25:-.2),170+drift*70,84+drift*42,.54*(1-progress),settings);
+    this.drawFormVfx(images.activation,formId,x,y,angle+(formId==='ember-drive'?-.28:.2),104+beat*20,112+beat*20,.40*(1-progress),settings);
+   }else if(settings.particles){
+    this.drawFormVfx(images.contact,formId,x+Math.cos(angle+drift*2)*26,y+Math.sin(angle+drift*2)*26,angle+drift,42,36,.33*(1-progress),settings);
+   }
+   return;
+  }
+  if(key==='contact'){
+   if(behind&&settings.particles&&!settings.reducedMotion){
+    const trail=images.transition;
+    this.drawFormVfx(trail,formId,x-Math.cos(angle)*17,y-Math.sin(angle)*17,angle+(formId==='ember-drive'?.10:-.08),132+beat*34,42+beat*12,.46*(1-progress*.72),settings);
+    this.drawFormVfx(trail,formId,x-Math.cos(angle)*31,y-Math.sin(angle)*31,angle-(formId==='ember-drive'?.08:-.12),98+beat*25,30+beat*9,.27*(1-progress),settings);
+   }else if(!behind){
+    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?.08:-.06),104+beat*44,86+beat*30,.94*(1-progress*.6),settings);
+    if(settings.particles){
+     this.drawFormVfx(images.activation,formId,x+Math.cos(angle)*12,y+Math.sin(angle)*12,angle-.18,54+beat*18,50+beat*16,.48*(1-progress),settings);
+     if(event.comboIndex===3||event.id==='ember-detonate')this.drawFormVfx(images.special,formId,x,y,angle,156+beat*46,120+beat*36,.62*(1-progress),settings);
+    }
+   }
+   return;
+  }
+  if(key==='bolt'){
+   if(behind&&settings.particles&&!settings.reducedMotion){
+    this.drawFormVfx(images.transition,formId,x-Math.cos(angle)*12,y-Math.sin(angle)*12,angle+(formId==='ember-drive'?.04:-.03),128,34,.42*(1-progress*.45),settings);
+    this.drawFormVfx(images.bolt,formId,x-Math.cos(angle)*27,y-Math.sin(angle)*27,angle,88,24,.28*(1-progress),settings);
+   }else if(!behind){
+    this.drawFormVfx(image,formId,x,y,angle,event.id==='bolt-hit'?112:92,event.id==='bolt-hit'?92:34,.88*(1-progress*.5),settings);
+    if(event.id==='bolt-hit')this.drawFormVfx(images.contact,formId,x,y,angle,92,76,.52*(1-progress),settings);
+   }
+   return;
+  }
+  if(key==='special'){
+   if(behind){
+    this.drawFormVfx(images.transition,formId,x,y,angle+(formId==='ember-drive'?.2:-.12),236+drift*70,182+drift*55,.62*(1-progress*.5),settings);
+    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?Math.PI/4:0),202+drift*62,166+drift*48,.92*(1-progress*.62),settings);
+    this.drawFormVfx(images.activation,formId,x,y,angle-.22,142+beat*40,136+beat*30,.50*(1-progress),settings);
+   }else if(settings.particles){
+    this.drawFormVfx(images.contact,formId,x+Math.cos(angle)*18,y+Math.sin(angle)*18,angle,78+beat*30,65+beat*24,.46*(1-progress),settings);
+   }
+   return;
+  }
+  if(key==='finisher'){
+   if(behind&&settings.particles&&!settings.reducedMotion){
+    this.drawFormVfx(images.transition,formId,x-Math.cos(angle)*28,y-Math.sin(angle)*28,angle+(formId==='ember-drive'?.18:-.06),190+drift*55,68+drift*22,.48*(1-progress*.5),settings);
+    this.drawFormVfx(images.activation,formId,x-Math.cos(angle)*12,y-Math.sin(angle)*12,angle-.18,142+beat*34,126+beat*28,.32*(1-progress),settings);
+   }else if(!behind){
+    const width=event.id==='finisher-hit'?286:206,height=event.id==='finisher-hit'?202:146;
+    this.drawFormVfx(image,formId,x,y,angle+(formId==='ember-drive'?Math.PI/4:0),width+beat*40,height+beat*30,(event.id==='finisher-hit'?.96:.72)*(1-progress*.68),settings);
+    if(event.id==='finisher-hit'&&settings.particles)this.drawFormVfx(images.contact,formId,x,y,angle,138+beat*40,108+beat*32,.66*(1-progress),settings);
+   }
+  }
+ }
  private drawVfx(clock:number,behind:boolean,settings:GameSettings):void {
+  this.drawFormParticles(clock,behind,settings);
   this.effects=this.effects.filter(effect=>clock-effect.start<=effect.duration);
   for(const effect of this.effects){
    const id=effect.event.id;const isBehind=['shockwave-charge','shockwave-release','dash-start','dash-land'].includes(id);
    const custom=this.formVfxFor(effect.event);
-   const customBehind=custom&&(custom.key==='activation'||custom.key==='transition'||custom.key==='special');
+   const customBehind=custom&&(custom.key==='activation'||custom.key==='transition'||custom.key==='special'||custom.key==='finisher'&&id==='finisher-build');
    const p=clamp((clock-effect.start)/effect.duration,0,1),motion=settings.reducedMotion ? .48 : p;
    let angle=effect.event.angle??0;let x=effect.event.x;let y=effect.event.y;
    if(custom&&effect.event.formId&&effect.event.formId!=='base'){
-    if(behind!==customBehind){
-     if(settings.particles&&!settings.reducedMotion){
-      const formId=effect.event.formId,layer=custom.key==='contact'?this.formVfx[formId].transition:this.formVfx[formId].contact;
-      const travel=(formId==='glass-current'?-1:1)*p*18,layerAlpha=Math.sin(Math.PI*p)*.38;
-      this.drawFormVfx(layer,formId,x+Math.cos(angle)*travel,y+Math.sin(angle)*travel,angle+(formId==='glass-current'?-.2:.2),74+motion*28,64+motion*24,layerAlpha,settings);
-     }
-     continue;
-    }
-    let width=150,height=120,alpha=.8*(1-p*.65);
-    if(custom.key==='activation'){width=190+motion*90;height=190+motion*90;alpha=.82*(1-p*.72);}
-    else if(custom.key==='transition'){width=150+motion*100;height=120+motion*80;alpha=.68*(1-p);}
-    else if(custom.key==='contact'){width=100+motion*44;height=90+motion*40;alpha=.96*(1-p*.65);}
-    else if(custom.key==='bolt'){width=id==='bolt-cast'?178:118;height=id==='bolt-cast'?58:112;alpha=(id==='bolt-cast'?.92:.84)*(1-p);}
-    else if(custom.key==='special'){width=212+motion*70;height=170+motion*45;alpha=.9*(1-p*.76);}
-    else if(custom.key==='finisher'){width=(id==='finisher-hit'?270:220)+motion*60;height=width*.72;alpha=(id==='finisher-hit'?1:.78)*(1-p*.78);if(effect.event.formId==='ember-drive')angle+=Math.PI/4;}
-    this.drawFormVfx(custom.image,effect.event.formId,x,y,angle,width,height,alpha,settings);continue;
+    if(behind!==customBehind){this.drawLayeredFormEffect(effect.event,custom.key,custom.image,p,settings,behind);continue;}
+    this.drawLayeredFormEffect(effect.event,custom.key,custom.image,p,settings,behind);continue;
    }
    if(isBehind!==behind)continue;
    let image:HTMLImageElement;let width:number;let height:number;let alpha=1;

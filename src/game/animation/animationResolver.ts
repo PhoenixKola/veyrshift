@@ -32,6 +32,12 @@ const directionRows: Record<FacingDirection, number> = { front: 0, right: 1, bac
 const cardinalAngle: Record<FacingDirection, number> = { right: 0, front: Math.PI/2, left: Math.PI, back: -Math.PI/2 };
 const cardinal = (angle: number) => facingFromAngle(angle);
 
+/** Form special/finisher body clips reuse authored form combo phases until dedicated action sheets exist. */
+export function formAbilityComboFrame(formId: Exclude<KairoFormId, 'base'>, ability: 'shockwave'|'finisher', phase: number): number {
+  const chain = ability === 'finisher' ? 2 : formId === 'glass-current' ? 1 : 2;
+  return chain * 4 + Math.max(0, Math.min(3, Math.floor(phase)));
+}
+
 function comboFrame(hero: Hero): number {
   const hit = KAIRO_COMBO_HITS[Math.max(0, Math.min(2, hero.combo - 1))];
   const t = hero.attackAnimTime;
@@ -84,9 +90,13 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
   } else if (hero.currentAbility === 'bolt' && hero.abilityAnimTime < hero.abilityAnimDuration) {
     state = 'bolt'; atlas = 'bolt'; direction = cardinal(hero.actionAngle); frame = actionFrame(hero, 'bolt'); frameCount = 4;
   } else if (hero.currentAbility === 'shockwave') {
-    state = 'shockwave'; atlas = 'shockwave'; direction = hero.attackFacing; frame = actionFrame(hero, 'shockwave'); frameCount = 4;
+    state = 'shockwave'; atlas = hero.abilityFormId === 'base' ? 'shockwave' : 'combo'; direction = hero.attackFacing;
+    const phase = actionFrame(hero, 'shockwave');
+    frame = hero.abilityFormId === 'base' ? phase : formAbilityComboFrame(hero.abilityFormId, 'shockwave', phase); frameCount = hero.abilityFormId === 'base' ? 4 : 12;
   } else if (hero.currentAbility === 'finisher') {
-    state = 'finisher'; atlas = 'finisher'; direction = hero.attackFacing; frame = actionFrame(hero, 'finisher'); frameCount = 4;
+    state = 'finisher'; atlas = hero.abilityFormId === 'base' ? 'finisher' : 'combo'; direction = hero.attackFacing;
+    const phase = actionFrame(hero, 'finisher');
+    frame = hero.abilityFormId === 'base' ? phase : formAbilityComboFrame(hero.abilityFormId, 'finisher', phase); frameCount = hero.abilityFormId === 'base' ? 4 : 12;
   } else if (hero.transformed && hero.formId !== 'base' && hero.parryVisualTime > 0) {
     state = 'parry'; atlas = 'guardParry'; direction = cardinal(hero.face); frame = 2; frameCount = 4;
   } else if (hero.guardTime > 0) {

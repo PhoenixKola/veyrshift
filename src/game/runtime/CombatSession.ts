@@ -44,7 +44,7 @@ export class CombatSession {
       hp: 100, maxHp: 100, pulse: 0, maxPulse: PULSE_TUNING.max,
       dashTime: 0, dashDuration: .19, invuln: 0,
       attackTime: 0, attackAnimTime: 0, attackDuration: 0, attackStartup: 0,
-      attackHitFired: false, attackCooldown: 0, attackBuffer: 0, combo: 0, comboWindow: 0,
+      attackHitFired: false, attackCooldown: 0, attackBuffer: 0, combo: 0, comboWindow: 0, attackFormId: 'base',
       abilityCooldowns: { combo: 0, bolt: 0, shockwave: 0, guard: 0, dodge: 0, finisher: 0, emberPreview: 0 },
       currentAbility: null, abilityFormId: 'base', abilityAnimTime: 0, abilityAnimDuration: 0, abilityContactFired: false,
       guardTime: 0, parryWindow: 0, parryConsumed: false, parryVisualTime: 0,
@@ -213,6 +213,7 @@ export class CombatSession {
     const next = hero.comboWindow > 0 ? hero.combo % KAIRO_COMBO_HITS.length + 1 : 1;
     const hit = KAIRO_COMBO_HITS[next - 1];
     hero.combo = next; hero.comboWindow = .82;
+    hero.attackFormId = hero.transformed ? hero.formId : 'base';
     hero.attackFacing = facingFromAngle(hero.face); hero.face = CARDINAL_ANGLE[hero.attackFacing]; hero.actionAngle = hero.face;
     hero.attackDuration = hit.timing.windup + hit.timing.active + hit.timing.recovery;
     hero.attackTime = hero.attackDuration; hero.attackAnimTime = 0; hero.attackStartup = hit.timing.windup;

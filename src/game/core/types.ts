@@ -61,7 +61,7 @@ export interface Hero {
   hp: number; maxHp: number; pulse: number; maxPulse: number;
   dashTime: number; dashDuration: number; invuln: number;
   attackTime: number; attackAnimTime: number; attackDuration: number; attackStartup: number;
-  attackHitFired: boolean; attackCooldown: number; attackBuffer: number; combo: number; comboWindow: number;
+  attackHitFired: boolean; attackCooldown: number; attackBuffer: number; combo: number; comboWindow: number; attackFormId: KairoFormId;
   abilityCooldowns: Record<AbilityId, number>;
   currentAbility: AbilityId|null; abilityFormId: KairoFormId; abilityAnimTime: number; abilityAnimDuration: number; abilityContactFired: boolean;
   guardTime: number; parryWindow: number; parryConsumed: boolean; parryVisualTime: number;

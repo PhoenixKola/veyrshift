@@ -56,3 +56,9 @@ Run `python tools/build-b05-visual-breakthrough.py` to rebuild:
 - `art-source/b05/visual-breakthrough/manifest.json` with source bounds, timings and byte counts
 
 The runtime atlases are served only by the Vite **development** harness; they are not exported under `public/` or added to the production runtime bundle. See [visual-breakthrough QA](../qa/b05-visual-breakthrough-evidence.md).
+
+## Later B05 playable atlas continuation — 2026-11-06
+
+The rejected eight-pose drafts above remain rejected; the later production pass did not add frames to them. Instead, the actual Vite game now plays the existing four-direction form atlases, event-timed form textures and combat VFX through 36-second Ember and Glass sequences. The older sentence above about the development-only proof atlases describes the superseded eight-pose visual-breakthrough route; the newer runtime path uses the production candidate atlases under `public/assets/characters/kairo/forms/` and is documented in [premium motion/VFX evidence](../qa/b05-animation-vfx-production-evidence.md).
+
+The current runtime atlases still reference the earlier `ember-drive-turnaround-v2.png` and `glass-current-turnaround-v3.png`, not the separate Ember reinterpretation and Glass A proposal images. Do not treat those proposals as integrated masters. Runtime visual quality, smoothness, audio and owner approval remain pending; the showcases are review candidates, not completed V2 forms.

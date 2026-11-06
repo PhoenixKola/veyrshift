@@ -4,7 +4,7 @@ import { CanvasRenderer } from '../render/CanvasRenderer.js';
 import { sharedSoundBus } from '../audio/synth.js';
 import type { GameSnapshot, KeyAction, CombatEvent } from '../core/types.js';
 import type { InputDevice } from './InputController.js';
-import { visualProofCuesBetween, visualProofDuration, type VisualProofForm } from '../animation/visualBreakthrough.js';
+import { PREMIUM_SHOWCASE_DURATION, premiumShowcaseCuesBetween, visualProofCuesBetween, visualProofDuration, type VisualProofForm } from '../animation/visualBreakthrough.js';
 
 const SOUND_BY_EVENT: Partial<Record<CombatEvent['id'], string>> = {
   'combo-start': 'swing', swing: 'swing', 'bolt-cast': 'bolt-cast', 'bolt-hit': 'bolt-hit', 'bolt-dissipate': 'bolt-dissipate',
@@ -31,6 +31,7 @@ export class GameController {
   private destroyed = false;
   private visualProofEnabled: boolean;
   private visualProof: { form: VisualProofForm; elapsed: number } | null = null;
+  premiumShowcase: { form: VisualProofForm; elapsed: number; duration: number; movement: { x: number; y: number }; held: Set<KeyAction> } | null = null;
   private rigCutoutProof: { elapsed: number; duration: number; scale: number; attackFired: boolean } | null = null;
   private proofTemporaryUnlock: VisualProofForm | null = null;
 
@@ -73,6 +74,25 @@ export class GameController {
       speed: 0, flash: 0, phase: 0, attackCooldown: 99, telegraph: 0, stagger: 0, vx: 0, vy: 0 }];
     this.visualProof = { form, elapsed: 0 };
     this.renderer.setVisualProof(form, 0); this.clearInputs(); this.publish();
+  }
+  startPremiumShowcase(form: VisualProofForm): void {
+    if (!this.visualProofEnabled) return;
+    this.clearProofUnlock(); this.visualProof = null; this.renderer.setVisualProof(null);
+    this.rigCutoutProof = null; this.renderer.setRigCutoutProof(null);
+    this.sound.unlock(); this.sound.resume();
+    this.session.newRun(form === 'ember-drive' ? 51805 : 51806);
+    if (!this.session.save.unlockedForms.includes(form)) {
+      this.session.save.unlockedForms.push(form); this.proofTemporaryUnlock = form;
+    }
+    this.session.hero.formId = form; this.session.hero.x = 420; this.session.hero.y = 360;
+    this.session.hero.face = 0; this.session.hero.moveFacing = 'right'; this.session.hero.pulse = this.session.hero.maxPulse;
+    const offsets = [[70, 0], [148, -58], [166, 48], [256, -26], [278, 38], [-170, -64], [-198, 60]];
+    this.session.enemies = offsets.map(([x, y], index) => ({ id: 9600 + index, kind: 'wisp' as const,
+      x: this.session.hero.x + x, y: this.session.hero.y + y, hp: 1200, maxHp: 1200, radius: 18,
+      speed: 0, flash: 0, phase: index * .3, attackCooldown: 99, telegraph: 0, stagger: 0, vx: 0, vy: 0 }));
+    this.premiumShowcase = { form, elapsed: 0, duration: PREMIUM_SHOWCASE_DURATION,
+      movement: { x: 0, y: 0 }, held: new Set<KeyAction>() };
+    this.clearInputs(); this.publish();
   }
   startRigCutoutProof(scale = 1): void {
     if (!this.visualProofEnabled || ![.75, 1].includes(scale)) return;
@@ -127,7 +147,41 @@ export class GameController {
     let steps = 0;
     while (this.accumulator >= this.fixedStep && steps < 6) {
       if (this.session.mode === 'playing') {
-        if (this.visualProof) {
+        if (this.premiumShowcase) {
+          const showcase = this.premiumShowcase;
+          const previous = showcase.elapsed;
+          const next = Math.min(showcase.duration, showcase.elapsed + this.fixedStep);
+          const pressed = new Set<KeyAction>();
+          for (const cue of premiumShowcaseCuesBetween(showcase.form, previous, next)) {
+            if (cue.action) pressed.add(cue.action);
+            if (cue.movement) showcase.movement = cue.movement;
+            if (cue.held) showcase.held = new Set(cue.held);
+            if (cue.cue === 'enemy-telegraph') {
+              const enemy = this.session.enemies[0]; if (enemy) { enemy.x = this.session.hero.x + 180; enemy.y = this.session.hero.y; enemy.vx = 0; enemy.vy = 0; enemy.attackCooldown = 99; enemy.telegraph = .47; }
+            }
+            if (cue.cue === 'reset-targets') {
+              const hero = this.session.hero;
+              // Keep the repeated proof cycles composed around the hero and alive long enough to
+              // show the complete run. This deterministic reset exists only in this dev route.
+              hero.x = 420; hero.y = 360; hero.hp = hero.maxHp;
+              hero.face = 0; hero.moveFacing = 'right';
+              this.session.enemies.forEach((enemy, index) => {
+                const slots = [[70, 0], [116, -54], [124, 48], [196, -20], [214, 39], [-150, -58], [-176, 52]];
+                const [x, y] = slots[index] ?? [240 + index * 26, 0];
+                enemy.x = hero.x + x; enemy.y = hero.y + y; enemy.vx = 0; enemy.vy = 0;
+                enemy.stagger = 0; enemy.telegraph = 0; enemy.attackCooldown = 99;
+              });
+            }
+            if (cue.cue === 'top-up-pulse') {
+              this.session.hero.pulse = this.session.hero.maxPulse;
+              this.session.hero.hp = this.session.hero.maxHp;
+              this.session.hero.abilityCooldowns.finisher = 0;
+            }
+          }
+          this.session.update(this.fixedStep, { movement: showcase.movement, aim: { x: 1, y: 0 }, pressed, held: showcase.held });
+          showcase.elapsed = next;
+          if (next >= showcase.duration) { this.premiumShowcase = null; this.clearProofUnlock(); }
+        } else if (this.visualProof) {
           const proof = this.visualProof;
           const previous = proof.elapsed;
           proof.elapsed = Math.min(visualProofDuration(proof.form), proof.elapsed + this.fixedStep);

@@ -2,6 +2,13 @@ import type { KeyAction, KairoFormId } from '../core/types.js';
 
 export type VisualProofForm = Extract<KairoFormId, 'ember-drive' | 'glass-current'>;
 export type VisualProofCue = { at: number; action?: KeyAction; cue?: 'enemy-telegraph' };
+export type PremiumShowcaseCue = {
+  at: number;
+  action?: KeyAction;
+  movement?: { x: number; y: number };
+  held?: KeyAction[];
+  cue?: 'enemy-telegraph'|'reset-targets'|'top-up-pulse';
+};
 export type RigCutoutPose = { x: number; y: number; rotation: number };
 
 const CUTOUT_LUNGE_KEYFRAMES: readonly { at: number; x: number; y: number; rotation: number }[] = [
@@ -53,6 +60,50 @@ export const VISUAL_PROOF_CUES: Readonly<Record<VisualProofForm, readonly Visual
     { at: 4.22, action: 'transform' },
   ],
 };
+
+const showcaseCycle = (form: VisualProofForm, start: number): PremiumShowcaseCue[] => form === 'ember-drive' ? [
+  { at: start + .20, action: 'transform' },
+  { at: start + .82, movement: { x: 1, y: 0 } },
+  { at: start + 1.16, movement: { x: 0, y: 0 } },
+  { at: start + 1.45, cue: 'reset-targets', action: 'attack' },
+  { at: start + 1.79, action: 'attack' },
+  { at: start + 2.13, action: 'attack' },
+  { at: start + 2.68, action: 'bolt' },
+  { at: start + 3.25, action: 'shockwave' },
+  { at: start + 4.10, cue: 'top-up-pulse', action: 'finisher' },
+  { at: start + 5.18, cue: 'enemy-telegraph' },
+  { at: start + 5.42, movement: { x: 1, y: 0 }, action: 'dash' },
+  { at: start + 5.70, movement: { x: 0, y: 0 } },
+  { at: start + 6.82, action: 'transform' },
+] : [
+  { at: start + .20, action: 'transform' },
+  { at: start + .82, movement: { x: 1, y: 0 } },
+  { at: start + 1.16, movement: { x: 0, y: 0 } },
+  { at: start + 1.45, cue: 'reset-targets', action: 'attack' },
+  { at: start + 1.79, action: 'attack' },
+  { at: start + 2.13, action: 'attack' },
+  { at: start + 2.68, action: 'bolt' },
+  { at: start + 3.25, cue: 'enemy-telegraph' },
+  { at: start + 3.49, movement: { x: 1, y: 0 }, action: 'dash' },
+  { at: start + 3.78, movement: { x: 0, y: 0 } },
+  { at: start + 3.88, action: 'shockwave' },
+  { at: start + 4.72, cue: 'top-up-pulse', action: 'finisher' },
+  { at: start + 5.28, cue: 'enemy-telegraph' },
+  { at: start + 5.54, held: ['guard'] },
+  { at: start + 5.92, held: [] },
+  { at: start + 6.82, action: 'transform' },
+];
+
+/** Three deterministic 12-second action cycles, replayed through the real CombatSession and renderer. */
+export const PREMIUM_SHOWCASE_DURATION = 36;
+export const PREMIUM_SHOWCASE_CUES: Readonly<Record<VisualProofForm, readonly PremiumShowcaseCue[]>> = {
+  'ember-drive': [0, 12, 24].flatMap(start => showcaseCycle('ember-drive', start)),
+  'glass-current': [0, 12, 24].flatMap(start => showcaseCycle('glass-current', start)),
+};
+
+export function premiumShowcaseCuesBetween(form: VisualProofForm, from: number, to: number): readonly PremiumShowcaseCue[] {
+  return PREMIUM_SHOWCASE_CUES[form].filter(cue => cue.at > from && cue.at <= to);
+}
 
 export function visualProofDuration(form: VisualProofForm): number {
   return VISUAL_PROOF_PHASES[form].reduce((total, milliseconds) => total + milliseconds, 0) / 1000;

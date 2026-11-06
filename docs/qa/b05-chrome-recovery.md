@@ -95,3 +95,9 @@ The reinterpretation's exact prompt and reference roles are recorded in [`ember-
 The automatic pass demonstrates the QA pathway, bounded gameplay mechanics, and one cutout interpolation method only. It does not approve the concepts, show that production animation is fluid, confirm monitor refresh behavior, or establish heard audio/game feel. The full-body cutout keeps all parts stable because it moves as a single image; it is not a skeletal/limb rig. Do not infer those passes from the report.
 
 See [ADR-016](../technical/adr-016-b05-local-chrome-and-art-handoff.md), [visual-breakthrough evidence](b05-visual-breakthrough-evidence.md), and [art notes](../art/b05-visual-breakthrough-notes.md). V2 is unchanged; B05 remains partial, and B06 is out of scope.
+
+## Later premium motion/VFX production run — 2026-11-06
+
+The recovery-run results above are historical and are superseded for current B05 gameplay evidence by [`b05-animation-vfx-production-evidence.md`](b05-animation-vfx-production-evidence.md). The new proof plays the existing four-direction form atlases and event-timed VFX through the actual Vite game for 36 seconds per form, exercises both ordinary form selections and the Glass dodge counter, and captures 100%/75% normal/reduced-effect views. It does not use the rejected eight-pose GIF as the live character animation.
+
+The current captures remain **headless automated / owner review pending**. The videos contain no audio, no one listened to the mix, and the runtime body art still uses the earlier B05 turnaround references rather than the separate Glass A and Ember reinterpretation proposal images. See the premium evidence report for missing art states, current source mapping, browser metrics and the exact latest report path.
