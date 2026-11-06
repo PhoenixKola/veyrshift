@@ -1,3 +1,13 @@
+# Implementation status - current through B05 assembled-first art decision (2026-11-07)
+
+## B05 assembled-first 2D animation decision - 2026-11-07
+
+The assembled-layer art gate is **NO-GO**. A source-preserving neutral reconstruction of one existing right-facing Kairo arm is visually close at rest, but the inpainted underlayer does not contain the hidden anatomy needed for movement. Two bounded arm transforms expose a blurred gap and duplicate cuff/hand while the torso remains fixed. The experiment is external to the repository; no runtime code or production art changed.
+
+Phase C used existing, complete-body source frames for neutral/windup, first contact and third contact. These frames are consistent at full resolution and at 100x140 / 75x105 display sizes, and the existing Canvas2D production atlas already plays the base three-hit combo. A focused headless Chrome recording shows all three contacts against a target (1000 to 936 HP, matching 14 + 19 + 31 damage) with no scene errors. This is evidence of the existing whole-body animation only, not an animation improvement from this batch. Human visual/game-feel approval remains pending.
+
+Do not integrate the arm segmentation or reuse assembled-part articulation for Ember. The current full-body frame workflow is retained for the base combo only. New form art/keyframes require a coherent source-locked artist paintover and owner review. Details and the exact next artist brief are in [the B05 decision report](../qa/b05-assembled-first-animation-decision.md) and [ADR-022](adr-022-assembled-first-art-gate.md). External review package: `E:\Programming\Projects\0. Extra\veyrshift-b05-assembled-first-review-2026-11-07.zip`.
+
 # Implementation status - current through B05 art-first Ember production candidate (2026-11-06)
 
 ## B05 art-first corrective production — 2026-11-06
