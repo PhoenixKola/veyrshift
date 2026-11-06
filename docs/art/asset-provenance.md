@@ -2,6 +2,7 @@
 
 | Asset group | Source / creation method | IP / likeness check | Status | Owner signoff |
 |---|---|---|---|---|
+| B05 art-first base/Ember diagonal and action candidate (19 PNG masters, 9 runtime WebP atlases) | Original OpenAI built-in ImageGen sheets; selected and bounded by `tools/build-b05-ember-production.py`; source hashes/cells in `b05-ember-production-manifest.json` | Agent visual check and alpha-cell audit only; no external similarity clearance or owner art approval | PRODUCTION CANDIDATE — PARTIAL DIRECTIONAL COMBAT | NO |
 | Temporary game chamber geometry | Original TypeScript Canvas paths in `CanvasRenderer.ts` | Designed for this scaffold; not researched as commercial environment IP | PROXY | NO |
 | Temporary Kairo silhouette | Original TypeScript Canvas paths in `CanvasRenderer.ts` | No third-party assets used; character resemblance still requires review | PROXY | NO |
 | Enemy stand-in polygons | Original TypeScript Canvas paths | No third-party assets used | PROXY | NO |

@@ -1,5 +1,18 @@
 # QA gates (beginning of evidence matrix)
 
+## B05 art-first corrective gate — 2026-11-06
+
+| Gate | Status | Evidence / remaining work |
+|---|---|---|
+| New base/Ember art | PASS as candidate | 19 new source sheets, 76 selected new figure cells, nine exported runtime atlases; source SHA-256/crop audit in `docs/art/b05-ember-production-manifest.json`. Owner approval pending. |
+| Eight-way travel | PARTIAL | Four distinct diagonal still views and four run frames per diagonal for both forms render in game; NW/SW are mirrored to correct source gaze, reversing asymmetric details. Cardinal rows remain older art. Camera, gait, and transitions need owner visual approval. |
+| Base three-hit combo | PARTIAL | Twelve new E-facing illustrated frames; N/S/W and diagonal attack aim still use earlier work. |
+| Ember three-hit combo | PARTIAL | Twelve new E-facing armored frames; other attack directions remain earlier work. |
+| Ember special / finisher | PARTIAL | Four new right-facing body frames each use existing effect textures; other directions and new layered effect art are missing. |
+| Activation / reversion | PARTIAL | New four-frame E-facing strip and reverse; other views crossfade earlier sprites. |
+| Runtime | PARTIAL | Vite ordinary play loads new assets; focused Chrome exercise passed. Full owner input/feel check pending. |
+| Evidence | PARTIAL | Normal-speed real-game headless WebM and contact sheets prepared; owner visual/audio signoff pending. |
+
 | Item | Status | Evidence / gap |
 |---|---|---|
 | Compiled TS preview | PASS | `npm run preview:build` |

@@ -1,5 +1,5 @@
-import { facingFromAngle, movementFacingFromVector } from '../core/direction.js';
-import type { FacingDirection } from '../core/direction.js';
+import { cardinalFromTravel, facingFromAngle, movementFacingFromVector } from '../core/direction.js';
+import type { FacingDirection, TravelDirection } from '../core/direction.js';
 import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS } from '../data/kairoAbilities.js';
 import { formById } from '../data/kairoForms.js';
 import type { AbilityId, Hero, KairoFormId, LocomotionState } from '../core/types.js';
@@ -9,7 +9,7 @@ export type HeroAnimationState = 'idle'|'start'|'run'|'stop'|'dodge'|'combo'|'bo
 export interface ResolvedAnimation {
   state: HeroAnimationState;
   atlas: AnimationAtlas;
-  direction: FacingDirection;
+  direction: TravelDirection;
   directionRow: number;
   frame: number;
   frameCount: number;
@@ -28,11 +28,12 @@ export function resolveFormAnimationAtlas(formId: KairoFormId, transformed: bool
 export const resolveFormComboAtlas = resolveFormAnimationAtlas;
 export const resolveFormRunAtlas = resolveFormAnimationAtlas;
 
-const directionRows: Record<FacingDirection, number> = { front: 0, right: 1, back: 2, left: 3 };
+const directionRows: Record<TravelDirection, number> = { front: 0, right: 1, back: 2, left: 3,
+  northeast: 4, northwest: 5, southeast: 6, southwest: 7 };
 const cardinalAngle: Record<FacingDirection, number> = { right: 0, front: Math.PI/2, left: Math.PI, back: -Math.PI/2 };
 const cardinal = (angle: number) => facingFromAngle(angle);
 
-/** Form special/finisher body clips reuse authored form combo phases until dedicated action sheets exist. */
+/** Legacy form special/finisher fallback outside Ember's new right-facing action sheets. */
 export function formAbilityComboFrame(formId: Exclude<KairoFormId, 'base'>, ability: 'shockwave'|'finisher', phase: number): number {
   const chain = ability === 'finisher' ? 2 : formId === 'glass-current' ? 1 : 2;
   return chain * 4 + Math.max(0, Math.min(3, Math.floor(phase)));
@@ -41,9 +42,10 @@ export function formAbilityComboFrame(formId: Exclude<KairoFormId, 'base'>, abil
 function comboFrame(hero: Hero): number {
   const hit = KAIRO_COMBO_HITS[Math.max(0, Math.min(2, hero.combo - 1))];
   const t = hero.attackAnimTime;
-  const formHitOne = hero.attackFormId !== 'base' && hero.combo === 1;
-  const baseHitTwo = hero.attackFormId === 'base' && hero.combo === 2;
-  // Atlas columns differ: Ember hit one and base hit two land in column 1.
+  const newRightArt = hero.attackFacing === 'right' && (hero.attackFormId === 'base' || hero.attackFormId === 'ember-drive');
+  const formHitOne = !newRightArt && hero.attackFormId !== 'base' && hero.combo === 1;
+  const baseHitTwo = !newRightArt && hero.attackFormId === 'base' && hero.combo === 2;
+  // Legacy atlas columns differ: Ember hit one and base hit two land in column 1.
   // Keep contact artwork on screen through the simulation's active hit window.
   const contact = formHitOne || baseHitTwo ? 1 : 2;
   if (t < hit.timing.windup * .52) return 0;
@@ -74,7 +76,7 @@ function locomotionFrame(state: LocomotionState, time: number): number {
 export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimation {
   let state: HeroAnimationState;
   let atlas: AnimationAtlas;
-  let direction: FacingDirection;
+  let direction: TravelDirection;
   let frame = 0;
   let frameCount = 1;
   let loop = false;
@@ -83,7 +85,7 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
   else if (hero.hurtTime > 0) { state = 'hurt'; atlas = 'states'; direction = hero.hurtFacing; frame = 2; }
   else if (hero.transformVisualTime > 0) { state = 'ember'; atlas = 'states'; direction = cardinal(hero.face); frame = hero.transformVisualTime / hero.transformVisualDuration > .5 ? 0 : 1; }
   else if (hero.dashTime > 0) {
-    state = 'dodge'; atlas = 'dodge'; direction = movementFacingFromVector({ x: hero.vx, y: hero.vy }, hero.moveFacing);
+    state = 'dodge'; atlas = 'dodge'; direction = movementFacingFromVector({ x: hero.vx, y: hero.vy }, cardinalFromTravel(hero.moveFacing));
     frame = Math.min(3, Math.floor(Math.max(0, 1 - hero.dashTime / hero.dashDuration) * 4)); frameCount = 4;
   } else if (hero.attackTime > 0) {
     state = 'combo'; atlas = 'combo'; direction = hero.attackFacing;
@@ -91,13 +93,15 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
   } else if (hero.currentAbility === 'bolt' && hero.abilityAnimTime < hero.abilityAnimDuration) {
     state = 'bolt'; atlas = 'bolt'; direction = cardinal(hero.actionAngle); frame = actionFrame(hero, 'bolt'); frameCount = 4;
   } else if (hero.currentAbility === 'shockwave') {
-    state = 'shockwave'; atlas = hero.abilityFormId === 'base' ? 'shockwave' : 'combo'; direction = hero.attackFacing;
+    const authoredRight = hero.abilityFormId === 'ember-drive' && hero.attackFacing === 'right';
+    state = 'shockwave'; atlas = hero.abilityFormId === 'base' || authoredRight ? 'shockwave' : 'combo'; direction = hero.attackFacing;
     const phase = actionFrame(hero, 'shockwave');
-    frame = hero.abilityFormId === 'base' ? phase : formAbilityComboFrame(hero.abilityFormId, 'shockwave', phase); frameCount = hero.abilityFormId === 'base' ? 4 : 12;
+    frame = hero.abilityFormId === 'glass-current' || hero.abilityFormId === 'ember-drive' && !authoredRight ? formAbilityComboFrame(hero.abilityFormId, 'shockwave', phase) : phase; frameCount = atlas === 'combo' ? 12 : 4;
   } else if (hero.currentAbility === 'finisher') {
-    state = 'finisher'; atlas = hero.abilityFormId === 'base' ? 'finisher' : 'combo'; direction = hero.attackFacing;
+    const authoredRight = hero.abilityFormId === 'ember-drive' && hero.attackFacing === 'right';
+    state = 'finisher'; atlas = hero.abilityFormId === 'glass-current' || hero.abilityFormId === 'ember-drive' && !authoredRight ? 'combo' : 'finisher'; direction = hero.attackFacing;
     const phase = actionFrame(hero, 'finisher');
-    frame = hero.abilityFormId === 'base' ? phase : formAbilityComboFrame(hero.abilityFormId, 'finisher', phase); frameCount = hero.abilityFormId === 'base' ? 4 : 12;
+    frame = atlas === 'combo' ? formAbilityComboFrame(hero.abilityFormId as Exclude<KairoFormId,'base'>, 'finisher', phase) : phase; frameCount = atlas === 'combo' ? 12 : 4;
   } else if (hero.transformed && hero.formId !== 'base' && hero.parryVisualTime > 0) {
     state = 'parry'; atlas = 'guardParry'; direction = cardinal(hero.face); frame = 2; frameCount = 4;
   } else if (hero.guardTime > 0) {
@@ -105,14 +109,14 @@ export function resolveHeroAnimation(hero: Hero, clock: number): ResolvedAnimati
     state = formGuard ? 'guard' : hero.parryWindow > 0 ? 'parry' : 'guard'; atlas = 'guardParry'; direction = cardinal(hero.face);
     frame = formGuard ? hero.guardTime < .06 ? 0 : hero.parryWindow > 0 ? 1 : 3 : state === 'parry' ? 0 : 1; frameCount = 4;
   } else if (hero.locomotion === 'start' || hero.locomotion === 'stop') {
-    state = hero.locomotion; atlas = 'locomotionTransitions'; direction = hero.moveFacing;
+    state = hero.locomotion; atlas = 'locomotionTransitions'; direction = cardinalFromTravel(hero.moveFacing);
     frame = locomotionFrame(hero.locomotion, hero.locomotionTime); frameCount = 4;
   } else if (Math.hypot(hero.vx, hero.vy) > 70) {
-    state = 'run'; atlas = 'run'; direction = hero.moveFacing;
+    state = 'run'; atlas = 'run'; direction = hero.transformed && hero.formId === 'glass-current' ? cardinalFromTravel(hero.moveFacing) : hero.moveFacing;
     const stepSpeed = hero.transformed ? formById(hero.formId)?.combat.moveSpeed ?? 277 : 277;
     frame = Math.floor(hero.step / (stepSpeed * .07)) % 4; frameCount = 4; loop = true;
   } else {
-    state = 'idle'; atlas = 'idle'; direction = hero.moveFacing;
+    state = 'idle'; atlas = 'idle'; direction = hero.transformed && hero.formId === 'glass-current' ? cardinalFromTravel(hero.moveFacing) : hero.moveFacing;
     frame = Math.floor(clock / .16) % 4; frameCount = 4; loop = true;
   }
 

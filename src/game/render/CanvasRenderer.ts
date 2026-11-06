@@ -42,6 +42,10 @@ export class CanvasRenderer {
   guardParry:this.load('/assets/characters/kairo/b04/guard-parry.webp'),
   finisher:this.load('/assets/characters/kairo/b04/finisher.webp'),
  };
+ private production={
+  base:{idle:this.load('/assets/characters/kairo/b05-ember-production/base/idle.webp'),run:this.load('/assets/characters/kairo/b05-ember-production/base/run.webp'),combo:this.load('/assets/characters/kairo/b05-ember-production/base/combo.webp')},
+  'ember-drive':{idle:this.load('/assets/characters/kairo/b05-ember-production/ember/idle.webp'),run:this.load('/assets/characters/kairo/b05-ember-production/ember/run.webp'),combo:this.load('/assets/characters/kairo/b05-ember-production/ember/combo.webp'),shockwave:this.load('/assets/characters/kairo/b05-ember-production/ember/special.webp'),finisher:this.load('/assets/characters/kairo/b05-ember-production/ember/finisher.webp'),activation:this.load('/assets/characters/kairo/b05-ember-production/ember/activation.webp')},
+ };
  private formCombos:Record<Exclude<KairoFormId,'base'>,HTMLImageElement>={
   'ember-drive':this.load('/assets/characters/kairo/forms/ember-drive/combo.webp'),
   'glass-current':this.load('/assets/characters/kairo/forms/glass-current/combo.webp'),
@@ -102,7 +106,7 @@ export class CanvasRenderer {
   };
    this.rigCutout=this.load('/art-source/b05/visual-breakthrough/ember-reinterpretation-from-glass-b-reference-v1.png');
   }
-  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formIdles),...Object.values(this.formDodges),...Object.values(this.formGuards),...Object.values(this.formBolts),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),...Object.values(this.proofAtlases),this.rigCutout??this.idle,this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
+  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.production).flatMap(form=>Object.values(form)),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formIdles),...Object.values(this.formDodges),...Object.values(this.formGuards),...Object.values(this.formBolts),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),...Object.values(this.proofAtlases),this.rigCutout??this.idle,this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
  }
  setVisualProof(form:VisualProofForm|null,elapsed=0):void {this.visualProof=form?{form,elapsed}:null;}
  setRigCutoutProof(elapsed:number|null,duration=1.7,scale=1):void {this.rigCutoutProof=elapsed===null?null:{elapsed,duration,scale};}
@@ -295,9 +299,10 @@ export class CanvasRenderer {
   const authored=this.authoredAtlas(resolved.atlas);
   const legacy=this.legacyAtlas(resolved.atlas);
   const formAtlasImages:Partial<Record<Exclude<KairoFormId,'base'>,HTMLImageElement>>|null=resolved.atlas==='combo'?this.formCombos:resolved.atlas==='run'?this.formRuns:resolved.atlas==='idle'?this.formIdles:resolved.atlas==='dodge'?this.formDodges:resolved.atlas==='guardParry'||resolved.atlas==='states'?resolved.state==='ember'?this.formIdles:this.formGuards:resolved.atlas==='bolt'?this.formBolts:null;
+  const productionAtlas=this.productionImage(resolved,currentForm);
   const candidate=currentForm!=='base'?formAtlasImages?.[currentForm]:undefined;
   const formAtlasId=resolveFormAnimationAtlas(currentForm,currentForm!=='base',!!candidate&&this.ready(candidate));
-  const formAtlas=formAtlasId?candidate:null;
+  const formAtlas=productionAtlas??(formAtlasId?candidate:null);
   const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):formAtlas?'b05':authored!==null&&this.ready(authored)?'b04':resolveAtlasSource(this.ready(sprite),this.ready(legacy));
   const bob=this.reducedMotion?0:(resolved.state==='idle'?Math.sin(h.step*.018)*.7:0);
   c.translate(0,bob-17);
@@ -374,6 +379,14 @@ export class CanvasRenderer {
   if(shift.phase==='deactivate'&&committed){shift.start=t;return false;}
   const raw=clamp((t-shift.start)/shift.duration,0,1);
   if(raw>=1){this.formShift=null;return false;}
+  const activation=this.production['ember-drive'].activation;
+  if(shift.formId==='ember-drive'&&this.ready(activation)&&resolveHeroAnimation({...h,transformVisualTime:0},t).direction==='right'){
+   const frame=Math.min(3,Math.floor(raw*4));
+   const source=shift.phase==='activate'?frame:3-frame;
+   const c=this.ctx;c.translate(0,-17);c.globalAlpha=alpha;
+   c.drawImage(activation,source*192,0,192,256,-50,-103,100,140);
+   return true;
+  }
   const blend=raw*raw*(3-2*raw);
   const clean={...h,transformVisualTime:0};
   const baseHero={...clean,transformed:false};
@@ -402,9 +415,16 @@ export class CanvasRenderer {
   }
  }
  private ready(image:HTMLImageElement):boolean {return image.complete&&image.naturalWidth>0;}
+ private productionImage(animation:ResolvedAnimation,formId:KairoFormId):HTMLImageElement|null {
+  if(formId==='glass-current')return null;
+  const form=this.production[formId];
+  const candidate=animation.atlas==='idle'?form.idle:animation.atlas==='run'?form.run:animation.atlas==='combo'?form.combo:formId==='ember-drive'&&animation.direction==='right'&&animation.atlas==='shockwave'?this.production['ember-drive'].shockwave:formId==='ember-drive'&&animation.direction==='right'&&animation.atlas==='finisher'?this.production['ember-drive'].finisher:null;
+  return candidate&&this.ready(candidate)?candidate:null;
+ }
  private fallbackAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {if(atlas==='idle')return this.directional.idle;if(atlas==='run')return this.directional.run;if(atlas==='dodge')return this.directional.dodge;if(atlas==='combo')return this.directional.combo;return this.directional.states;}
  private authoredAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement|null {if(atlas==='combo')return this.authored.combo;if(atlas==='locomotionTransitions')return this.authored.transitions;if(atlas==='bolt')return this.authored.bolt;if(atlas==='shockwave')return this.authored.shockwave;if(atlas==='guardParry')return this.authored.guardParry;if(atlas==='finisher')return this.authored.finisher;return null;}
  private animationImage(animation:ResolvedAnimation,formId:KairoFormId):HTMLImageElement {
+  const production=this.productionImage(animation,formId);if(production)return production;
   if(formId!=='base') {
    const candidate=animation.atlas==='combo'?this.formCombos[formId]:animation.atlas==='run'?this.formRuns[formId]:animation.atlas==='idle'?this.formIdles[formId]:animation.atlas==='dodge'?this.formDodges[formId]:animation.atlas==='guardParry'?this.formGuards[formId]:animation.atlas==='states'?animation.state==='ember'?this.formIdles[formId]:this.formGuards[formId]:animation.atlas==='bolt'?this.formBolts[formId]:null;
    if(candidate&&this.ready(candidate))return candidate;

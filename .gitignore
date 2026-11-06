@@ -13,3 +13,5 @@ test-results/
 prompts/
 tests/evidence/b05/live-chrome/run-*/
 tests/evidence/b05/live-chrome/ember-polish-*/
+tests/evidence/b05/live-chrome/ember-production-after-*/
+tests/evidence/b05/compare-inspection/

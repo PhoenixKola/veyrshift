@@ -1,4 +1,8 @@
-# Implementation status - current through B05 Ember polish (2026-11-06)
+# Implementation status - current through B05 art-first Ember production candidate (2026-11-06)
+
+## B05 art-first corrective production — 2026-11-06
+
+New original base and Ember source sheets have been generated and exported into nine runtime atlases. Eight-way base/Ember travel now has four newly authored diagonal body views and four distinct run drawings per diagonal; cardinal travel remains on previous B03–B05 art. Right-facing three-hit base and Ember combos and Ember activation, special and finisher have new body frames in ordinary gameplay. Source provenance and precise frame extraction are in `docs/art/b05-ember-production-manifest.json`; coverage and limits are in `docs/art/b05-ember-production-notes.md`. This is a **partial** production candidate: other combat directions, diagonal attack poses, new layered VFX textures, support states and owner approval remain open. The V2 complete-form contract is not met. See ADR-019 and the new B05 art-first QA report.
 
 ## B05 Ember polish continuation — 2026-11-06
 
