@@ -140,6 +140,10 @@ The B00 handoff ran on 2026-11-05; B01 work and current evidence are recorded be
 
 **Current B05 status:** **PARTIAL / PLAYABLE CANDIDATE / HUMAN REVIEW REQUIRED.** Current live runtime art still comes from `ember-drive-turnaround-v2.png` and `glass-current-turnaround-v3.png`; the separate Glass A and Ember reinterpretation silhouettes have not been converted to runtime atlases. Dedicated form hurt/KO, start/stop, special/finisher atlases, recorded audio and active audio loops remain missing. Neither form meets the full V2 contract, and B06 remains out of scope.
 
+## Native 2D skeletal pilot — 2026-11-06
+
+**Status: NO-GO at the art gate.** One reference-anchored set of generated parts failed composition review: a visible waist gap, detached-looking arm joins, stiff symmetry, and a changed Kairo silhouette. The owner rejected it. No generated parts were copied into the repo, no rig was implemented, and production art/gameplay remain unchanged. Require a coherent manually authored source with painted joint overlaps and successful target-scale pose composites before attempting another rig. See [ADR-021](adr-021-native-2d-skeletal-pilot-art-gate.md) and the [pilot review](../qa/b05-native-2d-skeletal-animation-pilot.md).
+
 ## Rigged-3D sprite pilot feasibility — 2026-11-06
 
 **Status: INSUFFICIENT EVIDENCE / BLOCKED before modeling. NO-GO for production adoption in this batch.** The Windows development machine has no located Blender executable or registered installation, so no editable Kairo model, armature, animation, eight-view render, or Vite sprite proof was created. The pre-existing `visualRigCutoutPose` remains a single-image translation/rotation test, not a rig. No production code or B05 asset changed. See [ADR-020](adr-020-rigged-3d-sprite-pilot-feasibility.md) and the [criterion-by-criterion pilot report](../qa/animation-pipeline-rigged-3d-sprite-pilot.md).
