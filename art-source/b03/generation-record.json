@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-06",
+  "tool": "OpenAI built-in image generation (image_gen.imagegen)",
+  "modelVersion": "not exposed",
+  "seed": "not exposed",
+  "verbatimPromptTranscript": "not exposed; reconstructed constraint briefs are in generation-prompts.md",
+  "masterReference": "art-source/b03/kairo-base-turnaround.png",
+  "proposedNotApproved": true,
+  "canonicalSources": [
+    "art-source/b03/kairo-base-turnaround.png",
+    "art-source/b03/kairo-idle-4dir-source.png",
+    "art-source/b03/kairo-run-4dir-source-v2.png",
+    "art-source/b03/kairo-dodge-4dir-source-v2.png",
+    "art-source/b03/kairo-combo-1-source-v2.png",
+    "art-source/b03/kairo-combo-2-source-v2.png",
+    "art-source/b03/kairo-combo-3-source-v2.png",
+    "art-source/b03/kairo-state-4dir-source-v2-edited.png"
+  ],
+  "supersededAndRejectedSources": [
+    { "path": "art-source/b03/rejected/kairo-combo-1-first-grid-rejected.png", "reason": "shoe fragment crossed row boundary" },
+    { "path": "art-source/b03/rejected/kairo-combo-2-first-grid-rejected.png", "reason": "shoe fragment crossed row boundary" },
+    { "path": "art-source/b03/rejected/kairo-combo-3-clipped-uppercut-rejected.png", "reason": "wrist clipping and row bleed" },
+    { "path": "art-source/b03/rejected/kairo-dodge-first-grid-rejected.png", "reason": "foot fragments crossed cell bounds" },
+    { "path": "art-source/b03/rejected/kairo-run-first-grid-edge-clipped.png", "reason": "profile shoe clipped at edge" },
+    { "path": "art-source/b03/kairo-combo-1-source.png", "reason": "superseded early sheet; see retained rejected duplicate and final v2" },
+    { "path": "art-source/b03/kairo-combo-2-source.png", "reason": "superseded early sheet; see retained rejected duplicate and final v2" },
+    { "path": "art-source/b03/kairo-combo-3-source.png", "reason": "superseded early sheet; see retained rejected duplicate and final v2" },
+    { "path": "art-source/b03/kairo-dodge-4dir-source.png", "reason": "superseded first grid; see retained rejected duplicate and final v2" },
+    { "path": "art-source/b03/kairo-run-4dir-source.png", "reason": "superseded clipped profile sheet; see retained rejected duplicate and final v2" },
+    { "path": "art-source/b03/kairo-state-4dir-source-v2-raw.png", "reason": "pre-edit halo draft; edited v2 is used" },
+    { "path": "art-source/b03/kairo-state-4dir-source.png", "reason": "superseded initial state grid; retained for audit" }
+  ],
+  "licenseAndClearance": "No third-party inputs were intentionally used. No legal, trademark, or external likeness clearance was performed. Owner approval is pending."
+}

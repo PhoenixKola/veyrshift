@@ -65,3 +65,20 @@
 | Owner visual quality, animation scalability and tactile signoff | NOT RUN / REQUIRED | Generated art is proposed feasibility work. Approval must come from the owner after review. |
 
 **Gate:** B02 implementation is reviewable, but art quality and game-feel approval remain open. No production art or complete transformation claim is made.
+
+## B03 Kairo directional animation gate — 2026-11-06
+
+| B03 criterion | Status | Evidence / limitation |
+|---|---|---|
+| Four distinct authored cardinal views in live game | PASS (technical); PARTIAL (visual approval) | Front, right profile, back and left profile; no B03 mirroring. Generated master/source still proposed. |
+| Diagonal movement/attack selection | PARTIAL | Dominant-axis mapping tested, vertical wins ties. No separate diagonal assets; continuous hit arc may differ from the nearest cardinal pose. |
+| Idle/run/dodge visual loops | PARTIAL | Four frames per cardinal direction. Visible Chrome demonstrates true front/back/lateral movement. Start/stop clips, exact foot-contact events and owner smoothness review remain open. |
+| Three-hit combo, guard/parry/hurt/KO and Ember compatibility | PARTIAL | Runtime phase/state routing and real damage/KO were exercised in visible Chrome. Third strike reads as an uppercut; first two need more visual distinction and temporal tuning. |
+| Source review, consistency audit, repeatable generation pipeline | PARTIAL | 5 atlases, JSON metadata, pivots, contact sheets and rejected drafts. No manual redraw/rig; consistency audit is not exhaustively annotated frame-by-frame. Provider transcript/model/version unavailable. |
+| Assets load, transition, fallback, reduced motion and responsive views | PASS (bounded technical) | Browser test has zero failed assets/JS errors; B02 and vector fallbacks are retained; 100/75% sprite scales and 1480×920/1280×800/1920×800/960×540 captures. |
+| Performance under movement/attack vs B02 | PARTIAL | Three short paired RAF samples and RGBA atlas estimate in `b03-evidence.md`; no GPU measurement or sustained/stress profile. |
+| Automated tests, clean install, build, audit | PASS after final clean-install run | Detailed commands/results in `b03-evidence.md`. |
+| Physical gamepad feel | NOT RUN | No physical controller connected; synthetic gamepad mapping tests are not hardware proof. |
+| Owner visual and game-feel approval | NOT RUN / REQUIRED | Review the proposed master, contact sheets, equal-scale comparison and live video before production-art acceptance. |
+
+**B03 gate:** IMPLEMENTED AS A REVIEWABLE DIRECTIONAL ANIMATION PROPOSAL; important visual gates remain PARTIAL. Owner signoff is required before the assets are treated as approved production art.

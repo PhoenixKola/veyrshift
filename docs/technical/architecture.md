@@ -19,6 +19,10 @@
 
 `src/game/runtime/gamepadMapping.ts` is a device-neutral standard gamepad mapper with radial dead zones, pressed/held sets, menu edge/repeat handling and platform labels. `InputController.ts` combines it with keyboard/mouse inputs, preserves last meaningful aim, releases on blur/disconnect and pauses on focus loss. Save schema v2 carries sanitized settings and migrates v1 records. Generated Kairo/enemy/title images are loaded by `CanvasRenderer` as single state poses; the simulation remains independent of those assets.
 
+## B03 directional animation layer (2026-11-06)
+
+`src/game/core/direction.ts` maps movement/aim vectors to authored front/right/back/left directions. `src/game/animation/animationResolver.ts` resolves simulation state and timers into atlas/frame selections; it is presentation-only and does not own hitboxes or mutate combat. `CanvasRenderer.ts` preloads five B03 atlases before the game loop, crossfades direction/state changes for 70 ms, and falls back to B02 atlases then vector art. A dev-only `?anim=b02` route supports paired browser comparisons. The four-way policy, atlas map, trim/pivot metadata and unresolved visual limits are in ADR-010 and the B03 art pipeline doc.
+
 ## Technology checkpoint
 
 V2 proposes React + TypeScript + Vite with a renderer such as Phaser 3. B00 verified the React/Vite install, lockfile, build and actual Chrome render. B01 added a measured, bounded Phaser 3.90.0 comparison; it did not show a production-scale reason to migrate. Canvas2D remains the **proposed interim renderer** under ADR-008, not a final engine lock. Phaser is a dev-only dependency and its spike is excluded from production `dist/`.

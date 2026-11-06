@@ -1,5 +1,6 @@
 import { ARENA, ENCOUNTERS, ROOM_COUNT, UPGRADES } from '../data/encounters.js';
 import { clamp, distance, inArc, normalize } from '../core/math.js';
+import { facingFromVector } from '../core/direction.js';
 import { SeededRandom, stableRunSeed } from '../core/random.js';
 import { loadSave, writeSave } from '../storage/save.js';
 import type { ActionInput, Enemy, EnemyKind, GameMode, GameSnapshot, Hero, Particle, Projectile, SaveData, UpgradeId, Vec2 } from '../core/types.js';
@@ -32,7 +33,7 @@ export class CombatSession {
 
  constructor(save: SaveData = loadSave()) { this.save = save; }
  static makeHero(): Hero {return {
-  x:590,y:360,vx:0,vy:0,face:0,hp:100,maxHp:100,pulse:0,maxPulse:100,
+  x:590,y:360,vx:0,vy:0,face:0,moveFacing:'right',hurtFacing:'right',hp:100,maxHp:100,pulse:0,maxPulse:100,
   dashTime:0,dashCooldown:0,invuln:0,attackTime:0,attackAnimTime:0,attackDuration:0,attackStartup:.075,
   attackHitFired:false,attackCooldown:0,attackBuffer:0,combo:0,comboWindow:0,
   guardTime:0,parryWindow:0,specialCooldown:0,ultimateCooldown:0,
@@ -176,6 +177,7 @@ export class CombatSession {
    amount*=.3;
   }
   h.hp=Math.max(0,h.hp-amount);h.hitFlash=.28;h.hurtTime=.34;h.invuln=.65;
+  h.hurtFacing=facingFromVector({x:origin.x-h.x,y:origin.y-h.y});
   const push=normalize({x:h.x-origin.x,y:h.y-origin.y});h.vx+=push.x*185;h.vy+=push.y*185;
   this.burst(h.x,h.y,'#ff8697',18,160);this.notify('hurt');this.shake+=4;
   if(h.hp<=0){h.ko=true;h.hurtTime=.8;this.finish('defeat');}
@@ -200,8 +202,10 @@ export class CombatSession {
   const aim=normalize(input.aim);
   if(Math.hypot(aim.x,aim.y)>.001)h.face=Math.atan2(aim.y,aim.x);
   const move=normalize(input.movement);
+  if(Math.hypot(move.x,move.y)>.001)h.moveFacing=facingFromVector(move);
   if(input.pressed.has('dash')&&h.dashCooldown===0){h.dashTime=.19;h.dashCooldown=this.upgrades.includes('echo')?.69:.92;
    h.invuln=.26;const d=Math.hypot(move.x,move.y)>.1?move:{x:Math.cos(h.face),y:Math.sin(h.face)};
+   h.moveFacing=facingFromVector(d);
    h.attackTime=0;h.attackCooldown=0;h.attackHitFired=true;
    h.vx=d.x*870;h.vy=d.y*870;this.burst(h.x,h.y,'#92d7ff',16,155);this.notify('dash');}
   if(h.dashTime>0){h.dashTime=dec(h.dashTime);}

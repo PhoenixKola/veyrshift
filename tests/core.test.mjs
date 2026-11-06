@@ -8,6 +8,9 @@ import { initialSave, parseSave } from '../dist-preview/src/game/storage/save.js
 import { CombatSession } from '../dist-preview/src/game/runtime/CombatSession.js';
 import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/runtime/gamepadMapping.js';
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
+import { facingFromAngle, facingFromVector } from '../dist-preview/src/game/core/direction.js';
+import { resolveAtlasSource, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
+import { existsSync, readFileSync } from 'node:fs';
 
 const action=(pressed=[], held=[], movement={x:0,y:0}, aim={x:1,y:0})=>({pressed:new Set(pressed),held:new Set(held),movement,aim});
 const advance=(session,frames,input=action())=>{for(let i=0;i<frames;i++)session.update(1/60,input);};
@@ -20,6 +23,33 @@ test('vector and facing geometry respects an arc rather than arbitrary auto targ
  assert.deepEqual(normalize({x:0,y:0}),{x:0,y:0});
  assert.equal(inArc({x:0,y:0},0,{x:60,y:0},90,Math.PI/2),true);
  assert.equal(inArc({x:0,y:0},0,{x:-60,y:0},90,Math.PI/2),false);
+});
+test('four-direction selection covers cardinal and diagonal vectors without mirroring authored views',()=>{
+ assert.equal(facingFromVector({x:0,y:1}),'front');assert.equal(facingFromVector({x:0,y:-1}),'back');
+ assert.equal(facingFromVector({x:1,y:0}),'right');assert.equal(facingFromVector({x:-1,y:0}),'left');
+ assert.equal(facingFromVector({x:1,y:1}),'front');assert.equal(facingFromVector({x:-1,y:-1}),'back');
+ assert.equal(facingFromVector({x:1,y:.4}),'right');assert.equal(facingFromAngle(Math.PI),'left');
+ const s=new CombatSession(initialSave());s.newRun(404);s.hero.vx=100;s.hero.moveFacing='left';
+ for(const d of ['front','right','back','left']){s.hero.moveFacing=d;const pose=resolveHeroAnimation(s.hero,0);assert.equal(pose.direction,d);assert.equal(pose.mirrorX,false);}
+});
+test('animation resolver respects state priority, combo contact timing, and recovery',()=>{
+ const s=new CombatSession(initialSave());s.newRun(405);const h=s.hero;
+ assert.equal(resolveHeroAnimation(h,0).state,'idle');
+ h.vx=120;h.moveFacing='back';assert.equal(resolveHeroAnimation(h,.1).state,'run');assert.equal(resolveHeroAnimation(h,.1).direction,'back');
+ h.vx=0;h.attackTime=.36;h.attackDuration=.36;h.attackStartup=.075;h.combo=2;h.attackAnimTime=.06;
+ assert.equal(resolveHeroAnimation(h,.2).frame,5);h.attackAnimTime=.08;const contact=resolveHeroAnimation(h,.2);assert.equal(contact.frame,6);assert.equal(contact.state,'combo');
+ h.dashTime=.1;h.vx=-300;h.attackTime=0;const dodge=resolveHeroAnimation(h,.2);assert.equal(dodge.state,'dodge');assert.equal(dodge.direction,'left');
+ h.dashTime=0;h.guardTime=.1;h.parryWindow=.1;assert.equal(resolveHeroAnimation(h,.2).state,'parry');
+ h.hurtTime=.2;h.hurtFacing='front';assert.equal(resolveHeroAnimation(h,.2).state,'hurt');assert.equal(resolveHeroAnimation(h,.2).direction,'front');
+ h.ko=true;assert.equal(resolveHeroAnimation(h,.2).state,'ko');
+ h.ko=false;h.hurtTime=0;h.guardTime=0;h.transformVisualTime=.3;h.transformVisualDuration=.72;assert.equal(resolveHeroAnimation(h,.2).state,'ember');
+});
+test('directional atlas fallback is safe and B03 manifest references real runtime assets',()=>{
+ assert.equal(resolveAtlasSource(true,true),'b03');assert.equal(resolveAtlasSource(false,true),'b02');assert.equal(resolveAtlasSource(false,false),'vector');
+ const manifest=JSON.parse(readFileSync('docs/art/b03-animation-manifest.json','utf8'));
+ assert.deepEqual(manifest.directions,['front','right','back','left']);
+ for(const clip of Object.values(manifest.clips)){assert.equal(clip.frameWidth,192);assert.equal(clip.frameHeight,256);for(const path of Array.isArray(clip.runtime)?clip.runtime:[clip.runtime])assert.ok(existsSync(path),`missing ${path}`);}
+ for(const name of ['idle','run','dodge','combo','states'])assert.ok(existsSync(`dist-preview/assets/characters/kairo/b03/${name}.png`),`offline preview missing B03 ${name} atlas`);
 });
 test('planned forms are catalog records, not claimed implemented assets',()=>{
  assert.equal(HEROES.length,6);

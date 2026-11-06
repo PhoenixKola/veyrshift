@@ -1,0 +1,19 @@
+{
+  "defaultPivot": {
+    "x": 0.5,
+    "y": 0.985,
+    "rootX": 0,
+    "rootY": 0
+  },
+  "frames": {
+    "dodge.front.2": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 1 },
+    "dodge.right.2": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 1 },
+    "dodge.back.2": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 1 },
+    "dodge.left.2": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 1 },
+    "states.front.3": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 0 },
+    "states.right.3": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 0 },
+    "states.back.3": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 0 },
+    "states.left.3": { "x": 0.5, "y": 0.985, "rootX": 0, "rootY": 0 }
+  },
+  "notes": "Editable per-frame source pivots and runtime root offsets. Current values preserve the generated common baseline; no disconnected foreground components are discarded. Validate/tune in the live game."
+}

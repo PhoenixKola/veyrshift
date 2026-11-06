@@ -31,6 +31,7 @@ export interface Projectile { x: number; y: number; vx: number; vy: number; life
 export interface Particle { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; size: number; color: string; }
 export interface Hero {
   x: number; y: number; vx: number; vy: number; face: number;
+  moveFacing: import('./direction.js').FacingDirection; hurtFacing: import('./direction.js').FacingDirection;
   hp: number; maxHp: number; pulse: number; maxPulse: number;
   dashTime: number; dashCooldown: number; invuln: number;
   attackTime: number; attackAnimTime: number; attackDuration: number; attackStartup: number;

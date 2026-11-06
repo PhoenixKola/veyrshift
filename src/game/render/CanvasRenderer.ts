@@ -1,22 +1,38 @@
 import { ARENA } from '../data/encounters.js';
 import type { Enemy, Hero } from '../core/types.js';
 import type { CombatSession } from '../runtime/CombatSession.js';
+import { resolveAtlasSource, resolveHeroAnimation, type ResolvedAnimation } from '../animation/animationResolver.js';
 import { clamp } from '../core/math.js';
 export class CanvasRenderer {
  private ctx:CanvasRenderingContext2D;
  private reducedMotion=false;
  private reducedFlash=false;
+ private forceB02:boolean;
  private idle=this.load('/assets/characters/kairo/b02/idle.png');
  private run=this.load('/assets/characters/kairo/b02/run.png');
  private combo=this.load('/assets/characters/kairo/b02/combo.png');
  private dodge=this.load('/assets/characters/kairo/b02/dodge.png');
  private states=this.load('/assets/characters/kairo/b02/states.png');
+ private directional={
+  idle:this.load('/assets/characters/kairo/b03/idle.png'),
+  run:this.load('/assets/characters/kairo/b03/run.png'),
+  dodge:this.load('/assets/characters/kairo/b03/dodge.png'),
+  combo:this.load('/assets/characters/kairo/b03/combo.png'),
+  states:this.load('/assets/characters/kairo/b03/states.png'),
+ };
+ readonly assetsReady:Promise<void>;
+ private lastAnimation:ResolvedAnimation|null=null;
+ private previousAnimation:ResolvedAnimation|null=null;
+ private transitionRemaining=0;
+ private previousRenderAt=0;
  private wisp=this.load('/assets/enemies/prototype/rift-wisp.png');
- constructor(canvas:HTMLCanvasElement){
+ constructor(canvas:HTMLCanvasElement,forceB02=false){
+  this.forceB02=forceB02;
   canvas.width=ARENA.width;canvas.height=ARENA.height;
   const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D support is required');this.ctx=ctx;
+  this.assetsReady=Promise.all([...Object.values(this.directional),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
  }
- private load(src:string):HTMLImageElement {const image=new Image();image.src=src;return image;}
+ private load(src:string):HTMLImageElement {const image=new Image();image.decoding='async';image.src=location.protocol==='file:'?new URL(`.${src}`,location.href).href:src;return image;}
  render(game:CombatSession):void {
   const c=this.ctx,w=ARENA.width,h=ARENA.height;
   this.reducedMotion=game.save.settings.reducedMotion;this.reducedFlash=game.save.settings.reducedFlash;
@@ -105,26 +121,47 @@ export class CanvasRenderer {
  }
  private drawHero(h:Hero,t:number,inBattle:boolean):void {
   const c=this.ctx;this.drawShadow(h.x,h.y,1.05);c.save();c.translate(h.x,h.y);
-  const move=Math.hypot(h.vx,h.vy)>70;const bob=this.reducedMotion?0:Math.sin(h.step*.035)*2.4*(move?1:.3);
+  const resolved=resolveHeroAnimation(h,t);
+  const key=`${resolved.state}:${resolved.direction}`;
+  if(!this.lastAnimation)this.lastAnimation=resolved;
+  else if(`${this.lastAnimation.state}:${this.lastAnimation.direction}`!==key){
+   this.previousAnimation=this.lastAnimation;
+   this.transitionRemaining=this.reducedMotion?0:.07;
+  }
+  const now=performance.now();
+  const renderDelta=this.previousRenderAt?Math.min(.05,Math.max(0,(now-this.previousRenderAt)/1000)):0;
+  this.previousRenderAt=now;
+  const blend=this.transitionRemaining>0?1-this.transitionRemaining/.07:1;
+  const heroAlpha=h.invuln>0&&Math.sin(t*32)>0?.62:1;
+  const sprite=this.directional[resolved.atlas];
+  const legacy=this.legacyAtlas(resolved.atlas);
+  const atlasSource=this.forceB02?resolveAtlasSource(false,this.ready(legacy)):resolveAtlasSource(this.ready(sprite),this.ready(legacy));
+  const bob=this.reducedMotion?0:(resolved.state==='idle'?Math.sin(h.step*.018)*.7:0);
   c.translate(0,bob-17);
-  if(h.invuln>0&&Math.sin(t*32)>0)c.globalAlpha=.62;
-  let strip:HTMLImageElement;let frame=0;
-  if(h.ko){strip=this.states;frame=5;}
-  else if(h.transformVisualTime>0){strip=this.states;const progress=1-h.transformVisualTime/h.transformVisualDuration;frame=6+Math.min(1,Math.floor(progress*2));}
-  else if(h.hurtTime>0){strip=this.states;frame=h.hurtTime>.2?2:3;}
-  else if(h.dashTime>0){strip=this.dodge;frame=Math.min(5,Math.floor((1-h.dashTime/.19)*6));}
-  else if(h.attackTime>0){strip=this.combo;const pose=Math.min(3,Math.floor(h.attackAnimTime/h.attackDuration*4));frame=(Math.max(0,h.combo-1)*4)+pose;}
-  else if(h.guardTime>0){strip=this.states;frame=h.parryWindow>0?0:1;}
-  else if(move){strip=this.run;frame=Math.floor(h.step/18)%8;}
-  else {strip=this.idle;frame=Math.floor(t*8)%8;}
-  if(strip.complete&&strip.naturalWidth>0){
-   const frameWidth=128,frameHeight=160,drawWidth=100,drawHeight=140;
-   if(h.transformed){c.shadowColor='#ffb773';c.shadowBlur=14;}
+  if(atlasSource==='b03'){
+   if(h.transformVisualTime>0)this.drawIgnition(h,t);
+   if(h.dashTime>0)this.drawDashStreak(h);
+   const animationDelta=this.transitionRemaining>0?blend:1;
+   if(this.previousAnimation&&this.transitionRemaining>0){
+    const oldImage=this.directional[this.previousAnimation.atlas];
+    if(this.ready(oldImage))this.drawDirectionalFrame(oldImage,this.previousAnimation,heroAlpha*(1-animationDelta));
+   }
+   this.drawDirectionalFrame(sprite,resolved,heroAlpha*animationDelta);
+   this.transitionRemaining=Math.max(0,this.transitionRemaining-renderDelta);
+   this.lastAnimation=resolved;
+   if(this.transitionRemaining===0)this.previousAnimation=null;
+   c.restore();return;
+  }
+  // If B03 atlases fail to load, use the B02 strip where available, then the vector fallback below.
+  if(atlasSource==='b02'){
    if(Math.cos(h.face)<0)c.scale(-1,1);
    if(h.transformVisualTime>0)this.drawIgnition(h,t);
    if(h.dashTime>0)this.drawDashStreak(h);
-   c.drawImage(strip,frame*frameWidth,0,frameWidth,frameHeight,-drawWidth/2,-drawHeight+37,drawWidth,drawHeight);
-   if(h.transformed&&h.attackTime>0){c.globalAlpha=.55;c.globalCompositeOperation='screen';c.drawImage(strip,frame*frameWidth,0,frameWidth,frameHeight,-drawWidth/2-2,-drawHeight+37,drawWidth+4,drawHeight);c.globalCompositeOperation='source-over';}
+   const frames=resolved.atlas==='idle'||resolved.atlas==='run'?8:resolved.atlas==='combo'?12:resolved.atlas==='dodge'?6:8;
+   const fw=legacy.naturalWidth/frames;
+   c.globalAlpha=heroAlpha;
+   c.drawImage(legacy,resolved.frame%frames*fw,0,fw,legacy.naturalHeight,-50,-103,100,140);
+   c.globalAlpha=1;
    c.restore();return;
   }
   c.rotate(h.dashTime>0?-.27*Math.sin(h.face):0);
@@ -143,6 +180,19 @@ export class CanvasRenderer {
   c.fillStyle='#f2d4a6';c.fillRect(29,-7,8,10);c.restore();
   if(inBattle&&h.guardTime>0){c.strokeStyle='#b3f5e7';c.lineWidth=4;c.globalAlpha=.8;
    c.beginPath();c.arc(0,-12,43,h.face-.95,h.face+.95);c.stroke();}
+  c.restore();
+ }
+ private ready(image:HTMLImageElement):boolean {return image.complete&&image.naturalWidth>0;}
+ private legacyAtlas(atlas:ResolvedAnimation['atlas']):HTMLImageElement {
+  if(atlas==='idle')return this.idle;if(atlas==='run')return this.run;if(atlas==='dodge')return this.dodge;
+  if(atlas==='combo')return this.combo;return this.states;
+ }
+ private drawDirectionalFrame(image:HTMLImageElement,animation:ResolvedAnimation,alpha:number):void {
+  if(alpha<=0)return;
+  const c=this.ctx,frameWidth=192,frameHeight=256;
+  c.save();c.globalAlpha=alpha;
+  if(this.reducedFlash&&this.directional.states===image&&animation.state==='hurt')c.globalAlpha*=.72;
+  c.drawImage(image,animation.frame*frameWidth,animation.directionRow*frameHeight,frameWidth,frameHeight,-50,-103,100,140);
   c.restore();
  }
  private drawDashStreak(h:Hero):void {

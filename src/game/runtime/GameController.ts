@@ -18,17 +18,16 @@ export class GameController {
  private readonly fixedStep = 1/60;
  private publishedMode = '';
  private destroyed = false;
- constructor(canvas: HTMLCanvasElement, private onSnapshot: (value:GameSnapshot)=>void, onDeviceChange:(device:InputDevice)=>void=()=>undefined){
-  this.renderer = new CanvasRenderer(canvas);
+ constructor(canvas: HTMLCanvasElement, private onSnapshot: (value:GameSnapshot)=>void, onDeviceChange:(device:InputDevice)=>void=()=>undefined, forceB02=false){
+  this.renderer = new CanvasRenderer(canvas,forceB02);
   this.input = new InputController(canvas,this.session.width,this.session.height,onDeviceChange,()=>{
    if(this.session.mode==='playing')this.session.pause();
    this.publish();
   });
   this.sound.setVolumes(this.session.save.settings.masterVolume,this.session.save.settings.effectsVolume);
-  this.renderer.render(this.session);
   this.publish();
  }
- start():void {if(this.destroyed)throw new Error('Cannot restart a disposed controller');this.input.start();this.previous=performance.now();this.raf=requestAnimationFrame(this.frame);}
+ start():void {if(this.destroyed)throw new Error('Cannot restart a disposed controller');this.input.start();this.previous=performance.now();void this.renderer.assetsReady.then(()=>{if(!this.destroyed)this.raf=requestAnimationFrame(this.frame);});}
  dispose():void {this.destroyed=true;cancelAnimationFrame(this.raf);this.input.stop();}
  newRun(seed?:number):void {this.session.newRun(seed);this.publish();}
  reward(choice:number):void {this.session.chooseReward(choice);this.publish();}

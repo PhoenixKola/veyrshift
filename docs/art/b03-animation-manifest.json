@@ -1,0 +1,3877 @@
+{
+  "status": "B03 directional animation implementation; generated art is proposed and owner review remains pending",
+  "date": "2026-11-06",
+  "directions": [
+    "front",
+    "right",
+    "back",
+    "left"
+  ],
+  "diagonalPolicy": "four authored cardinal views; select the dominant world axis (vertical wins ties), with 70 ms crossfade on direction changes; diagonals are mapped, not separately authored",
+  "cell": {
+    "width": 192,
+    "height": 256,
+    "runtimeAnchor": [
+      96,
+      248
+    ]
+  },
+  "pivotOverrides": "tools/b03-frame-overrides.json; per-frame source pivot and root offsets are editable; default uses the common source-grid foot line",
+  "cleanup": {
+    "alphaFloor": 32,
+    "alphaThreshold": "Only nonzero alpha values <= 32 are cleared as low-opacity edge contamination after contact-sheet review; disconnected foreground components are reported, never deleted."
+  },
+  "rejectedSources": [
+    {
+      "source": "art-source/b03/rejected/kairo-combo-1-first-grid-rejected.png",
+      "reason": "vertical grid bleed placed cropped shoes above the next row"
+    },
+    {
+      "source": "art-source/b03/rejected/kairo-combo-2-first-grid-rejected.png",
+      "reason": "vertical grid bleed placed cropped shoes above the next row"
+    },
+    {
+      "source": "art-source/b03/rejected/kairo-combo-3-clipped-uppercut-rejected.png",
+      "reason": "uppercut wrist clipped at canvas edge and grid fragments"
+    },
+    {
+      "source": "art-source/b03/rejected/kairo-dodge-first-grid-rejected.png",
+      "reason": "extended feet crossed cell bounds and appeared as detached fragments"
+    },
+    {
+      "source": "art-source/b03/rejected/kairo-run-first-grid-edge-clipped.png",
+      "reason": "extended profile shoe was clipped by the source cell edge"
+    },
+    {
+      "source": "art-source/b03/kairo-combo-1-source.png",
+      "reason": "superseded early grid; a rejected copy is retained and v2 is used"
+    },
+    {
+      "source": "art-source/b03/kairo-combo-2-source.png",
+      "reason": "superseded early grid; a rejected copy is retained and v2 is used"
+    },
+    {
+      "source": "art-source/b03/kairo-combo-3-source.png",
+      "reason": "superseded early grid; a rejected copy is retained and v2 is used"
+    },
+    {
+      "source": "art-source/b03/kairo-dodge-4dir-source.png",
+      "reason": "superseded first grid; a rejected copy is retained and v2 is used"
+    },
+    {
+      "source": "art-source/b03/kairo-run-4dir-source.png",
+      "reason": "superseded clipped profile grid; a rejected copy is retained and v2 is used"
+    },
+    {
+      "source": "art-source/b03/kairo-state-4dir-source-v2-raw.png",
+      "reason": "pre-edit halo draft; edited v2 is used"
+    },
+    {
+      "source": "art-source/b03/kairo-state-4dir-source.png",
+      "reason": "superseded initial grid retained for audit"
+    }
+  ],
+  "clips": {
+    "idle": {
+      "source": "art-source/b03/kairo-idle-4dir-source.png",
+      "runtime": "public/assets/characters/kairo/b03/idle.png",
+      "grid": {
+        "columns": 4,
+        "rows": 4,
+        "layout": "rows=directions front,right,back,left; columns=frames"
+      },
+      "frameCountPerDirection": 4,
+      "frameWidth": 192,
+      "frameHeight": 256,
+      "uniformClipScale": 0.628571,
+      "loop": true,
+      "frameSeconds": 0.16,
+      "alphaFloorClearedPixelCount": 112629,
+      "disconnectedComponentsDeleted": 0,
+      "frames": [
+        {
+          "direction": "front",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            57,
+            5,
+            230,
+            360
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            33470
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            55,
+            8,
+            227,
+            360
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            33125
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            38,
+            10,
+            225,
+            360
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            32776
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            41,
+            13,
+            225,
+            361
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            33140
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            75,
+            6,
+            229,
+            360
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            27282
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            67,
+            8,
+            227,
+            359
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            27749
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            42,
+            12,
+            223,
+            360
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            27890
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            47,
+            11,
+            221,
+            360
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            27180
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            64,
+            9,
+            231,
+            357
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            32102
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            61,
+            7,
+            230,
+            357
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            32360,
+            1,
+            1
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            56,
+            10,
+            224,
+            357
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            31392
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            51,
+            12,
+            221,
+            357
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            32302
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            55,
+            5,
+            217,
+            358
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            26481
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            51,
+            7,
+            225,
+            358
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            27609
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            47,
+            12,
+            231,
+            358
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            28428
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            41,
+            12,
+            212,
+            358
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.628571,
+          "components": [
+            26870
+          ]
+        }
+      ],
+      "bytes": 612545,
+      "directions": [
+        "front",
+        "right",
+        "back",
+        "left"
+      ]
+    },
+    "run": {
+      "source": "art-source/b03/kairo-run-4dir-source-v2.png",
+      "runtime": "public/assets/characters/kairo/b03/run.png",
+      "grid": {
+        "columns": 4,
+        "rows": 4,
+        "layout": "rows=directions front,right,back,left; columns=frames"
+      },
+      "frameCountPerDirection": 4,
+      "frameWidth": 192,
+      "frameHeight": 256,
+      "uniformClipScale": 0.786026,
+      "loop": true,
+      "frameSeconds": 0.07,
+      "alphaFloorClearedPixelCount": 338409,
+      "disconnectedComponentsDeleted": 0,
+      "frames": [
+        {
+          "direction": "front",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 0,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            129,
+            25,
+            247,
+            261
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            15463
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 1,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            116,
+            22,
+            248,
+            260
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            16170,
+            1
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 2,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            117,
+            24,
+            250,
+            262
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            17072
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 3,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            113,
+            23,
+            246,
+            262
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            17345
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 0,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            82,
+            21,
+            302,
+            257
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            19477
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 1,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            99,
+            23,
+            265,
+            257
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            16267
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 2,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            92,
+            22,
+            276,
+            256
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            16509
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 3,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            87,
+            24,
+            290,
+            257
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            16260
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 0,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            138,
+            17,
+            245,
+            260
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            14254
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 1,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            134,
+            15,
+            237,
+            260
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            13953
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 2,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            129,
+            15,
+            235,
+            260
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            14473
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 3,
+            "width": 362,
+            "height": 271
+          },
+          "sourceAlphaBounds": [
+            123,
+            14,
+            238,
+            260
+          ],
+          "sourcePivot": [
+            181,
+            267
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            14776
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 0,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            81,
+            23,
+            310,
+            257
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            18628
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 1,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            107,
+            24,
+            268,
+            257
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            16367
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 2,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            96,
+            19,
+            281,
+            257
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            16945
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 3,
+            "width": 362,
+            "height": 272
+          },
+          "sourceAlphaBounds": [
+            73,
+            23,
+            261,
+            257
+          ],
+          "sourcePivot": [
+            181,
+            268
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.786026,
+          "components": [
+            16126
+          ]
+        }
+      ],
+      "bytes": 539018,
+      "directions": [
+        "front",
+        "right",
+        "back",
+        "left"
+      ]
+    },
+    "dodge": {
+      "source": "art-source/b03/kairo-dodge-4dir-source-v2.png",
+      "runtime": "public/assets/characters/kairo/b03/dodge.png",
+      "grid": {
+        "columns": 4,
+        "rows": 4,
+        "layout": "rows=directions front,right,back,left; columns=frames"
+      },
+      "frameCountPerDirection": 4,
+      "frameWidth": 192,
+      "frameHeight": 256,
+      "uniformClipScale": 0.842912,
+      "loop": false,
+      "frameSeconds": 0.0475,
+      "alphaFloorClearedPixelCount": 94999,
+      "disconnectedComponentsDeleted": 0,
+      "frames": [
+        {
+          "direction": "front",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            78,
+            85,
+            195,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            19197
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            60,
+            113,
+            187,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            18242
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            50,
+            118,
+            212,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            249.0
+          ],
+          "rootOffset": [
+            0.0,
+            1.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            18504
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            81,
+            85,
+            194,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            19340
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            85,
+            84,
+            185,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            16412
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            58,
+            111,
+            187,
+            347
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            15761
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            42,
+            119,
+            198,
+            349
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            249.0
+          ],
+          "rootOffset": [
+            0.0,
+            1.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            17384,
+            1
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            82,
+            85,
+            187,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            16888
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            83,
+            84,
+            201,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            18768
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            80,
+            113,
+            207,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            17677
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            79,
+            121,
+            239,
+            347
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            249.0
+          ],
+          "rootOffset": [
+            0.0,
+            1.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            18326,
+            1
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            85,
+            84,
+            203,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            18898
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            84,
+            82,
+            188,
+            346
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            16146
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            71,
+            116,
+            192,
+            346
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            15241
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            69,
+            126,
+            220,
+            346
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            249.0
+          ],
+          "rootOffset": [
+            0.0,
+            1.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            16686
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            90,
+            82,
+            193,
+            346
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.842912,
+          "components": [
+            16490
+          ]
+        }
+      ],
+      "bytes": 631441,
+      "directions": [
+        "front",
+        "right",
+        "back",
+        "left"
+      ]
+    },
+    "states": {
+      "source": "art-source/b03/kairo-state-4dir-source-v2-edited.png",
+      "runtime": "public/assets/characters/kairo/b03/states.png",
+      "grid": {
+        "columns": 4,
+        "rows": 4,
+        "layout": "rows=directions front,right,back,left; columns=frames"
+      },
+      "frameCountPerDirection": 4,
+      "frameWidth": 192,
+      "frameHeight": 256,
+      "uniformClipScale": 0.791367,
+      "loop": false,
+      "frameSeconds": null,
+      "alphaFloorClearedPixelCount": 152459,
+      "disconnectedComponentsDeleted": 0,
+      "frames": [
+        {
+          "direction": "front",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            63,
+            77,
+            214,
+            356
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            23002
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            61,
+            77,
+            214,
+            356
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            23610,
+            1,
+            1
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            62,
+            83,
+            236,
+            356
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            24718,
+            1
+          ]
+        },
+        {
+          "direction": "front",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 0,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            47,
+            184,
+            236,
+            359
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            19061,
+            1
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            70,
+            75,
+            199,
+            355
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            20581
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            73,
+            74,
+            212,
+            355
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            21864
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            75,
+            78,
+            230,
+            355
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            22596,
+            1
+          ]
+        },
+        {
+          "direction": "right",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 1,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            38,
+            180,
+            247,
+            350
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            18002
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            61,
+            61,
+            215,
+            340
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            23198
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            56,
+            61,
+            220,
+            339
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            24138
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            52,
+            65,
+            228,
+            337
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            23555
+          ]
+        },
+        {
+          "direction": "back",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 2,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            33,
+            163,
+            238,
+            333
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            19783,
+            1,
+            1
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 0,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            76,
+            45,
+            211,
+            325
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            20520,
+            1
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 1,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            35,
+            44,
+            224,
+            326
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            21772
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 2,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            45,
+            49,
+            212,
+            325
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            23098
+          ]
+        },
+        {
+          "direction": "left",
+          "frame": 3,
+          "sourceGridCell": {
+            "row": 3,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            20,
+            152,
+            226,
+            322
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.791367,
+          "components": [
+            17450
+          ]
+        }
+      ],
+      "bytes": 662798,
+      "directions": [
+        "front",
+        "right",
+        "back",
+        "left"
+      ]
+    },
+    "combo": {
+      "source": [
+        "art-source/b03/kairo-combo-1-source-v2.png",
+        "art-source/b03/kairo-combo-2-source-v2.png",
+        "art-source/b03/kairo-combo-3-source-v2.png"
+      ],
+      "runtime": "public/assets/characters/kairo/b03/combo.png",
+      "grid": {
+        "columns": 12,
+        "rows": 4,
+        "layout": "rows=directions front,right,back,left; columns=hit1[4],hit2[4],hit3[4] phases"
+      },
+      "frameCountPerDirection": 12,
+      "phaseOrderPerHit": [
+        "anticipation",
+        "extension",
+        "contact",
+        "recovery"
+      ],
+      "phaseThresholds": "frame 0 before 60% of startup; frame 1 until startup; frame 2 for 75 ms after startup; frame 3 through recovery",
+      "frameWidth": 192,
+      "frameHeight": 256,
+      "uniformClipScale": 0.846154,
+      "alphaFloorClearedPixelCount": 415546,
+      "disconnectedComponentsDeleted": 0,
+      "frames": [
+        {
+          "hit": 1,
+          "phase": "anticipation",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            77,
+            85,
+            199,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            17733
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "extension",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            77,
+            85,
+            199,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16857
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "contact",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            78,
+            85,
+            199,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16130
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "recovery",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            78,
+            85,
+            200,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            17110
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "anticipation",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            83,
+            82,
+            185,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15151
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "extension",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            82,
+            82,
+            210,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15597
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "contact",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            83,
+            82,
+            239,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16070
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "recovery",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            84,
+            82,
+            187,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15089
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "anticipation",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            71,
+            83,
+            202,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            17424
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "extension",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            71,
+            84,
+            205,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            17198
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "contact",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            72,
+            83,
+            223,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            17710
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "recovery",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            72,
+            83,
+            204,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            17265
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "anticipation",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            92,
+            83,
+            200,
+            343
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15206
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "extension",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            63,
+            83,
+            200,
+            343
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15475
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "contact",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            40,
+            83,
+            201,
+            343
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15753
+          ]
+        },
+        {
+          "hit": 1,
+          "phase": "recovery",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            93,
+            83,
+            202,
+            343
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15027
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "anticipation",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            75,
+            84,
+            206,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18615
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "extension",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            73,
+            86,
+            203,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18641
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "contact",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            71,
+            86,
+            206,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18405
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "recovery",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            72,
+            85,
+            200,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18332
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "anticipation",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            78,
+            85,
+            188,
+            346
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16826
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "extension",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            72,
+            85,
+            191,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16949,
+            1
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "contact",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            78,
+            85,
+            216,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            17053
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "recovery",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            78,
+            85,
+            189,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16676,
+            1
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "anticipation",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            71,
+            83,
+            206,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18621,
+            1
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "extension",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            71,
+            83,
+            209,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18579,
+            1
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "contact",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            72,
+            83,
+            213,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18898
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "recovery",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            72,
+            83,
+            205,
+            344
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18493
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "anticipation",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            89,
+            87,
+            199,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16141,
+            2
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "extension",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            67,
+            87,
+            199,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16313,
+            1
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "contact",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            45,
+            87,
+            200,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16900
+          ]
+        },
+        {
+          "hit": 2,
+          "phase": "recovery",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            89,
+            86,
+            201,
+            345
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16340
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "anticipation",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            59,
+            133,
+            208,
+            362
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            19245
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "extension",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            68,
+            99,
+            205,
+            362
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            20294
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "contact",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            67,
+            85,
+            206,
+            362
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            20100,
+            2
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "recovery",
+          "direction": "front",
+          "sourceGridCell": {
+            "row": 0,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            63,
+            103,
+            207,
+            362
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            20507
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "anticipation",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            70,
+            138,
+            197,
+            361
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16784
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "extension",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            74,
+            101,
+            202,
+            361
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18402
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "contact",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            79,
+            83,
+            195,
+            361
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            19335
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "recovery",
+          "direction": "right",
+          "sourceGridCell": {
+            "row": 1,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            79,
+            104,
+            188,
+            361
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18405
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "anticipation",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            63,
+            141,
+            209,
+            356
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            18327
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "extension",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            64,
+            101,
+            207,
+            356
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            20029
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "contact",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            64,
+            81,
+            206,
+            356
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            20897
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "recovery",
+          "direction": "back",
+          "sourceGridCell": {
+            "row": 2,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            65,
+            103,
+            210,
+            356
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            19875
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "anticipation",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 0,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            74,
+            142,
+            193,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            14867
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "extension",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 1,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            72,
+            105,
+            189,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16650
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "contact",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 2,
+            "width": 271,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            67,
+            84,
+            187,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            16904
+          ]
+        },
+        {
+          "hit": 3,
+          "phase": "recovery",
+          "direction": "left",
+          "sourceGridCell": {
+            "row": 3,
+            "column": 3,
+            "width": 272,
+            "height": 362
+          },
+          "sourceAlphaBounds": [
+            75,
+            106,
+            190,
+            348
+          ],
+          "sourcePivot": [
+            136,
+            357
+          ],
+          "runtimePivot": [
+            96.0,
+            248.0
+          ],
+          "rootOffset": [
+            0.0,
+            0.0
+          ],
+          "scale": 0.846154,
+          "components": [
+            15823,
+            1
+          ]
+        }
+      ],
+      "bytes": 1909286,
+      "directions": [
+        "front",
+        "right",
+        "back",
+        "left"
+      ]
+    }
+  },
+  "states": {
+    "guard": 0,
+    "parry": 1,
+    "hurt": 2,
+    "ko": 3,
+    "emberAnticipation": 0,
+    "emberBurst": 1
+  },
+  "generationMetadata": "art-source/b03/generation-record.json"
+}

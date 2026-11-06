@@ -1,0 +1,195 @@
+{
+  "date": "2026-11-06T00:43:04.767Z",
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "machine": {
+    "cpu": "AMD Ryzen 7 5700X 8-Core Processor             ",
+    "logicalCores": 16,
+    "totalMemoryBytes": 34282344448
+  },
+  "url": "http://127.0.0.1:5175/?dev=1",
+  "viewportRuns": [
+    {
+      "width": 1480,
+      "height": 920
+    },
+    {
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "width": 1920,
+      "height": 800
+    },
+    {
+      "width": 960,
+      "height": 540
+    }
+  ],
+  "directionalInput": [
+    "front",
+    "back",
+    "left",
+    "right"
+  ],
+  "screenshots": [
+    "chrome-game-start.png",
+    "chrome-front-run.png",
+    "chrome-front-move-idle.png",
+    "chrome-back-run.png",
+    "chrome-back-move-idle.png",
+    "chrome-left-run.png",
+    "chrome-left-move-idle.png",
+    "chrome-right-run.png",
+    "chrome-right-move-idle.png",
+    "chrome-wasd-diagonal-turn.png",
+    "chrome-attack-right.png",
+    "chrome-attack-front.png",
+    "chrome-attack-left.png",
+    "chrome-attack-back.png",
+    "chrome-combo-playback.png",
+    "chrome-dodge-front.png",
+    "chrome-dodge-back.png",
+    "chrome-dodge-left.png",
+    "chrome-dodge-right.png",
+    "chrome-dodge-up-recovery.png",
+    "chrome-parry-contact.png",
+    "chrome-guard-held.png",
+    "chrome-ember-compatibility.png",
+    "chrome-pause.png",
+    "chrome-real-hit-hurt.png",
+    "chrome-reward.png",
+    "chrome-reward-selected-next-room.png",
+    "chrome-real-hit-ko.png",
+    "chrome-settings-reduced-motion.png",
+    "chrome-layout-1280x800.png",
+    "chrome-layout-1920x800.png",
+    "chrome-layout-960x540.png"
+  ],
+  "frameSamplesUnderMovementAndAttack": [
+    {
+      "frames": 487,
+      "observedFps": 221.33345452892775,
+      "frameTimeMs": {
+        "median": 4.200000000000728,
+        "p95": 8.399999999997817,
+        "max": 16.299999999999272
+      }
+    },
+    {
+      "frames": 497,
+      "observedFps": 225.86802399563737,
+      "frameTimeMs": {
+        "median": 4.200000000000728,
+        "p95": 8,
+        "max": 11.899999999997817
+      }
+    },
+    {
+      "frames": 505,
+      "observedFps": 229.51415716038727,
+      "frameTimeMs": {
+        "median": 4.200000000000728,
+        "p95": 4.69999999999709,
+        "max": 12.799999999999272
+      }
+    }
+  ],
+  "b02FrameSamplesUnderMovementAndAttack": [
+    {
+      "frames": 466,
+      "observedFps": 211.78930145889188,
+      "frameTimeMs": {
+        "median": 4.199999999999818,
+        "p95": 8.299999999999955,
+        "max": 108.39999999999998
+      }
+    },
+    {
+      "frames": 509,
+      "observedFps": 231.32157789492817,
+      "frameTimeMs": {
+        "median": 4.199999999999818,
+        "p95": 4.399999999999636,
+        "max": 12.599999999999909
+      }
+    },
+    {
+      "frames": 469,
+      "observedFps": 213.13337877755058,
+      "frameTimeMs": {
+        "median": 4.199999999999818,
+        "p95": 8.399999999999636,
+        "max": 12.300000000000182
+      }
+    }
+  ],
+  "decodedAtlasMemoryEstimate": {
+    "images": [
+      {
+        "src": "/assets/characters/kairo/b03/idle.png",
+        "width": 768,
+        "height": 1024,
+        "bytesDecoded": 3145728
+      },
+      {
+        "src": "/assets/characters/kairo/b03/run.png",
+        "width": 768,
+        "height": 1024,
+        "bytesDecoded": 3145728
+      },
+      {
+        "src": "/assets/characters/kairo/b03/dodge.png",
+        "width": 768,
+        "height": 1024,
+        "bytesDecoded": 3145728
+      },
+      {
+        "src": "/assets/characters/kairo/b03/combo.png",
+        "width": 2304,
+        "height": 1024,
+        "bytesDecoded": 9437184
+      },
+      {
+        "src": "/assets/characters/kairo/b03/states.png",
+        "width": 768,
+        "height": 1024,
+        "bytesDecoded": 3145728
+      }
+    ],
+    "approximateDecodedBytes": 22020096
+  },
+  "offlineFilePreviewAtlases": {
+    "idle": {
+      "width": 768,
+      "height": 1024,
+      "src": "file:///E:/Programming/Projects/0.%20Extra/project-veyrshift/dist-preview/assets/characters/kairo/b03/idle.png"
+    },
+    "run": {
+      "width": 768,
+      "height": 1024,
+      "src": "file:///E:/Programming/Projects/0.%20Extra/project-veyrshift/dist-preview/assets/characters/kairo/b03/run.png"
+    },
+    "dodge": {
+      "width": 768,
+      "height": 1024,
+      "src": "file:///E:/Programming/Projects/0.%20Extra/project-veyrshift/dist-preview/assets/characters/kairo/b03/dodge.png"
+    },
+    "combo": {
+      "width": 2304,
+      "height": 1024,
+      "src": "file:///E:/Programming/Projects/0.%20Extra/project-veyrshift/dist-preview/assets/characters/kairo/b03/combo.png"
+    },
+    "states": {
+      "width": 768,
+      "height": 1024,
+      "src": "file:///E:/Programming/Projects/0.%20Extra/project-veyrshift/dist-preview/assets/characters/kairo/b03/states.png"
+    }
+  },
+  "offlineFilePreviewErrors": [],
+  "errors": [],
+  "failedRequests": [],
+  "videos": [
+    "video/b03-live-gameplay.webm",
+    "video/b02-live-reference.webm"
+  ]
+}
