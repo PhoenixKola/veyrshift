@@ -19,7 +19,7 @@ def main() -> None:
     parser.add_argument("--effects", required=True, type=Path)
     parser.add_argument("--broad", required=True, type=Path)
     args = parser.parse_args()
-    output = ROOT / "handoff/b05-art-first-review.zip"
+    output = ROOT.parent / "veyrshift-local-archive-2026-11-06/handoff/b05-art-first-review.zip"
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="veyrshift-b05-review-") as temp:
         temp = Path(temp)
@@ -61,7 +61,8 @@ def main() -> None:
                     archive.write(image, image.name)
             for path in (ROOT / "docs/art/b05-ember-production-manifest.json",
                          ROOT / "docs/art/b05-ember-production-notes.md",
-                         ROOT / "docs/qa/b05-art-first-ember-production-evidence.md"):
+                         ROOT / "docs/qa/b05-art-first-ember-production-evidence.md",
+                         ROOT / "docs/qa/b05-ember-completion-and-repo-slimming.md"):
                 archive.write(path, path.name)
             for name in ("ordinary-11-game-960x540.png",
                          "showcase-matrix-ember-drive-75-midtone-normal.png"):

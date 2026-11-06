@@ -35,9 +35,9 @@
           "southeast",
           "southwest"
         ],
-        "newDiagonalDrawings": 4,
-        "derivedIdleRepeats": 12,
-        "correctedMirroredViews": [
+        "newDiagonalDrawings": 2,
+        "derivedIdleRepeats": 6,
+        "legacyDiagonalFallbackRows": [
           "northwest",
           "southwest"
         ]
@@ -60,10 +60,7 @@
         ],
         "newDiagonalDrawings": 16,
         "derivedIdleRepeats": 0,
-        "correctedMirroredViews": [
-          "northwest",
-          "southwest"
-        ]
+        "legacyDiagonalFallbackRows": []
       },
       "combo": {
         "path": "public/assets/characters/kairo/b05-ember-production/base/combo.webp",
@@ -96,9 +93,9 @@
           "southeast",
           "southwest"
         ],
-        "newDiagonalDrawings": 4,
-        "derivedIdleRepeats": 12,
-        "correctedMirroredViews": [
+        "newDiagonalDrawings": 2,
+        "derivedIdleRepeats": 6,
+        "legacyDiagonalFallbackRows": [
           "northwest",
           "southwest"
         ]
@@ -119,9 +116,9 @@
           "southeast",
           "southwest"
         ],
-        "newDiagonalDrawings": 16,
+        "newDiagonalDrawings": 8,
         "derivedIdleRepeats": 0,
-        "correctedMirroredViews": [
+        "legacyDiagonalFallbackRows": [
           "northwest",
           "southwest"
         ]
@@ -362,7 +359,7 @@
     },
     {
       "source": "art-source/b05-ember-production/base/run-nw.png",
-      "sha256": "9aa971b986c5d379bcb7946c144185ca7832476b094e98026fbf3c8f970a05fd",
+      "sha256": "fa46ec55725327bdcfd2f354cca27758f2934e65d48559e00bc3bcda8c7893a0",
       "column": 0,
       "sourceSize": [
         2172,
@@ -374,18 +371,18 @@
         543
       ],
       "sourceBounds": [
-        66,
-        48,
-        530,
-        709
+        60,
+        34,
+        509,
+        694
       ],
-      "bodyPixels": 122992,
+      "bodyPixels": 117482,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
     {
       "source": "art-source/b05-ember-production/base/run-nw.png",
-      "sha256": "9aa971b986c5d379bcb7946c144185ca7832476b094e98026fbf3c8f970a05fd",
+      "sha256": "fa46ec55725327bdcfd2f354cca27758f2934e65d48559e00bc3bcda8c7893a0",
       "column": 1,
       "sourceSize": [
         2172,
@@ -397,18 +394,18 @@
         1086
       ],
       "sourceBounds": [
-        77,
-        30,
-        471,
-        709
+        73,
+        21,
+        467,
+        699
       ],
-      "bodyPixels": 114029,
-      "discardedDetachedPixels": 1,
+      "bodyPixels": 108827,
+      "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
     {
       "source": "art-source/b05-ember-production/base/run-nw.png",
-      "sha256": "9aa971b986c5d379bcb7946c144185ca7832476b094e98026fbf3c8f970a05fd",
+      "sha256": "fa46ec55725327bdcfd2f354cca27758f2934e65d48559e00bc3bcda8c7893a0",
       "column": 2,
       "sourceSize": [
         2172,
@@ -420,18 +417,18 @@
         1629
       ],
       "sourceBounds": [
-        84,
-        45,
-        457,
-        709
+        69,
+        36,
+        468,
+        702
       ],
-      "bodyPixels": 110790,
+      "bodyPixels": 106341,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
     {
       "source": "art-source/b05-ember-production/base/run-nw.png",
-      "sha256": "9aa971b986c5d379bcb7946c144185ca7832476b094e98026fbf3c8f970a05fd",
+      "sha256": "fa46ec55725327bdcfd2f354cca27758f2934e65d48559e00bc3bcda8c7893a0",
       "column": 3,
       "sourceSize": [
         2172,
@@ -443,12 +440,12 @@
         2172
       ],
       "sourceBounds": [
-        80,
-        57,
-        462,
-        709
+        62,
+        51,
+        485,
+        705
       ],
-      "bodyPixels": 118608,
+      "bodyPixels": 114556,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
@@ -546,7 +543,7 @@
     },
     {
       "source": "art-source/b05-ember-production/base/run-sw.png",
-      "sha256": "92e4e2b67bb9686ccae666be26eb786a770fbf00c32c56be1fd9ab8190ece2f9",
+      "sha256": "1e430397000fb9332f992c7ae299317214e8276aab45e8852eb5fb27407682be",
       "column": 0,
       "sourceSize": [
         2172,
@@ -558,18 +555,18 @@
         543
       ],
       "sourceBounds": [
-        110,
-        33,
-        477,
-        710
+        69,
+        20,
+        501,
+        709
       ],
-      "bodyPixels": 115409,
+      "bodyPixels": 119262,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
     {
       "source": "art-source/b05-ember-production/base/run-sw.png",
-      "sha256": "92e4e2b67bb9686ccae666be26eb786a770fbf00c32c56be1fd9ab8190ece2f9",
+      "sha256": "1e430397000fb9332f992c7ae299317214e8276aab45e8852eb5fb27407682be",
       "column": 1,
       "sourceSize": [
         2172,
@@ -581,18 +578,18 @@
         1086
       ],
       "sourceBounds": [
-        76,
-        16,
-        476,
-        667
+        42,
+        15,
+        493,
+        642
       ],
-      "bodyPixels": 112541,
+      "bodyPixels": 115007,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
     {
       "source": "art-source/b05-ember-production/base/run-sw.png",
-      "sha256": "92e4e2b67bb9686ccae666be26eb786a770fbf00c32c56be1fd9ab8190ece2f9",
+      "sha256": "1e430397000fb9332f992c7ae299317214e8276aab45e8852eb5fb27407682be",
       "column": 2,
       "sourceSize": [
         2172,
@@ -604,18 +601,18 @@
         1629
       ],
       "sourceBounds": [
-        101,
-        29,
-        420,
-        709
+        76,
+        18,
+        500,
+        681
       ],
-      "bodyPixels": 106931,
+      "bodyPixels": 109283,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
     {
       "source": "art-source/b05-ember-production/base/run-sw.png",
-      "sha256": "92e4e2b67bb9686ccae666be26eb786a770fbf00c32c56be1fd9ab8190ece2f9",
+      "sha256": "1e430397000fb9332f992c7ae299317214e8276aab45e8852eb5fb27407682be",
       "column": 3,
       "sourceSize": [
         2172,
@@ -627,12 +624,12 @@
         2172
       ],
       "sourceBounds": [
-        68,
-        42,
-        470,
-        708
+        86,
+        39,
+        483,
+        709
       ],
-      "bodyPixels": 118985,
+      "bodyPixels": 112393,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
@@ -1097,98 +1094,6 @@
       "sourceCellEdgePixels": 0
     },
     {
-      "source": "art-source/b05-ember-production/ember/run-nw.png",
-      "sha256": "abfded8c36734fa48d457eda1339cd561e242822b709a151591381c294491932",
-      "column": 0,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        0,
-        543
-      ],
-      "sourceBounds": [
-        39,
-        74,
-        518,
-        688
-      ],
-      "bodyPixels": 118149,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
-      "source": "art-source/b05-ember-production/ember/run-nw.png",
-      "sha256": "abfded8c36734fa48d457eda1339cd561e242822b709a151591381c294491932",
-      "column": 1,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        543,
-        1086
-      ],
-      "sourceBounds": [
-        54,
-        66,
-        521,
-        696
-      ],
-      "bodyPixels": 117246,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
-      "source": "art-source/b05-ember-production/ember/run-nw.png",
-      "sha256": "abfded8c36734fa48d457eda1339cd561e242822b709a151591381c294491932",
-      "column": 2,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        1086,
-        1629
-      ],
-      "sourceBounds": [
-        57,
-        67,
-        490,
-        684
-      ],
-      "bodyPixels": 105223,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
-      "source": "art-source/b05-ember-production/ember/run-nw.png",
-      "sha256": "abfded8c36734fa48d457eda1339cd561e242822b709a151591381c294491932",
-      "column": 3,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        1629,
-        2172
-      ],
-      "sourceBounds": [
-        29,
-        70,
-        514,
-        687
-      ],
-      "bodyPixels": 118707,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
       "source": "art-source/b05-ember-production/ember/run-se.png",
       "sha256": "e1bdf346da9373d9c5c41351b0217a736474128f0f75a2c32c669741cd273535",
       "column": 0,
@@ -1277,98 +1182,6 @@
         690
       ],
       "bodyPixels": 115359,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
-      "source": "art-source/b05-ember-production/ember/run-sw.png",
-      "sha256": "af2502b7d31be5561be652a563045ddaa1016d762378ca6a031191476ef10299",
-      "column": 0,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        0,
-        570
-      ],
-      "sourceBounds": [
-        60,
-        63,
-        557,
-        678
-      ],
-      "bodyPixels": 119989,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
-      "source": "art-source/b05-ember-production/ember/run-sw.png",
-      "sha256": "af2502b7d31be5561be652a563045ddaa1016d762378ca6a031191476ef10299",
-      "column": 1,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        570,
-        1086
-      ],
-      "sourceBounds": [
-        44,
-        48,
-        505,
-        669
-      ],
-      "bodyPixels": 118576,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
-      "source": "art-source/b05-ember-production/ember/run-sw.png",
-      "sha256": "af2502b7d31be5561be652a563045ddaa1016d762378ca6a031191476ef10299",
-      "column": 2,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        1086,
-        1629
-      ],
-      "sourceBounds": [
-        64,
-        52,
-        494,
-        675
-      ],
-      "bodyPixels": 108309,
-      "discardedDetachedPixels": 0,
-      "sourceCellEdgePixels": 0
-    },
-    {
-      "source": "art-source/b05-ember-production/ember/run-sw.png",
-      "sha256": "af2502b7d31be5561be652a563045ddaa1016d762378ca6a031191476ef10299",
-      "column": 3,
-      "sourceSize": [
-        2172,
-        724
-      ],
-      "alphaFloor": 32,
-      "sourceCut": [
-        1629,
-        2172
-      ],
-      "sourceBounds": [
-        23,
-        64,
-        508,
-        680
-      ],
-      "bodyPixels": 118633,
       "discardedDetachedPixels": 0,
       "sourceCellEdgePixels": 0
     },
@@ -1927,7 +1740,8 @@
   ],
   "limitations": [
     "Only right-facing new combo, special, finisher and activation body art; other attack directions retain legacy candidate rows.",
-    "Diagonal idle contains one unique pose per direction repeated in four runtime columns.",
+    "Northwest/southwest idle use the left-facing legacy cycle to avoid reversing asymmetric details; Ember northwest/southwest run use its left-facing legacy cycle. Base northwest/southwest run are now identity-locked from the canonical turnaround.",
+    "Diagonal idle has one unique NE and SE pose per form repeated in four runtime columns; NW/SW use the left-facing legacy cycle.",
     "No new dodge, guard, hurt, KO or full eight-direction attack art."
   ]
 }

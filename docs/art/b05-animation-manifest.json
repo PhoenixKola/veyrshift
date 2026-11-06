@@ -11370,63 +11370,7 @@
     "phaseLogic": "src/game/animation/visualBreakthrough.ts",
     "note": "Two independent eight-pose GIF drafts remain rejected for long holds and anchor changes. The newer live sprite-atlas gameplay candidate is recorded under playableShowcase. See ADR-015 and the B05 production evidence."
   },
-  "rejectedDrafts": [
-    {
-      "source": "art-source/b05/rejected/ember-dodge-grid-v1-unsafe-margin.png",
-      "sha256": "3d34d3a565b5a8fe0db03fc77f492b8fe116a902d2618e36313ad2c4ab5c6ee4",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/ember-dodge-grid-v2-stance-mismatch.png",
-      "sha256": "d7944bcb47e50e33ee6aa8edd233fa1de287f7774dbca17eaf896475c910a068",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/ember-hurtko-grid-v1-cell-edge-noise.png",
-      "sha256": "48d0326be0fd65a51ffbc1fbef0a786475915cbc9ec5723358b57a31963206e7",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/ember-idle-grid-v1-wrong-facing.png",
-      "sha256": "a37c5430b281ecec405de4334963b9d826a265f738becdaca8627e6cc6a5b6fd",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/glass-combo-hit2-grid-top-edge-rejected.png",
-      "sha256": "7ce522f0c8e0ec8871f2f74059395b8789666ae8c2f2cbe4fdc000e1547a3fcf",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/glass-combo-hit2-grid-white-background-rejected.png",
-      "sha256": "5cca9cc01dbe5010b4f4dce24993db0e82eec41ad245c931f2e36b6d268403f6",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/glass-combo-hit3-grid-foot-edge-rejected.png",
-      "sha256": "2b868621bb8519dc868afd09f2227b571088e31537e9a94a46a8db406ceeade4",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/glass-combo-hit3-grid-trailing-cut-rejected.png",
-      "sha256": "31f53e07ea8c4383d818a05e2793d80d2d2f9f7068ac0d9ebf94319eb51f97d0",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/glass-dodge-grid-v1-stance-mismatch.png",
-      "sha256": "26e4fe1e2eea57e2e7cfe2e12917da8f94b636e4fbbe5dc58ad9f2312df69b5c",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/glass-hurtko-grid-v1-repeated-left-facing.png",
-      "sha256": "9c7b449fb5b26c55b141d60e12a3cd188aad9d314579031da73531cc39dfb812",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    },
-    {
-      "source": "art-source/b05/rejected/glass-idle-grid-v1-edge-contact.png",
-      "sha256": "dfca1227a628b9eb8131ca5a4277cc19a212d20248278e603d4294cc59db6003",
-      "reason": "Rejected generation retained for audit; see b05-generation-notes.md."
-    }
-  ],
+  "rejectedDrafts": [],
   "missingCoverage": [
     "dedicated form hurt/KO character animation",
     "form-specific start/stop character animation",

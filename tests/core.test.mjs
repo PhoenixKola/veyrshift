@@ -85,12 +85,14 @@ test('form-specific run animation advances at each form movement speed',()=>{
 });
 test('B05 production manifest retains selected source cells and clean atlas exports',()=>{
  const manifest=JSON.parse(readFileSync('docs/art/b05-ember-production-manifest.json','utf8'));
- assert.equal(manifest.sourceFrames.length,76);
+ assert.equal(manifest.sourceFrames.length,68);
  assert.deepEqual(manifest.directionRows,{front:0,right:1,back:2,left:3,northeast:4,northwest:5,southeast:6,southwest:7});
  assert.ok(manifest.sourceFrames.every(frame=>frame.sourceCellEdgePixels===0));
  for(const form of ['base','ember'])for(const [clip,asset] of Object.entries(manifest.outputs[form])){
   assert.ok(existsSync(asset.path),`${form}/${clip} atlas exists`);
-  if(clip==='idle'||clip==='run')assert.deepEqual(asset.correctedMirroredViews,['northwest','southwest']);
+  if(clip==='idle')assert.deepEqual(asset.legacyDiagonalFallbackRows,['northwest','southwest']);
+  if(form==='ember'&&clip==='run')assert.deepEqual(asset.legacyDiagonalFallbackRows,['northwest','southwest']);
+  if(form==='base'&&clip==='run')assert.deepEqual(asset.legacyDiagonalFallbackRows,[]);
  }
  const s=new CombatSession(initialSave());s.newRun(412);const h=s.hero;
  h.transformed=true;h.formId='ember-drive';h.abilityFormId='ember-drive';h.currentAbility='shockwave';h.abilityAnimTime=.06;h.abilityAnimDuration=.22;
@@ -174,7 +176,6 @@ test('B05 selects form combo atlases only when active and loaded, and exports cl
  const manifest=JSON.parse(readFileSync('docs/art/b05-animation-manifest.json','utf8'));
  assert.equal(manifest.runtimeAssetsExported,true);
  assert.deepEqual(manifest.directions,['front','right','back','left']);
- assert.ok(existsSync(manifest.scaleComparison),`missing ${manifest.scaleComparison}`);
  for(const formId of ['ember-drive','glass-current']){
   const form=manifest.forms[formId];
   assert.equal(form.status,'PRODUCTION_CANDIDATE_OWNER_APPROVAL_PENDING');
@@ -182,17 +183,13 @@ test('B05 selects form combo atlases only when active and loaded, and exports cl
   assert.deepEqual(form.runtimePivot,[96,248]);
   assert.equal(form.frames.length,48);
   assert.ok(existsSync(form.runtime),`missing ${form.runtime}`);
-  assert.ok(existsSync(form.contactSheet),`missing ${form.contactSheet}`);
   assert.deepEqual(form.phaseDurationsMs,{hit1:[65,55,114,76],hit2:[38,52,65,200],hit3:[57,78,85,300]});
   assert.deepEqual(form.frames.slice(0,4).map(frame=>frame.durationMs),form.phaseDurationsMs.hit1);
   assert.deepEqual(form.frames.slice(16,20).map(frame=>frame.durationMs),form.phaseDurationsMs.hit2);
   assert.deepEqual(form.frames.slice(32,36).map(frame=>frame.durationMs),form.phaseDurationsMs.hit3);
-  assert.ok(existsSync(form.atSpeedPreview),`missing ${form.atSpeedPreview}`);
   assert.ok(existsSync(form.run.runtime),`missing ${form.run.runtime}`);
-  assert.ok(existsSync(form.run.contactSheet),`missing ${form.run.contactSheet}`);
   assert.equal(form.coverage.idle,true);
   assert.ok(existsSync(form.idle.runtime),`missing ${form.idle.runtime}`);
-  assert.ok(existsSync(form.idle.contactSheet),`missing ${form.idle.contactSheet}`);
   assert.equal(form.idle.frames.length,16);
   for(const frame of form.idle.frames){assert.equal(frame.componentsDeleted,0);assert.equal(frame.cellBorderPixelsAboveAlphaFloor,0);assert.ok(frame.minimumCellMargin>=6);assert.deepEqual(frame.runtimePivot,[96,248]);}
   assert.equal(form.coverage.dodge,true);
@@ -205,11 +202,9 @@ test('B05 selects form combo atlases only when active and loaded, and exports cl
   assert.equal(form.coverage.dedicatedIcons,true);
   assert.equal(form.icons.icons.length,6);
   for(const icon of form.icons.icons){assert.ok(existsSync(icon.runtime),`missing ${icon.runtime}`);assert.equal(icon.componentsDeleted,0);assert.equal(icon.cellBorderPixelsAboveAlphaFloor,0);}
-  assert.ok(existsSync(form.icons.contactSheet),`missing ${form.icons.contactSheet}`);
   assert.equal(form.coverage.authoredVfx,true);
   assert.equal(form.vfx.textures.length,6);
   for(const texture of form.vfx.textures){assert.ok(existsSync(texture.runtime),`missing ${texture.runtime}`);assert.equal(texture.componentsDeleted,0);assert.equal(texture.cellBorderPixelsAboveAlphaFloor,0);}
-  assert.ok(existsSync(form.vfx.contactSheet),`missing ${form.vfx.contactSheet}`);
   for(const sheet of form.sourceGrids)assert.ok(existsSync(sheet.source),`missing ${sheet.source}`);
   for(const frame of form.frames){
    assert.equal(frame.componentsDeleted,0);
@@ -222,12 +217,12 @@ test('B05 selects form combo atlases only when active and loaded, and exports cl
   for(const state of ['hurtKo','special','finisher','activation','deactivation'])assert.equal(form.coverage[state],false);
  }
 });
-test('combo offline previews keep four directions together and use the simulation phase durations',()=>{
+test('B05 combo metadata keeps four directions together and records simulation phase durations',()=>{
  const manifest=JSON.parse(readFileSync('docs/art/b05-animation-manifest.json','utf8'));
  for(const formId of ['ember-drive','glass-current']){
   const form=manifest.forms[formId];assert.equal(form.frames.length,48);
-  const image=readFileSync(form.atSpeedPreview);assert.ok(image.length>1000);
   assert.match(form.timingBasis,/simulation windup\/active\/recovery/);
+  assert.ok(form.phaseDurationsMs.hit1.length===4&&form.phaseDurationsMs.hit2.length===4&&form.phaseDurationsMs.hit3.length===4);
  }
 });
 test('form bolt animation changes to release at the exact cast windup',()=>{

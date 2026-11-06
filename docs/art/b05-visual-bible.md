@@ -26,7 +26,7 @@ Keep these proposals out of any “approved” category. Do not claim B05 comple
 
 ## Provenance
 
-Generated with OpenAI built-in ImageGen on 2026-11-06. Model/version and seed were not exposed. Exact prior-turn prompts were not retained in the repository; reconstruction notes are explicitly labeled in `docs/art/b05-generation-notes.md`. Source PNGs remain under `art-source/b05/review/`; failed sheets are retained under `art-source/b05/rejected/`. Runtime mapping, hashes, dimensions, cell checks and pivots are in `docs/art/b05-animation-manifest.json`. No external likeness/IP clearance or owner signoff has occurred.
+Generated with OpenAI built-in ImageGen on 2026-11-06. Model/version and seed were not exposed. Exact prior-turn prompts were not retained in the repository; reconstruction notes are explicitly labeled in `docs/art/b05-generation-notes.md`. Selected source PNGs remain under `art-source/b05/review/`; failed sheets are preserved outside Git in the sibling local archive, with hashes in its inventory. Runtime mapping, hashes, dimensions, cell checks and pivots are in `docs/art/b05-animation-manifest.json`. No external likeness/IP clearance or owner signoff has occurred.
 
 ## Visual-breakthrough corrective pass
 

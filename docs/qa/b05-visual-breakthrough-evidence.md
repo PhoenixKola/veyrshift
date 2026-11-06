@@ -16,6 +16,8 @@
 
 ## Production and combat evidence
 
+Historical screenshots, videos, GIFs, and rejected source images described here are preserved outside Git under `../veyrshift-local-archive-2026-11-06/`. The archive inventory records original relative paths and hashes. New focused gameplay captures can be regenerated with the tracked B05 Chrome QA scripts.
+
 - Four new front/right concept alternatives were generated. Their alpha remains intact; the builder crops only to fit comparison frames. No pixels or disconnected components are deleted from source masters.
 - One eight-pose source grid was retained for each provisional candidate. Every source cell has zero alpha contact at the cell boundary using a threshold of 32. The reproducible cell audit, timings, source and runtime byte counts are in [`art-source/b05/visual-breakthrough/manifest.json`](../../art-source/b05/visual-breakthrough/manifest.json).
 - The offline GIFs are explicitly labeled timed-pose previews. They contain one frame per authored pose with the listed hold durations; they are not captured from Chrome or the game renderer.

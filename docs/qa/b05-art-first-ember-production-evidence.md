@@ -1,4 +1,6 @@
-# B05 art-first Ember production evidence — 2026-11-06
+# B05 art-first Ember production evidence — initial pass, 2026-11-06
+
+This captures the initial `32c63a8` production candidate before owner feedback and repository slimming. The [continuation report](b05-ember-completion-and-repo-slimming.md) supersedes its direction and retention details.
 
 **Verdict: PARTIAL.** Newly generated character art is integrated into ordinary Vite gameplay. The work is not a completed eight-direction combat set or a premium Ember approval. Owner visual, feel, and audio signoff remain pending.
 
@@ -17,7 +19,7 @@ Two attempted 4-by-4 run grids were rejected for adjacent figure contamination. 
 | `ember-production-after-body-only-2026-11-06T21-13-06-208Z` | Particles off | Normal-speed WebM for eight-way travel, three base punches, Ember activation/combo/special/finisher/reversion. Base test target HP 1000 → 936; Ember target 1000 → 807. |
 | `ember-production-after-effects-2026-11-06T21-14-35-394Z` | Particles on | Matching normal-speed WebM for the same real-game inputs. Existing effects are visible; this batch made no new VFX texture. |
 
-The prior pushed B05 real-game clips from `ember-polish-after-2026-11-06T20-12-09-311Z` provide a before reference. [The review ZIP](../../handoff/b05-art-first-review.zip) contains three normal-speed, before-left/after-right comparisons with particles enabled; three body-only current clips; dark/light contact sheets; source/runtime manifest; and two 75% Chrome screenshots. Browser start/frame schedules are not frame-locked. All WebM recordings are video-only. The ZIP is about 4.9 MB. The large raw browser directories remain ignored by Git.
+The prior pushed B05 real-game clips and this batch's recordings are preserved in the local sibling archive. It contains three normal-speed, before-left/after-right comparisons with particles enabled; three body-only current clips; dark/light contact sheets; source/runtime manifest; and two 75% Chrome screenshots in `handoff/b05-art-first-review.zip` (about 4.9 MB). Browser start/frame schedules are not frame-locked. All WebM recordings are video-only. Regenerate current clips with the tracked B05 QA scripts.
 
 The broad `node tools/b05-chrome-local-qa.mjs --headless --url http://127.0.0.1:5175/` run recorded 70 PASS and one FAIL: `showcase-matrix-glass-current-75-midtone-normal: active gameplay frame captured`. Its telemetry had no JS errors, failed requests, or bad responses. A prior concurrent broad run additionally timed out on page navigation, so its result is not used as the final broad result. The failing Glass frame check is recorded in the included broad QA JSON; Glass was outside this corrective batch. The broad run captured a real ordinary-game 960×540 screenshot and Ember 75% showcase screenshot.
 

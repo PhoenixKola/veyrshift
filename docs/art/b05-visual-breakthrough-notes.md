@@ -13,6 +13,8 @@ The selected Ember and Glass proposals remain visually distinct from base in the
 
 ## Sequence drafts and rejection log
 
+Rejected source images and superseded concept/sequence sheets are stored outside Git in the sibling local archive. Their filenames, original paths, byte counts and hashes remain in that archive's inventory; selected Ember comparison references and its reinterpretation master remain tracked.
+
 | Source | Status | Review |
 |---|---|---|
 | `ember-sequence-grid-v1.png` | Retained as draft | Eight right-facing phases: idle, anticipation, cuff forming, transformed stance, heavy-attack windup, contact, recovery, return. Cell-edge audit passes, but the scale/anchor changes and held poses fail fluid-motion quality. |

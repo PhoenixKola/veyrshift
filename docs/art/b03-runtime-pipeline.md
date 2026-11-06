@@ -10,7 +10,7 @@ Run `python tools/build-b03-animation-assets.py` to make five PNG atlases and co
 
 The script records each source alpha bound, pivot, clip scale, connected foreground component area and alpha cleanup count in `docs/art/b03-animation-manifest.json`. A configurable per-frame pivot/root-offset map is in `tools/b03-frame-overrides.json`. Current overrides retain the common generated foot line; they are exposed for artist correction and have not been hand-tuned through a skeletal/rig workflow.
 
-Only alpha values 1–32 are cleared after source-sheet review. Connected components are reported, never automatically deleted. The first clipped/bleeding combo, dodge and run sheets remain in `art-source/b03/rejected/`. The atlas builder does not turn checkerboard pixels into alpha, warp anatomy, or hide detached limbs by cropping neighboring cells.
+Only alpha values 1–32 are cleared after source-sheet review. Connected components are reported, never automatically deleted. The first clipped/bleeding combo, dodge and run sheets are preserved outside Git in the sibling local archive and listed by original path/hash in its inventory. The atlas builder does not turn checkerboard pixels into alpha, warp anatomy, or hide detached limbs by cropping neighboring cells.
 
 ## Runtime
 

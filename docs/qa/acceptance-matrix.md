@@ -5,7 +5,7 @@
 | Gate | Status | Evidence / remaining work |
 |---|---|---|
 | New base/Ember art | PASS as candidate | 19 new source sheets, 76 selected new figure cells, nine exported runtime atlases; source SHA-256/crop audit in `docs/art/b05-ember-production-manifest.json`. Owner approval pending. |
-| Eight-way travel | PARTIAL | Four distinct diagonal still views and four run frames per diagonal for both forms render in game; NW/SW are mirrored to correct source gaze, reversing asymmetric details. Cardinal rows remain older art. Camera, gait, and transitions need owner visual approval. |
+| Eight-way travel | PARTIAL | Base has four identity-locked diagonal run directions. Ember has new NE/SE run art; NW/SW intentionally use its left-facing legacy cycle to preserve asymmetric armor. Both forms use legacy left idle for NW/SW. |
 | Base three-hit combo | PARTIAL | Twelve new E-facing illustrated frames; N/S/W and diagonal attack aim still use earlier work. |
 | Ember three-hit combo | PARTIAL | Twelve new E-facing armored frames; other attack directions remain earlier work. |
 | Ember special / finisher | PARTIAL | Four new right-facing body frames each use existing effect textures; other directions and new layered effect art are missing. |

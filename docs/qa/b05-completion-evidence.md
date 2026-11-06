@@ -27,7 +27,7 @@
 ## Art review artifacts
 
 - Candidate source masters and grids: `art-source/b05/review/` (source PNGs retained losslessly).
-- Rejected drafts retained with reasons: `art-source/b05/rejected/` and `docs/art/b05-generation-notes.md`.
+- Rejected drafts retained outside Git with reasons in `docs/art/b05-generation-notes.md` and SHA-256 inventory in the local sibling archive.
 - Runtime source-to-export map, hashes, pivots, durations and cell audits: `docs/art/b05-animation-manifest.json`.
 - Combo and run contacts / fixed-timing GIFs: `tests/evidence/b05/`.
 - Icon contacts: `tests/evidence/b05/ember-drive-ability-icons-contact.jpg` and `glass-current-ability-icons-contact.jpg`.

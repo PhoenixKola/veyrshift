@@ -11,7 +11,12 @@ coverage/
 playwright-report/
 test-results/
 prompts/
-tests/evidence/b05/live-chrome/run-*/
-tests/evidence/b05/live-chrome/ember-polish-*/
-tests/evidence/b05/live-chrome/ember-production-after-*/
-tests/evidence/b05/compare-inspection/
+tests/evidence/
+handoff/
+art-source/**/rejected/
+art-source/**/proposed/
+public/assets/_b00-concepts/
+art-source/b05/visual-breakthrough/ember-concept-b.png
+art-source/b05/visual-breakthrough/glass-concept-a.png
+art-source/b05/visual-breakthrough/ember-sequence-grid-v1.png
+art-source/b05/visual-breakthrough/glass-sequence-grid-v3.png

@@ -22,13 +22,13 @@ All files below are original generated candidates stored as PNG under `art-sourc
 
 The prompt briefs asked for original HD inked/cel-shaded 2.5D anime action-game visuals, four consistent cardinal views based on the existing Kairo reference, unclipped body parts, clear gaps between cells, transparent backgrounds, no extra limbs, and form-specific silhouette/material language. Ember used kinetic bronze/ember cues; Glass used controlled prismatic/cyan-violet cues. No third-party images were intentionally referenced other than the project’s own Kairo identity reference.
 
-## Rejected drafts retained
+## Rejected drafts archived outside Git
 
 - `glass-combo-hit2-grid-white-background-rejected.png` — opaque white background.
 - `glass-combo-hit2-grid-top-edge-rejected.png` — hair touched the top source-cell edge.
 - `glass-combo-hit3-grid-trailing-cut-rejected.png` — light trail leaked through neighboring source cells.
 - `glass-combo-hit3-grid-foot-edge-rejected.png` — foot cut the source-cell edge.
-- Earlier turnaround proposals in `art-source/b05/proposed/` — prior B05 evidence records baked-background, label and accessory-placement defects; they remain excluded from runtime.
+- Earlier turnaround proposals previously in `art-source/b05/proposed/` — prior B05 evidence records baked-background, label and accessory-placement defects; they are excluded from runtime and stored in the local sibling archive.
 - `ember-idle-grid-v1-wrong-facing.png` — final row did not preserve facing and poses were too similar.
 - `glass-idle-grid-v1-edge-contact.png` — above-threshold alpha touches a source-cell edge.
 - `ember-dodge-grid-v1-unsafe-margin.png` — foot one source pixel from an edge; rejected against the user's prior crop-neighbor feedback.
@@ -36,6 +36,8 @@ The prompt briefs asked for original HD inked/cel-shaded 2.5D anime action-game 
 - `glass-dodge-grid-v1-stance-mismatch.png` — first Glass dodge attempt; rejected for the same stance problem.
 - `glass-hurtko-grid-v1-repeated-left-facing.png` — generated replacement repeated a left-facing profile in the required right-facing row; no runtime use.
 - `ember-hurtko-grid-v1-cell-edge-noise.png` — opaque pixels touched cell edges in multiple frames; rejected to avoid cross-cell contamination.
+
+Rejected full-resolution sources listed above are retained outside the repository at `../veyrshift-local-archive-2026-11-06/` and recorded by original path, byte count, and SHA-256 in its `archive-inventory.json`. The active build uses selected sources only.
 
 ## Verbatim finalization prompts
 

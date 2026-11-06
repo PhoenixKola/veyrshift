@@ -7,7 +7,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageOps
+from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "art-source/b05-ember-production"
@@ -102,25 +102,37 @@ def export(form: str) -> dict:
             scale = scale_for(frames)
             for i, row in enumerate(DIAGONALS.values()):
                 for column in range(4):
-                    # Generator made NW/SW anatomy with the gaze to screen-right.
-                    # Correct the travel gaze while keeping each distinct body drawing.
-                    frame = ImageOps.mirror(frames[i]) if row in (5, 7) else frames[i]
-                    place(atlas, frame, column, row, scale)
-            unique = 4
+                    if row in (5, 7):
+                        # Keep asymmetric costume details facing correctly. The generated
+                        # NW/SW turnarounds were not camera-correct, so retain the authored
+                        # left idle fallback for these two directions.
+                        left = old.crop((0, 3 * CELL[1], 4 * CELL[0], 4 * CELL[1]))
+                        atlas.paste(left.crop((column * CELL[0], 0, (column + 1) * CELL[0], CELL[1])),
+                                    (column * CELL[0], row * CELL[1]))
+                    else:
+                        place(atlas, frames[i], column, row, scale)
+            unique = 2
         else:
-            frame_sets = {d: [select_body(folder / f"run-{d}.png", i) for i in range(4)] for d in DIAGONALS}
+            authored_directions = [d for d in DIAGONALS if not (form == "ember" and d in ("nw", "sw"))]
+            frame_sets = {d: [select_body(folder / f"run-{d}.png", i) for i in range(4)] for d in authored_directions}
             scale = scale_for([frame for frames in frame_sets.values() for frame in frames])
             for d, row in DIAGONALS.items():
-                for column, frame in enumerate(frame_sets[d]):
-                    place(atlas, ImageOps.mirror(frame) if d in ("nw", "sw") else frame,
-                          column, row, scale, 9 if column == 1 else 0)
-            unique = 16
+                if form == "ember" and d in ("nw", "sw"):
+                    # A mirror reverses the signature asymmetric Ember armor. Use the
+                    # matching authored left-facing cycle until corrected diagonal art exists.
+                    left = old.crop((0, 3 * CELL[1], 4 * CELL[0], 4 * CELL[1]))
+                    atlas.paste(left, (0, row * CELL[1]))
+                else:
+                    for column, frame in enumerate(frame_sets[d]):
+                        place(atlas, frame, column, row, scale, 9 if column == 1 else 0)
+            unique = 16 if form == "base" else 8
         path = dest / f"{clip}.webp"
         atlas.save(path, "WEBP", quality=92, method=6)
         outputs[clip] = {"path": path.relative_to(ROOT).as_posix(), "size": list(atlas.size),
                          "directions": list(ROWS), "newDiagonalDrawings": unique,
-                         "derivedIdleRepeats": 12 if clip == "idle" else 0,
-                         "correctedMirroredViews": ["northwest", "southwest"]}
+                         "derivedIdleRepeats": 6 if clip == "idle" else 0,
+                         "legacyDiagonalFallbackRows": ["northwest", "southwest"]
+                         if clip == "idle" or form == "ember" and clip == "run" else []}
 
     # Re-author right-facing combo cells while retaining tested cardinal fallbacks.
     atlas = legacy(form, "combo")
@@ -170,6 +182,7 @@ def main() -> None:
     outputs = {form: export(form) for form in ("base", "ember")}
     for form in ("base", "ember"):
         run = Image.open(ROOT / outputs[form]["run"]["path"]).convert("RGBA")
+        fallback_rows = set(outputs[form]["run"]["legacyDiagonalFallbackRows"])
         for background, color in (("dark", "#132236"), ("light", "#dce3e6")):
             sheet = Image.new("RGB", (8 * 120, 190), color)
             draw = ImageDraw.Draw(sheet)
@@ -177,14 +190,16 @@ def main() -> None:
                 cell = run.crop((192, row * 256, 384, (row + 1) * 256))
                 sprite = cell.resize((100, 140), Image.Resampling.LANCZOS)
                 sheet.paste(sprite, (row * 120 + 10, 25), sprite)
-                draw.text((row * 120 + 15, 170), direction, fill="#ffffff" if background == "dark" else "#152333")
+                label = f"{direction} (left fallback)" if direction in fallback_rows else direction
+                draw.text((row * 120 + 4, 170), label, fill="#ffffff" if background == "dark" else "#152333")
             sheet.save(ROOT / f"docs/art/b05-{form}-eight-way-{background}.png")
     data = {"batch": "B05 art-first corrective production candidate", "date": "2026-11-06",
             "generator": "OpenAI built-in ImageGen; exact prompt briefs in docs/art/b05-ember-production-notes.md; version/seed not exposed",
             "cell": list(CELL), "alphaPolicy": "largest connected body above alpha 32, all detached pixels logged; source cell edge contact rejects export",
             "directionRows": ROWS, "outputs": outputs, "sourceFrames": records,
             "limitations": ["Only right-facing new combo, special, finisher and activation body art; other attack directions retain legacy candidate rows.",
-                            "Diagonal idle contains one unique pose per direction repeated in four runtime columns.",
+                            "Northwest/southwest idle use the left-facing legacy cycle to avoid reversing asymmetric details; Ember northwest/southwest run use its left-facing legacy cycle. Base northwest/southwest run are now identity-locked from the canonical turnaround.",
+                            "Diagonal idle has one unique NE and SE pose per form repeated in four runtime columns; NW/SW use the left-facing legacy cycle.",
                             "No new dodge, guard, hurt, KO or full eight-direction attack art."]}
     MANIFEST.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     print(f"B05 Ember production candidates exported: {len(records)} selected source cells, {len(outputs['base']) + len(outputs['ember'])} atlases")
