@@ -27,3 +27,9 @@ Keep these proposals out of any “approved” category. Do not claim B05 comple
 ## Provenance
 
 Generated with OpenAI built-in ImageGen on 2026-11-06. Model/version and seed were not exposed. Exact prior-turn prompts were not retained in the repository; reconstruction notes are explicitly labeled in `docs/art/b05-generation-notes.md`. Source PNGs remain under `art-source/b05/review/`; failed sheets are retained under `art-source/b05/rejected/`. Runtime mapping, hashes, dimensions, cell checks and pivots are in `docs/art/b05-animation-manifest.json`. No external likeness/IP clearance or owner signoff has occurred.
+
+## Visual-breakthrough corrective pass
+
+New provisional directions are recorded in [`b05-visual-breakthrough-notes.md`](b05-visual-breakthrough-notes.md): Ember A emphasizes the asymmetrical segmented bronze cuff; Glass A changes the shoulder and coat geometry with translucent facets. Both separate from base in the VFX-off 100%/75% front/profile comparisons. No color glow is needed to distinguish these concept silhouettes.
+
+The accompanying eight-pose-per-form sequences are held key poses, not fluid animation. Their crops pass a 32-alpha cell-edge check, but visual review shows anchor/pose changes and long holds. The motion gate is **FAIL**. Do not extend these sheets or mark the designs production-ready. The actual-game dev showcase and full review blockers are listed in [`b05-visual-breakthrough-evidence.md`](../qa/b05-visual-breakthrough-evidence.md).

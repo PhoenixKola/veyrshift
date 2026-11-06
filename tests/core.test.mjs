@@ -9,6 +9,7 @@ import { CombatSession } from '../dist-preview/src/game/runtime/CombatSession.js
 import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/runtime/gamepadMapping.js';
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
 import { facingFromAngle, facingFromVector } from '../dist-preview/src/game/core/direction.js';
+import { visualProofCuesBetween, visualProofDuration, visualProofFrameIndex, VISUAL_PROOF_PHASES } from '../dist-preview/src/game/animation/visualBreakthrough.js';
 import { resolveAtlasSource, resolveFormComboAtlas, resolveFormRunAtlas, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
 import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS } from '../dist-preview/src/game/data/kairoAbilities.js';
 import { existsSync, readFileSync } from 'node:fs';
@@ -60,6 +61,43 @@ test('form-specific run animation advances at each form movement speed',()=>{
  let pose=resolveHeroAnimation(h,.2);assert.equal(pose.state,'run');assert.equal(pose.frame,2);
  h.formId='glass-current';h.vx=260;h.step=260*.07*3.2;
  pose=resolveHeroAnimation(h,.3);assert.equal(pose.state,'run');assert.equal(pose.frame,3);
+});
+test('visual-breakthrough preview uses eight authored frames and exactly timed phase holds',()=>{
+ for(const form of ['ember-drive','glass-current']){
+  assert.equal(VISUAL_PROOF_PHASES[form].length,8);
+  assert.equal(visualProofFrameIndex(form,0),0);
+  assert.equal(visualProofFrameIndex(form,visualProofDuration(form)),7);
+  assert.equal(visualProofFrameIndex(form,visualProofDuration(form)+.2),7);
+ }
+ assert.equal(visualProofDuration('ember-drive'),5.02);assert.equal(visualProofDuration('glass-current'),5.06);
+ assert.deepEqual(visualProofCuesBetween('glass-current',2.62,2.64).map(cue=>cue.action),['dash']);
+ assert.equal(visualProofCuesBetween('glass-current',2.38,2.40)[0].cue,'enemy-telegraph');
+});
+test('actual combat rules resolve Ember contact and Glass dodge-counter-special in visual-proof timing',()=>{
+ for(const form of ['ember-drive','glass-current']){
+  const session=new CombatSession(initialSave());session.newRun(form==='ember-drive'?50805:50806);
+  session.save.unlockedForms=[...new Set([...session.save.unlockedForms,form])];
+  session.hero.formId=form;session.hero.x=520;session.hero.y=360;session.hero.face=0;session.hero.pulse=100;session.hero.invuln=0;
+  session.enemies=[{id:9501,kind:'wisp',x:form==='ember-drive'?580:690,y:360,hp:1000,maxHp:1000,radius:18,speed:0,flash:0,phase:0,attackCooldown:99,telegraph:0,stagger:0,vx:0,vy:0}];
+  let elapsed=0;
+  for(let frame=0;frame<Math.ceil(visualProofDuration(form)*60);frame++){
+   const next=Math.min(visualProofDuration(form),elapsed+1/60),pressed=new Set(),movement={x:0,y:0};
+   for(const cue of visualProofCuesBetween(form,elapsed,next)){
+    if(cue.action){pressed.add(cue.action);if(cue.action==='dash')movement.x=1;if(cue.action==='shockwave')session.enemies[0].attackCooldown=99;}
+    if(cue.cue==='enemy-telegraph')session.enemies[0].telegraph=.47;
+   }
+   session.update(1/60,{movement,aim:{x:1,y:0},pressed,held:new Set()});elapsed=next;
+  }
+  const events=session.consumeEvents();
+  if(form==='ember-drive'){
+   assert.ok(events.some(event=>event.id==='ember-start'));assert.ok(events.some(event=>event.id==='combo-contact'));
+   assert.ok(events.some(event=>event.id==='ember-end'));assert.ok(session.enemies[0].hp<1000);
+  }else{
+   assert.ok(events.some(event=>event.id==='glass-start'));assert.ok(events.some(event=>event.id==='glass-counter'&&event.ability==='dodge'));
+   assert.ok(events.some(event=>event.id==='shockwave-hit'));assert.ok(events.some(event=>event.id==='glass-end'));
+   assert.ok(session.enemies[0].hp<1000);assert.equal(session.hero.hp,session.hero.maxHp);
+  }
+ }
 });
 test('finisher animation advances four phases while holding its selected facing row',()=>{
  const s=new CombatSession(initialSave());s.newRun(406);const h=s.hero;h.currentAbility='finisher';h.abilityAnimDuration=.8;

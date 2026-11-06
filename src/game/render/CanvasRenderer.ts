@@ -3,12 +3,15 @@ import type { CombatEvent, Enemy, GameSettings, Hero, KairoFormId } from '../cor
 import type { CombatSession } from '../runtime/CombatSession.js';
 import { resolveAtlasSource, resolveFormAnimationAtlas, resolveHeroAnimation, type ResolvedAnimation } from '../animation/animationResolver.js';
 import { clamp } from '../core/math.js';
+import { visualProofFrameIndex, type VisualProofForm } from '../animation/visualBreakthrough.js';
 type FormVfxKey = 'activation'|'contact'|'bolt'|'special'|'finisher'|'transition';
 export class CanvasRenderer {
  private ctx:CanvasRenderingContext2D;
  private reducedMotion=false;
  private reducedFlash=false;
  private forceB02:boolean;
+ private proofAtlases:Partial<Record<VisualProofForm,HTMLImageElement>>={};
+ private visualProof:{form:VisualProofForm;elapsed:number}|null=null;
  private idle=this.load('/assets/characters/kairo/b02/idle.png');
  private run=this.load('/assets/characters/kairo/b02/run.png');
  private combo=this.load('/assets/characters/kairo/b02/combo.png');
@@ -79,12 +82,17 @@ export class CanvasRenderer {
  private transitionRemaining=0;
  private previousRenderAt=0;
  private wisp=this.load('/assets/enemies/prototype/rift-wisp.png');
- constructor(canvas:HTMLCanvasElement,forceB02=false){
+ constructor(canvas:HTMLCanvasElement,forceB02=false,enableVisualProof=false){
   this.forceB02=forceB02;
   canvas.width=ARENA.width;canvas.height=ARENA.height;
   const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D support is required');this.ctx=ctx;
-  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formIdles),...Object.values(this.formDodges),...Object.values(this.formGuards),...Object.values(this.formBolts),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
+  if(enableVisualProof){this.proofAtlases={
+   'ember-drive':this.load('/art-source/b05/visual-breakthrough/runtime/ember-proof.webp'),
+   'glass-current':this.load('/art-source/b05/visual-breakthrough/runtime/glass-proof.webp'),
+  };}
+  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formIdles),...Object.values(this.formDodges),...Object.values(this.formGuards),...Object.values(this.formBolts),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),...Object.values(this.proofAtlases),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
  }
+ setVisualProof(form:VisualProofForm|null,elapsed=0):void {this.visualProof=form?{form,elapsed}:null;}
  emit(events:CombatEvent[],clock:number):void {
   const durations:Partial<Record<CombatEvent['id'],number>>={'bolt-cast':.22,'bolt-hit':.23,'bolt-dissipate':.2,'combo-contact':.23,swing:.19,
    'shockwave-charge':.24,'shockwave-release':.48,'shockwave-hit':.22,parry:.23,block:.17,'dash-start':.24,'dash-land':.22,
@@ -182,6 +190,11 @@ export class CanvasRenderer {
  }
  private drawHero(h:Hero,t:number,inBattle:boolean):void {
   const c=this.ctx;this.drawShadow(h.x,h.y,1.05);c.save();c.translate(h.x,h.y);
+  if(this.visualProof){const atlas=this.proofAtlases[this.visualProof.form];if(atlas&&this.ready(atlas)){
+   const frame=this.reducedMotion?3:visualProofFrameIndex(this.visualProof.form,this.visualProof.elapsed);
+   c.translate(0,-17);c.globalAlpha=!this.reducedFlash&&h.invuln>0&&Math.sin(t*32)>0?.62:1;
+   c.drawImage(atlas,frame*192,0,192,256,-50,-103,100,140);c.restore();return;
+  }}
   const resolved=resolveHeroAnimation(h,t);
   const committedAbility=resolved.state==='bolt'||resolved.state==='shockwave'||resolved.state==='finisher';
   const currentForm=committedAbility?h.abilityFormId:h.transformed?h.formId:'base';

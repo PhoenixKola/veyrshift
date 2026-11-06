@@ -142,3 +142,17 @@
 | Deactivate | Existing base state | Base transition/effects | Base transition/effects |
 
 ?Native candidate art? means a runtime atlas is routed; it does not mean animation quality or game integration was approved. See the finalization evidence matrix for source/test, live-game and owner-approval statuses.
+
+## B05 visual-breakthrough corrective pass — 2026-11-06
+
+| B05 visual-breakthrough criterion | Status | Evidence / limitation |
+|---|---|---|
+| VFX-off Ember/Glass silhouettes distinct from base at target sizes | PASS as proposal comparison; owner review pending | Both concept variants per form are shown with base in front/right views, 100%/75% size, dark/midtone backgrounds, VFX off/on, plus close-ups. This does not approve the generated art. |
+| Ember and Glass motion quality | **FAIL** | Eight-pose timed drafts have large pose/anchor changes and no rigged deformation or generated in-betweens. The timed GIFs and contact boards are previews, not fluid-animation evidence. |
+| Actual combat timing in the draft proof | PASS (simulation tests only) | Ember combo hit damages the target; Glass avoids a telegraphed strike during dodge iframes, earns the counter, and lands the gated special. This does not establish what the running game looks like or feels like. |
+| Dev-only replay uses the actual game loop and Canvas renderer | IMPLEMENTED; visual verification NOT RUN | Route `?b05showcase=1` and the two buttons are restricted to Vite development. Browser host unavailable and headed fallback denied by execution policy. |
+| Layered motion-specific VFX (Gate C) | NOT STARTED / NOT RUN | Work stopped after the motion-quality gate failed. Existing B05 single-image form effects remain unchanged. |
+| Browser/audio/960×540/16:9 visual review | BLOCKED / NOT RUN | No actual Vite browser screenshot/video or audible review. Owner-local steps are in `b05-visual-breakthrough-evidence.md`. |
+| Physical controller and owner art/game-feel approval | NOT RUN / REQUIRED | No controller connected and generated proposals await owner review. |
+
+**Corrective-pass gate:** ART PROPOSED (silhouette comparison only); ANIMATION DEMONSTRATED: FAIL; IN-GAME VERIFIED: NOT RUN / BLOCKED; AUDIO HEARD: NOT RUN / BLOCKED; OWNER APPROVED: NOT RUN / REQUIRED. Do not expand the form atlases until a reference-locked rig or reviewed in-between workflow clears the motion gate on one clip. See [`b05-visual-breakthrough-evidence.md`](b05-visual-breakthrough-evidence.md).

@@ -1,0 +1,235 @@
+{
+  "sequences": {
+    "ember": {
+      "source": "art-source/b05/visual-breakthrough/ember-sequence-grid-v1.png",
+      "runtime_preview": "art-source/b05/visual-breakthrough/runtime/ember-proof.webp",
+      "source_bytes": 1435242,
+      "runtime_bytes": 305412,
+      "grid": {
+        "columns": 4,
+        "rows": 2,
+        "frames": 8,
+        "cell_edge_contacts_threshold_32": 0
+      },
+      "duration_ms": [
+        1000,
+        450,
+        500,
+        400,
+        950,
+        120,
+        750,
+        850
+      ],
+      "total_ms": 5020,
+      "alpha_audit": [
+        {
+          "frame": 0,
+          "alpha_bounds_threshold_32": [
+            138,
+            10,
+            332,
+            438
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 1,
+          "alpha_bounds_threshold_32": [
+            88,
+            54,
+            344,
+            438
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 2,
+          "alpha_bounds_threshold_32": [
+            67,
+            39,
+            349,
+            438
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 3,
+          "alpha_bounds_threshold_32": [
+            48,
+            19,
+            374,
+            438
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 4,
+          "alpha_bounds_threshold_32": [
+            28,
+            29,
+            402,
+            434
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 5,
+          "alpha_bounds_threshold_32": [
+            17,
+            57,
+            428,
+            432
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 6,
+          "alpha_bounds_threshold_32": [
+            65,
+            56,
+            354,
+            434
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 7,
+          "alpha_bounds_threshold_32": [
+            123,
+            10,
+            325,
+            436
+          ],
+          "cell_edge_contacts": 0
+        }
+      ],
+      "runtime_cell": [
+        192,
+        256
+      ],
+      "authoring_note": "Eight independently generated held poses, cropped by alpha bounds; no generated in-betweens. Preview is intentionally classified as a timed-pose draft, not fluid animation."
+    },
+    "glass": {
+      "source": "art-source/b05/visual-breakthrough/glass-sequence-grid-v3.png",
+      "runtime_preview": "art-source/b05/visual-breakthrough/runtime/glass-proof.webp",
+      "source_bytes": 1397928,
+      "runtime_bytes": 284064,
+      "grid": {
+        "columns": 2,
+        "rows": 4,
+        "frames": 8,
+        "cell_edge_contacts_threshold_32": 0
+      },
+      "duration_ms": [
+        1000,
+        750,
+        450,
+        450,
+        720,
+        120,
+        720,
+        850
+      ],
+      "total_ms": 5060,
+      "alpha_audit": [
+        {
+          "frame": 0,
+          "alpha_bounds_threshold_32": [
+            137,
+            12,
+            304,
+            433
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 1,
+          "alpha_bounds_threshold_32": [
+            137,
+            12,
+            354,
+            433
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 2,
+          "alpha_bounds_threshold_32": [
+            137,
+            11,
+            354,
+            431
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 3,
+          "alpha_bounds_threshold_32": [
+            125,
+            11,
+            325,
+            432
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 4,
+          "alpha_bounds_threshold_32": [
+            48,
+            66,
+            402,
+            395
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 5,
+          "alpha_bounds_threshold_32": [
+            58,
+            20,
+            396,
+            409
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 6,
+          "alpha_bounds_threshold_32": [
+            115,
+            14,
+            324,
+            433
+          ],
+          "cell_edge_contacts": 0
+        },
+        {
+          "frame": 7,
+          "alpha_bounds_threshold_32": [
+            137,
+            13,
+            303,
+            432
+          ],
+          "cell_edge_contacts": 0
+        }
+      ],
+      "runtime_cell": [
+        192,
+        256
+      ],
+      "authoring_note": "Eight independently generated held poses, cropped by alpha bounds; no generated in-betweens. Preview is intentionally classified as a timed-pose draft, not fluid animation."
+    }
+  },
+  "size_report": {
+    "source_png_count_including_rejections": 9,
+    "source_png_bytes_including_rejections": 13451140,
+    "rejected_png_bytes": 5157722,
+    "development_preview_atlas_count": 2,
+    "development_preview_atlas_bytes": 589476,
+    "evidence_file_count": 7,
+    "evidence_bytes": 1025988,
+    "production_bundle_bytes": 0,
+    "note": "Runtime previews are source-tree WebP atlases served by Vite development only; they are excluded from public/ and dist/. Evidence total includes every file already present in this evidence directory."
+  }
+}

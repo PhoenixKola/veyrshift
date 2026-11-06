@@ -4,6 +4,7 @@ import { CanvasRenderer } from '../render/CanvasRenderer.js';
 import { sharedSoundBus } from '../audio/synth.js';
 import type { GameSnapshot, KeyAction, CombatEvent } from '../core/types.js';
 import type { InputDevice } from './InputController.js';
+import { visualProofCuesBetween, visualProofDuration, type VisualProofForm } from '../animation/visualBreakthrough.js';
 
 const SOUND_BY_EVENT: Partial<Record<CombatEvent['id'], string>> = {
   'combo-start': 'swing', swing: 'swing', 'bolt-cast': 'bolt-cast', 'bolt-hit': 'bolt-hit', 'bolt-dissipate': 'bolt-dissipate',
@@ -28,10 +29,14 @@ export class GameController {
   private readonly fixedStep = 1/60;
   private publishedMode = '';
   private destroyed = false;
+  private visualProofEnabled: boolean;
+  private visualProof: { form: VisualProofForm; elapsed: number } | null = null;
+  private proofTemporaryUnlock: VisualProofForm | null = null;
 
   constructor(canvas: HTMLCanvasElement, private onSnapshot: (value: GameSnapshot) => void,
-    onDeviceChange: (device: InputDevice) => void = () => undefined, forceB02 = false) {
-    this.renderer = new CanvasRenderer(canvas, forceB02);
+    onDeviceChange: (device: InputDevice) => void = () => undefined, forceB02 = false, enableVisualProof = false) {
+    this.visualProofEnabled = enableVisualProof;
+    this.renderer = new CanvasRenderer(canvas, forceB02, enableVisualProof);
     this.input = new InputController(canvas, this.session.width, this.session.height, onDeviceChange, () => {
       if (this.session.mode === 'playing') this.session.pause();
       this.clearInputs(); this.sound.suspend(); this.publish();
@@ -47,6 +52,27 @@ export class GameController {
   }
   dispose(): void { this.destroyed = true; cancelAnimationFrame(this.raf); this.input.stop(); }
   newRun(seed?: number): void { this.clearInputs(); this.session.newRun(seed); this.sound.resume(); this.publish(); }
+  private clearProofUnlock(): void {
+    if (!this.proofTemporaryUnlock) return;
+    const form = this.proofTemporaryUnlock;
+    this.session.save.unlockedForms = this.session.save.unlockedForms.filter(id => id !== form);
+    this.proofTemporaryUnlock = null;
+  }
+  startVisualProof(form: VisualProofForm): void {
+    if (!this.visualProofEnabled) return;
+    this.clearProofUnlock();
+    this.sound.unlock(); this.sound.resume();
+    this.session.newRun(form === 'ember-drive' ? 50805 : 50806);
+    const session = this.session;
+    if (!session.save.unlockedForms.includes(form)) { session.save.unlockedForms.push(form); this.proofTemporaryUnlock = form; }
+    session.hero.formId = form; session.hero.x = 520; session.hero.y = 360; session.hero.face = 0;
+    session.hero.hp = session.hero.maxHp; session.hero.pulse = session.hero.maxPulse; session.hero.invuln = 0;
+    const enemyX = form === 'ember-drive' ? 580 : 690;
+    session.enemies = [{ id: 9501, kind: 'wisp', x: enemyX, y: 360, hp: 1000, maxHp: 1000, radius: 18,
+      speed: 0, flash: 0, phase: 0, attackCooldown: 99, telegraph: 0, stagger: 0, vx: 0, vy: 0 }];
+    this.visualProof = { form, elapsed: 0 };
+    this.renderer.setVisualProof(form, 0); this.clearInputs(); this.publish();
+  }
   reward(choice: number): void { this.clearInputs(); this.session.chooseReward(choice); this.publish(); }
   togglePause(): void {
     const before = this.session.mode;
@@ -84,15 +110,39 @@ export class GameController {
     this.accumulator = Math.min(this.accumulator + elapsed, this.fixedStep * 6);
     const sampled = this.input.sample(this.session.hero);
     if (sampled.pressed.has('pause') && ['playing', 'paused'].includes(this.session.mode)) this.togglePause();
-    if (this.session.mode === 'playing') for (const action of sampled.pressed) this.pendingPressed.add(action);
-    else this.pendingPressed.clear();
+    if (!this.visualProof && this.session.mode === 'playing') for (const action of sampled.pressed) this.pendingPressed.add(action);
+    else if (!this.visualProof) this.pendingPressed.clear();
 
     let steps = 0;
     while (this.accumulator >= this.fixedStep && steps < 6) {
       if (this.session.mode === 'playing') {
-        const input = { ...sampled, pressed: this.pendingPressed };
-        this.pendingPressed = new Set<KeyAction>();
-        this.session.update(this.fixedStep, input);
+        if (this.visualProof) {
+          const proof = this.visualProof;
+          const previous = proof.elapsed;
+          proof.elapsed = Math.min(visualProofDuration(proof.form), proof.elapsed + this.fixedStep);
+          const pressed = new Set<KeyAction>();
+          let movement = { x: 0, y: 0 };
+          for (const cue of visualProofCuesBetween(proof.form, previous, proof.elapsed)) {
+            if (cue.action) {
+              pressed.add(cue.action);
+              if (cue.action === 'dash') movement = { x: 1, y: 0 };
+              if (cue.action === 'shockwave') { const enemy = this.session.enemies[0]; if (enemy) enemy.attackCooldown = 99; }
+            }
+            if (cue.cue === 'enemy-telegraph') {
+              const enemy = this.session.enemies[0]; if (enemy) enemy.telegraph = .47;
+            }
+          }
+          this.session.update(this.fixedStep, { movement, aim: { x: 1, y: 0 }, pressed, held: new Set() });
+          if (this.proofTemporaryUnlock === proof.form && this.session.hero.transformed) this.clearProofUnlock();
+          this.renderer.setVisualProof(proof.form, proof.elapsed);
+          if (proof.elapsed >= visualProofDuration(proof.form)) {
+            this.clearProofUnlock(); this.renderer.setVisualProof(null); this.visualProof = null;
+          }
+        } else {
+          const input = { ...sampled, pressed: this.pendingPressed };
+          this.pendingPressed = new Set<KeyAction>();
+          this.session.update(this.fixedStep, input);
+        }
       }
       this.accumulator -= this.fixedStep; steps++;
     }

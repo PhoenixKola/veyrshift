@@ -102,3 +102,12 @@ The B00 handoff ran on 2026-11-05; B01 work and current evidence are recorded be
 - `docs/qa/b05-finalization-evidence.md` contains current per-state implementation/source-test/live/owner status and owner-local Chrome steps. This finalization still does not close Gate 0 or establish art, game-feel, audio, accessibility or performance approval.
 
 **Finalization status:** **PARTIAL / LIVE ACCEPTANCE BLOCKED.** Do not mark either transformation complete or B06 ready.
+
+## B05 visual-breakthrough corrective pass — 2026-11-06
+
+- Added four original concept alternatives and one eight-pose draft per form. VFX-off front/right comparisons distinguish Ember A's oversized segmented cuff and Glass A's faceted shoulder/coat from base Kairo at 100% and 75%; alternate concepts and detail crops are included. These remain proposals.
+- The sequence source-cell audits pass, and deterministic five-second timed-pose previews use the recorded phase durations. The drafts have long held drawings and visible pose/anchor jumps, so the animation-quality gate is **FAIL**. No further independent frame grid was produced after this finding.
+- Added a Vite-only `?b05showcase=1` control panel. It routes deterministic inputs through `GameController` and `CombatSession`; Ember hits a real target with its combo, and Glass avoids a telegraphed attack during its real dodge iframe, earns the counter and lands its counter-gated special. Candidate strip atlases are only loaded in Vite development and are not under `public/`.
+- Clean `npm ci`, `npm run typecheck`, `npm run build`, `npm test` (42/42), and `npm audit` (0 vulnerabilities) pass. The source/evidence builder and Vite HTTP requests for the query route, both preview atlases and transformed CanvasRenderer module pass; `dist/art-source/` is absent. `git diff --check` is clean.
+
+**Corrective-pass status:** **PARTIAL / MOTION QUALITY FAIL / LIVE VISUAL + AUDIO REVIEW BLOCKED.** Visual comparisons are owner-review candidates. The timed pose GIFs are not fluid animation or full-game captures. Multilayer motion VFX work was stopped at the failed motion gate. Do not claim B05 completion, owner approval or B06 appearance-swap readiness. The next pass should first prove one motion clip with a reference-locked rig or animator-reviewed in-betweens.

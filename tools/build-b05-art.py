@@ -465,6 +465,16 @@ def main() -> None:
         "turnarounds": {form_id: audit_turnaround(form_id, file) for form_id, file in TURNAROUNDS.items()},
         "forms": forms,
         "scaleComparison": build_scale_comparison(),
+        "visualBreakthroughProof": {
+            "status": "SILHOUETTE PROPOSAL; MOTION QUALITY FAIL; LIVE REVIEW BLOCKED",
+            "evidence": "tests/evidence/b05/visual-breakthrough/",
+            "sourceManifest": "art-source/b05/visual-breakthrough/manifest.json",
+            "builder": "tools/build-b05-visual-breakthrough.py",
+            "rendererPath": "src/game/render/CanvasRenderer.ts (Vite development only)",
+            "devRoute": "?b05showcase=1",
+            "phaseLogic": "src/game/animation/visualBreakthrough.ts",
+            "note": "Two eight-pose timed previews use actual combat inputs but are not fluid animation or browser capture. See ADR-015 and the visual-breakthrough QA record.",
+        },
         "rejectedDrafts": audit_rejected(),
         "missingCoverage": ["hurt/KO character animation",
                             "form-specific start/stop transitions",
@@ -474,7 +484,9 @@ def main() -> None:
         "limitations": ["These 12-frame action atlases are production candidates, not owner-approved art.",
                         "Generated 4-frame hit and run clips are illustrative key poses; fluidity and timing are not approved.",
                         "B04 live Chrome gate and B05 live Vite gameplay/audio/performance checks remain blocked by unavailable CUA host.",
-                        "The animation GIFs are offline previews, not gameplay or human visual/game-feel signoff."],
+                        "The animation GIFs are offline previews, not gameplay or human visual/game-feel signoff.",
+                        "B05 visual-breakthrough concepts distinguish silhouettes in VFX-off scale comparisons, but are owner-review proposals only.",
+                        "The eight-pose Ember/Glass visual-breakthrough drafts fail the fluid-motion quality gate; do not expand them without a reference-locked rig or reviewed in-betweens."],
     }
     manifest_path = ROOT / "docs" / "art" / "b05-animation-manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

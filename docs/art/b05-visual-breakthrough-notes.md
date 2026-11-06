@@ -1,0 +1,50 @@
+# B05 visual-breakthrough art notes
+
+**Generated:** 2026-11-06 with the OpenAI built-in image-generation tool. The tool did not expose a model/version or seed. This remains original-IP feasibility art; it has not been checked for likeness conflicts or approved by the owner.
+
+## Candidate direction
+
+- **Ember A** (`ember-concept-a.png`): same recognizable Kairo face, plum hair, lean build, dark jacket, split cloth and bronze-cuff identity; a greatly enlarged asymmetrical segmented cuff makes the attack side heavy. A right-facing profile was generated alongside the front view.
+- **Ember B** (`ember-concept-b.png`): the stronger shape change is a broad asymmetric shoulder/pauldron and longer, more flared coat. It is an alternate direction, not used for the pose proof.
+- **Glass A** (`glass-concept-a.png`): sharply faceted translucent shoulder pieces and long side panels create a taller, more vertical silhouette, with restrained cool material accents. A right-facing profile accompanies the front view.
+- **Glass B** (`glass-concept-b.png`): narrower body outline, open geometric forearm rings, and one controlled sash. It is an alternate direction, not used for the pose proof.
+
+The selected Ember and Glass proposals remain visually distinct from base in the VFX-off front and profile comparisons at 100% and 75%. The base art is lower-resolution than the generated concepts; the close-up board keeps that limitation visible rather than presenting the base as equally detailed.
+
+## Sequence drafts and rejection log
+
+| Source | Status | Review |
+|---|---|---|
+| `ember-sequence-grid-v1.png` | Retained as draft | Eight right-facing phases: idle, anticipation, cuff forming, transformed stance, heavy-attack windup, contact, recovery, return. Cell-edge audit passes, but the scale/anchor changes and held poses fail fluid-motion quality. |
+| `glass-sequence-grid-v1-cell-bleed.png` | Rejected, retained | Counter anatomy/energy touched neighboring cells. |
+| `glass-sequence-grid-v2-afterimage-edge.png` | Rejected, retained | The afterimage crossed its cell boundary. |
+| `glass-sequence-grid-v3.png` | Retained as draft | Eight right-facing phases: base idle, focus, facets forming, transformed stance, dodge, counter thrust, recovery, return. Cell-edge audit passes. Large holds and independently changing silhouette still fail fluid-motion quality. |
+| `rejected/glass-concept-b1-wrong-profile.png` | Rejected, retained | Profile faced the wrong direction. |
+
+No edges were trimmed to hide bleed. The runtime proof atlases are derived by taking each equal source cell, finding its alpha bounds above 32, adding transparent margin, fitting it to a 192×256 transparent frame, and packing the eight frames into a horizontal strip. Source alpha and every visible component are kept. There are no generated or interpolated in-between frames. Bottom-center fitting aligns the feet but does not stabilize body/shoulder anchors; this is one cause of visible drift.
+
+The timed GIFs use the source timings in `manifest.json`. They are one authored image per timed phase, not duplicated 60-fps copies, but they are only pose previews and do not represent a rigged or polished animation.
+
+## Prompt provenance
+
+The generation tool did not provide a durable prompt transcript with the returned image files. The exact prompt strings from these earlier calls are not present in this checkout, so they are **not reconstructed as if verbatim**. The request briefs used were:
+
+- Ember A/B concepts: original Kairo front plus right profile; retain face, asymmetrical plum hair, lean build, bronze cuff motif and split dark jacket; distinguish A with a massive segmented gauntlet and B with shoulder/mantle geometry; transparent background, no effects.
+- Glass A/B concepts: original Kairo front plus right profile; retain the same identity; distinguish A with translucent angular shoulder/coat facets and B with open forearm geometry; no blue recolor, no effects, transparent background.
+- Ember v1: transparent 4×2 source grid of eight whole-body Kairo phases for ignition and one heavy combo attack, right-facing consistently, no cell overlap or detached body parts.
+- Glass v1/v2/v3: transparent eight-pose grid for focus, facets, precise dodge and counter, with a consistent right-facing head; no neighboring pixels. The v1/v2 layout/afterimage failed edge checks; v3 removed the overlapping afterimage from the generated frames so trails can be a separate renderer effect.
+
+These bullets are brief summaries, **not exact prompts**. Future image generations must archive the exact submitted prompt and provider/model metadata when exposed before an image enters the candidate ledger.
+
+## Reproducible outputs
+
+Run `python tools/build-b05-visual-breakthrough.py` to rebuild:
+
+- `tests/evidence/b05/visual-breakthrough/comparison-front.jpg`
+- `tests/evidence/b05/visual-breakthrough/comparison-right.jpg`
+- `tests/evidence/b05/visual-breakthrough/detail-closeups.jpg`
+- normal-scale pose boards and 5-second timed-pose GIFs
+- eight-frame lossless WebP preview atlases under `art-source/b05/visual-breakthrough/runtime/`
+- `art-source/b05/visual-breakthrough/manifest.json` with source bounds, timings and byte counts
+
+The runtime atlases are served only by the Vite **development** harness; they are not exported under `public/` or added to the production runtime bundle. See [visual-breakthrough QA](../qa/b05-visual-breakthrough-evidence.md).
