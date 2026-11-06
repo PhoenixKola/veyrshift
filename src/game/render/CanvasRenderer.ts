@@ -3,7 +3,7 @@ import type { CombatEvent, Enemy, GameSettings, Hero, KairoFormId } from '../cor
 import type { CombatSession } from '../runtime/CombatSession.js';
 import { resolveAtlasSource, resolveFormAnimationAtlas, resolveHeroAnimation, type ResolvedAnimation } from '../animation/animationResolver.js';
 import { clamp } from '../core/math.js';
-import { visualProofFrameIndex, type VisualProofForm } from '../animation/visualBreakthrough.js';
+import { visualProofFrameIndex, visualRigCutoutPose, type VisualProofForm } from '../animation/visualBreakthrough.js';
 type FormVfxKey = 'activation'|'contact'|'bolt'|'special'|'finisher'|'transition';
 export class CanvasRenderer {
  private ctx:CanvasRenderingContext2D;
@@ -12,6 +12,8 @@ export class CanvasRenderer {
  private forceB02:boolean;
  private proofAtlases:Partial<Record<VisualProofForm,HTMLImageElement>>={};
  private visualProof:{form:VisualProofForm;elapsed:number}|null=null;
+ private rigCutout:HTMLImageElement|null=null;
+ private rigCutoutProof:{elapsed:number;duration:number;scale:number}|null=null;
  private idle=this.load('/assets/characters/kairo/b02/idle.png');
  private run=this.load('/assets/characters/kairo/b02/run.png');
  private combo=this.load('/assets/characters/kairo/b02/combo.png');
@@ -89,10 +91,13 @@ export class CanvasRenderer {
   if(enableVisualProof){this.proofAtlases={
    'ember-drive':this.load('/art-source/b05/visual-breakthrough/runtime/ember-proof.webp'),
    'glass-current':this.load('/art-source/b05/visual-breakthrough/runtime/glass-proof.webp'),
-  };}
-  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formIdles),...Object.values(this.formDodges),...Object.values(this.formGuards),...Object.values(this.formBolts),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),...Object.values(this.proofAtlases),this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
+  };
+   this.rigCutout=this.load('/art-source/b05/visual-breakthrough/ember-reinterpretation-from-glass-b-reference-v1.png');
+  }
+  this.assetsReady=Promise.all([...Object.values(this.directional),...Object.values(this.authored),...Object.values(this.formCombos),...Object.values(this.formRuns),...Object.values(this.formIdles),...Object.values(this.formDodges),...Object.values(this.formGuards),...Object.values(this.formBolts),...Object.values(this.formVfx).flatMap(form=>Object.values(form)),...Object.values(this.vfx),...Object.values(this.proofAtlases),this.rigCutout??this.idle,this.idle,this.run,this.combo,this.dodge,this.states,this.wisp].map(image=>image.decode().catch(()=>undefined))).then(()=>undefined);
  }
  setVisualProof(form:VisualProofForm|null,elapsed=0):void {this.visualProof=form?{form,elapsed}:null;}
+ setRigCutoutProof(elapsed:number|null,duration=1.7,scale=1):void {this.rigCutoutProof=elapsed===null?null:{elapsed,duration,scale};}
  emit(events:CombatEvent[],clock:number):void {
   const durations:Partial<Record<CombatEvent['id'],number>>={'bolt-cast':.22,'bolt-hit':.23,'bolt-dissipate':.2,'combo-contact':.23,swing:.19,
    'shockwave-charge':.24,'shockwave-release':.48,'shockwave-hit':.22,parry:.23,block:.17,'dash-start':.24,'dash-land':.22,
@@ -189,12 +194,19 @@ export class CanvasRenderer {
   if((e.emberMarks??0)>0){const mark=this.formVfx['ember-drive'].contact;for(let i=0;i<(e.emberMarks??0);i++)this.drawFormVfx(mark,'ember-drive',e.x+(i-((e.emberMarks??0)-1)/2)*15,e.y-e.radius-54,0,16,16,.86,settings);}
  }
  private drawHero(h:Hero,t:number,inBattle:boolean):void {
-  const c=this.ctx;this.drawShadow(h.x,h.y,1.05);c.save();c.translate(h.x,h.y);
+  const c=this.ctx;if(!this.rigCutoutProof)this.drawShadow(h.x,h.y,1.05);c.save();c.translate(h.x,h.y);
   if(this.visualProof){const atlas=this.proofAtlases[this.visualProof.form];if(atlas&&this.ready(atlas)){
    const frame=this.reducedMotion?3:visualProofFrameIndex(this.visualProof.form,this.visualProof.elapsed);
    c.translate(0,-17);c.globalAlpha=!this.reducedFlash&&h.invuln>0&&Math.sin(t*32)>0?.62:1;
    c.drawImage(atlas,frame*192,0,192,256,-50,-103,100,140);c.restore();return;
   }}
+  if(this.rigCutoutProof&&this.rigCutout&&this.ready(this.rigCutout)){
+   const pose=visualRigCutoutPose(this.rigCutoutProof.elapsed,this.rigCutoutProof.duration),scale=this.rigCutoutProof.scale;
+   c.restore();this.drawShadow(h.x+pose.x*scale,h.y+pose.y*scale,1.05*scale);c.save();
+   c.translate(h.x+pose.x*scale,h.y-17+pose.y*scale);c.rotate(pose.rotation);c.scale(scale,scale);
+   c.globalAlpha=h.invuln>0&&Math.sin(t*32)>0?.62:1;
+   c.drawImage(this.rigCutout,1040,0,372,887,-29.35,-103,58.7,140);c.restore();return;
+  }
   const resolved=resolveHeroAnimation(h,t);
   const committedAbility=resolved.state==='bolt'||resolved.state==='shockwave'||resolved.state==='finisher';
   const currentForm=committedAbility?h.abilityFormId:h.transformed?h.formId:'base';

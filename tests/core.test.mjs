@@ -9,7 +9,7 @@ import { CombatSession } from '../dist-preview/src/game/runtime/CombatSession.js
 import { radialDeadzone, StandardGamepadMapper } from '../dist-preview/src/game/runtime/gamepadMapping.js';
 import { transitionScreen } from '../dist-preview/src/app/screenState.js';
 import { facingFromAngle, facingFromVector } from '../dist-preview/src/game/core/direction.js';
-import { visualProofCuesBetween, visualProofDuration, visualProofFrameIndex, VISUAL_PROOF_PHASES } from '../dist-preview/src/game/animation/visualBreakthrough.js';
+import { visualProofCuesBetween, visualProofDuration, visualProofFrameIndex, visualRigCutoutPose, VISUAL_PROOF_PHASES } from '../dist-preview/src/game/animation/visualBreakthrough.js';
 import { resolveAtlasSource, resolveFormComboAtlas, resolveFormRunAtlas, resolveHeroAnimation } from '../dist-preview/src/game/animation/animationResolver.js';
 import { KAIRO_BASE_ABILITIES, KAIRO_COMBO_HITS } from '../dist-preview/src/game/data/kairoAbilities.js';
 import { existsSync, readFileSync } from 'node:fs';
@@ -72,6 +72,11 @@ test('visual-breakthrough preview uses eight authored frames and exactly timed p
  assert.equal(visualProofDuration('ember-drive'),5.02);assert.equal(visualProofDuration('glass-current'),5.06);
  assert.deepEqual(visualProofCuesBetween('glass-current',2.62,2.64).map(cue=>cue.action),['dash']);
  assert.equal(visualProofCuesBetween('glass-current',2.38,2.40)[0].cue,'enemy-telegraph');
+});
+test('cutout rig feasibility uses deterministic smooth in-betweens and returns to its fixed-scale rest pose',()=>{
+ const start=visualRigCutoutPose(0),anticipation=visualRigCutoutPose(.34),impact=visualRigCutoutPose(1.156),end=visualRigCutoutPose(1.7);
+ assert.deepEqual(start,{x:0,y:0,rotation:0});assert.ok(anticipation.x<0);assert.ok(impact.x>16);
+ assert.deepEqual(end,{x:0,y:0,rotation:0});assert.deepEqual(visualRigCutoutPose(.8),visualRigCutoutPose(.8));
 });
 test('actual combat rules resolve Ember contact and Glass dodge-counter-special in visual-proof timing',()=>{
  for(const form of ['ember-drive','glass-current']){

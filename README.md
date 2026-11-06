@@ -41,6 +41,18 @@ Open the local address printed by Vite. This initializes the React + TypeScript 
 
 **Current B04 verification:** `npm ci`, `npm run typecheck`, `npm run build`, `npm test` (25/25) and `npm audit` pass. The CUA browser host was unavailable for this batch, so the visible Chrome gameplay gate remains unrun; details and other open checks are in `docs/qa/b04-evidence.md`.
 
+### Owner-local Chrome QA for B05
+
+The B05 recovery batch adds a repeatable Windows Chrome run through the actual Vite game. From PowerShell at the repo root:
+
+```powershell
+npm ci
+npm run qa:chrome:self-test
+npm run qa:chrome:local
+```
+
+The launcher is headed by default, uses a temporary Playwright context and installed Chrome, and saves screenshots, normal-speed video-only WebM clips, runtime/network diagnostics and a JSON report under `tests/evidence/b05/live-chrome/`. Use `npm run qa:chrome:headless` only for supplementary automation. For another local Vite port, run `node tools/b05-chrome-local-qa.mjs --url http://127.0.0.1:5175/`. The WebM has no audio; human visual and system-audio review remain separate gates. See [B05 Chrome recovery and art handoff](docs/qa/b05-chrome-recovery.md).
+
 ## Controls (desktop keyboard and mouse)
 
 | Control | Action |
@@ -109,4 +121,6 @@ Hades and Dragon Ball are high-level feel references only. Do not copy character
 
 ## B05 Kairo forms — prototype only
 
-The current Forms screen lets the player equip Ember Drive or unlock/equip Glass Current after five parries. Save schema v3 migrates the prior save formats. Ember and Glass combat prototypes have bounded differences and are described in `docs/technical/adr-012-formweaving-runtime-save-contract.md`. Candidate four-direction atlases, icons, VFX textures and synthesized combat cues remain proposals. The B05 visual-breakthrough pass demonstrates distinct VFX-off Ember/Glass silhouettes and adds a Vite-only `?b05showcase=1` replay through the actual controller, combat session and Canvas renderer. Its eight independently generated held poses per form **fail** fluid-motion quality; full-game browser/audio review remains blocked. Do not treat these as complete transformations or production animation. See [visual-breakthrough evidence](docs/qa/b05-visual-breakthrough-evidence.md), [art notes](docs/art/b05-visual-breakthrough-notes.md), and [B05 completion evidence](docs/qa/b05-completion-evidence.md). B05 remains partial; do not claim B06 appearance-swap readiness.
+The current Forms screen lets the player equip Ember Drive or unlock/equip Glass Current after five parries. Save schema v3 migrates the prior save formats. Ember and Glass combat prototypes have bounded differences and are described in `docs/technical/adr-012-formweaving-runtime-save-contract.md`. Candidate four-direction atlases, icons, VFX textures and synthesized combat cues remain proposals. The B05 visual-breakthrough pass demonstrates distinct VFX-off Ember/Glass silhouettes and adds a Vite-only `?b05showcase=1` replay through the actual controller, combat session and Canvas renderer. Its eight independently generated held poses per form **fail** fluid-motion quality; headed owner visual/audio review remains pending. Do not treat these as complete transformations or production animation. See [visual-breakthrough evidence](docs/qa/b05-visual-breakthrough-evidence.md), [art notes](docs/art/b05-visual-breakthrough-notes.md), and [B05 completion evidence](docs/qa/b05-completion-evidence.md). B05 remains partial; do not claim B06 appearance-swap readiness.
+
+The browser-access recovery adds an owner-local Playwright/Chrome workflow in [B05 Chrome recovery](docs/qa/b05-chrome-recovery.md); a successful automated report still does not close owner visual/audio acceptance. The corrected source mapping keeps Glass B labeled as Glass and the single Ember reinterpretation as a non-runtime review proposal. Glass A is the provisional Glass anchor; Ember A and the new Ember proposal await owner choice. B05 remains partial and fluid animation remains failed.

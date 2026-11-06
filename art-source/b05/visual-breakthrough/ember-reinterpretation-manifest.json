@@ -1,0 +1,33 @@
+{
+  "asset": "ember-reinterpretation-from-glass-b-reference-v1.png",
+  "status": "PROPOSED — one Ember redesign for owner review; not approved or used at runtime",
+  "created_date": "2026-11-06",
+  "tool": "OpenAI built-in image-generation tool",
+  "model_version_seed": "Not exposed by the tool",
+  "dimensions": [1774, 887],
+  "color_mode": "RGBA",
+  "alpha_extrema": [0, 255],
+  "rig_feasibility_crop": {
+    "source_rectangle": [1040, 0, 372, 887],
+    "view": "right-facing profile",
+    "runtime_frame_bounds": [58.7, 140],
+    "editing": "CanvasRenderer source crop only; original proposal sheet is unchanged"
+  },
+  "runtime_exported": false,
+  "rig_feasibility_method": "Development-only single-layer cutout translation/rotation between six smooth keyframes; fixed scale; no joint deformation, generated in-betweens, or production animation claim.",
+  "source_references": [
+    {
+      "path": "art-source/b03/kairo-base-turnaround.png",
+      "role": "Base Kairo identity: face, hair, body proportions and outfit"
+    },
+    {
+      "path": "art-source/b05/visual-breakthrough/ember-concept-a.png",
+      "role": "Existing Ember A comparison direction; not replaced"
+    },
+    {
+      "path": "art-source/b05/visual-breakthrough/glass-concept-b.png",
+      "role": "Glass B only; inspiration for forearm-motif placement. Its source identity remains Glass Current B and it is not an Ember master."
+    }
+  ],
+  "submitted_prompt": "Create one original-IP Ember Drive transformation concept sheet for Project Veyrshift. Identity reference: plum-haired lean fighter from the base Kairo turnaround; preserve his recognizable face, asymmetrical plum hair, dark cropped jacket, pale shirt, loose dark trousers, split plum cloth, boots and athletic proportions. Comparison reference: existing Ember A with oversized bronze cuffs. Inspiration-only reference: Glass Current B, the slim design with open forearm loops; its identity and provenance must remain Glass Current B. Do not copy or recolor Glass B and do not use crystals, glass, translucent facets, cyan/blue, violet loops, open floating rings or its costume. Design a visibly distinct Ember proposal: heated segmented kinetic armor integrated tightly over one oversized attack-side forearm and shoulder, layered bronze and charcoal plates, mechanical articulation, restrained orange-red core seams and a few ember-hot highlights. Heavy forward-driving silhouette, aggressive anatomically plausible stance. Exactly two full-body views of the SAME design on a single wide transparent sheet: front three-quarter view left, strict right-facing profile right, equal scale and aligned feet, generous transparent gutters. Fully include the head, both arms, hands, legs and feet; consistent rightward head direction in profile; no cropping, detached fragments, text, labels, background, checkerboard, ground shadow, aura, or extra characters. High-quality polished anime action-game concept art, crisp contours and restrained material lighting. This is a review proposal, not a production master."
+}

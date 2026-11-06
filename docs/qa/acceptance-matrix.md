@@ -156,3 +156,19 @@
 | Physical controller and owner art/game-feel approval | NOT RUN / REQUIRED | No controller connected and generated proposals await owner review. |
 
 **Corrective-pass gate:** ART PROPOSED (silhouette comparison only); ANIMATION DEMONSTRATED: FAIL; IN-GAME VERIFIED: NOT RUN / BLOCKED; AUDIO HEARD: NOT RUN / BLOCKED; OWNER APPROVED: NOT RUN / REQUIRED. Do not expand the form atlases until a reference-locked rig or reviewed in-between workflow clears the motion gate on one clip. See [`b05-visual-breakthrough-evidence.md`](b05-visual-breakthrough-evidence.md).
+
+## B05 browser recovery and locked-art handoff — 2026-11-06
+
+| B05 criterion | Status | Evidence / limitation |
+|---|---|---|
+| Version-locked local Playwright launcher and loopback Vite lifecycle | PASS (implementation and self-test) | `tools/b05-chrome-local-qa.mjs`; `npm run qa:chrome:self-test`; temporary context, Chrome channel and owned-child cleanup. |
+| Real Vite headless Chrome automation | PASS (supplementary) | 32/32 automated assertions in the local report; no console/page/request/HTTP errors. Not headed owner acceptance. |
+| Ordinary flow and input checks | PASS (bounded automation) | Menu flow, character/forms, arrow/WASD movement, mouse hit, guard/dodge, form HUD, pause/settings/resume. Physical gamepad and human feel not tested. |
+| Ember/Glass actual-scene replay mechanics | PASS (automated) | Real target damage and state reversion observed for both forms; RAF timings and videos captured. Visual quality is not accepted by automation. |
+| One reference-locked motion-method feasibility clip | PASS (technical capture); owner visual review pending | Single generated right-facing profile cutout, 1.7s code-interpolated lunge/attack, fixed scale and real hit. Captured in the Vite Canvas at 100% and 75% beside the failed pose GIF. No joint deformation; this does not pass production fluid-animation quality. |
+| System audio playback and owner listening | NOT RUN / REQUIRED | Browser video contains no audio. Owner recording/listening procedure is in `b05-chrome-recovery.md`. |
+| Ember/Glass art-source identity | PASS (ledger corrected); owner signoff pending | Glass A is provisional Glass anchor; Glass B remains Glass; Ember A remains separate; one Ember reinterpretation is a non-runtime proposal. |
+| Fluid animation | FAIL | Eight-pose drafts have no in-betweens and visible anchor changes. |
+| Layered motion VFX | NOT STARTED | Still blocked on one successful motion-method clip. |
+
+**Recovery gate:** local automation pathway is implemented and its headless supplementary run passes. Human visual/audio acceptance, fluid animation, layered motion VFX and complete-form quality remain open; do not claim B05 complete or begin B06.

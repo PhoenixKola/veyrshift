@@ -25,9 +25,17 @@ No edges were trimmed to hide bleed. The runtime proof atlases are derived by ta
 
 The timed GIFs use the source timings in `manifest.json`. They are one authored image per timed phase, not duplicated 60-fps copies, but they are only pose previews and do not represent a rigged or polished animation.
 
+## Corrected source mapping and locked handoff (2026-11-06)
+
+The user's three shared choices map to the repository as follows: angular translucent shoulder/coat is `glass-concept-a.png`; the slimmer dark jacket with open forearm loops is `glass-concept-b.png`; the third image resembles base Kairo. **Glass B is not Ember art.** Glass A remains the provisional Glass Current silhouette anchor. Ember A remains the separate oversized-bronze-cuff proposal and comparison anchor.
+
+One Ember reinterpretation was generated for quick owner review: [`ember-reinterpretation-from-glass-b-reference-v1.png`](../../art-source/b05/visual-breakthrough/ember-reinterpretation-from-glass-b-reference-v1.png). It uses Glass B only as a clearly labeled placement inspiration for a forearm motif, with heated segmented bronze/charcoal kinetic armor and orange-red seams. Its exact prompt, reference roles and image metadata are in [`ember-reinterpretation-manifest.json`](../../art-source/b05/visual-breakthrough/ember-reinterpretation-manifest.json). This sheet is a proposal only, is not a replacement for Ember A, is not a runtime asset, and has no owner approval. No additional pose sheets were generated.
+
+The art handoff to the owner is limited to reviewing Glass A against Ember A and this single Ember reinterpretation. Decide the preferred Ember silhouette before any animation production. The existing independent-pose drafts still fail the fluid-motion gate; no more full-character pose rolls should be made. The next animation attempt must use one reference-locked rig/layer workflow or reviewed in-betweens and pass at gameplay scale before further production.
+
 ## Prompt provenance
 
-The generation tool did not provide a durable prompt transcript with the returned image files. The exact prompt strings from these earlier calls are not present in this checkout, so they are **not reconstructed as if verbatim**. The request briefs used were:
+The generation tool did not provide a durable prompt transcript with the earlier concept and sequence files. Their exact prompt strings are not present in this checkout, so they are **not reconstructed as if verbatim**. The new Ember reinterpretation prompt is archived verbatim in its adjacent manifest. The earlier request briefs used were:
 
 - Ember A/B concepts: original Kairo front plus right profile; retain face, asymmetrical plum hair, lean build, bronze cuff motif and split dark jacket; distinguish A with a massive segmented gauntlet and B with shoulder/mantle geometry; transparent background, no effects.
 - Glass A/B concepts: original Kairo front plus right profile; retain the same identity; distinguish A with translucent angular shoulder/coat facets and B with open forearm geometry; no blue recolor, no effects, transparent background.

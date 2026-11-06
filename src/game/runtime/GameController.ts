@@ -31,6 +31,7 @@ export class GameController {
   private destroyed = false;
   private visualProofEnabled: boolean;
   private visualProof: { form: VisualProofForm; elapsed: number } | null = null;
+  private rigCutoutProof: { elapsed: number; duration: number; scale: number; attackFired: boolean } | null = null;
   private proofTemporaryUnlock: VisualProofForm | null = null;
 
   constructor(canvas: HTMLCanvasElement, private onSnapshot: (value: GameSnapshot) => void,
@@ -72,6 +73,16 @@ export class GameController {
       speed: 0, flash: 0, phase: 0, attackCooldown: 99, telegraph: 0, stagger: 0, vx: 0, vy: 0 }];
     this.visualProof = { form, elapsed: 0 };
     this.renderer.setVisualProof(form, 0); this.clearInputs(); this.publish();
+  }
+  startRigCutoutProof(scale = 1): void {
+    if (!this.visualProofEnabled || ![.75, 1].includes(scale)) return;
+    this.clearProofUnlock(); this.visualProof = null; this.renderer.setVisualProof(null);
+    this.session.newRun(50807); this.session.hero.x = 520; this.session.hero.y = 360; this.session.hero.face = 0;
+    this.session.hero.moveFacing = 'right'; this.session.hero.pulse = this.session.hero.maxPulse;
+    this.session.enemies = [{ id: 9507, kind: 'wisp', x: 590, y: 360, hp: 1000, maxHp: 1000, radius: 18,
+      speed: 0, flash: 0, phase: 0, attackCooldown: 99, telegraph: 0, stagger: 0, vx: 0, vy: 0 }];
+    this.rigCutoutProof = { elapsed: 0, duration: 1.7, scale, attackFired: false };
+    this.renderer.setRigCutoutProof(0, 1.7, scale); this.clearInputs(); this.publish();
   }
   reward(choice: number): void { this.clearInputs(); this.session.chooseReward(choice); this.publish(); }
   togglePause(): void {
@@ -139,9 +150,20 @@ export class GameController {
             this.clearProofUnlock(); this.renderer.setVisualProof(null); this.visualProof = null;
           }
         } else {
-          const input = { ...sampled, pressed: this.pendingPressed };
+          let input = { ...sampled, pressed: this.pendingPressed };
+          const rig = this.rigCutoutProof;
+          const rigNext = rig ? Math.min(rig.duration, rig.elapsed + this.fixedStep) : 0;
+          if (rig && !rig.attackFired && rig.elapsed < .72 && rigNext >= .72) {
+            input = { ...input, aim: { x: 1, y: 0 }, pressed: new Set([...input.pressed, 'attack']) };
+            rig.attackFired = true;
+          }
           this.pendingPressed = new Set<KeyAction>();
           this.session.update(this.fixedStep, input);
+          if (rig) {
+            rig.elapsed = rigNext;
+            this.renderer.setRigCutoutProof(rig.elapsed, rig.duration, rig.scale);
+            if (rig.elapsed >= rig.duration) { this.rigCutoutProof = null; this.renderer.setRigCutoutProof(null); }
+          }
         }
       }
       this.accumulator -= this.fixedStep; steps++;

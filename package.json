@@ -11,6 +11,9 @@
     "preview:build": "tsc -p tsconfig.preview.json && node tools/copy-preview.mjs",
     "preview:serve": "python3 -m http.server 4173 -d dist-preview",
     "test": "tsc -p tsconfig.preview.json && node tools/copy-preview.mjs && node --test tests/core.test.mjs",
+    "qa:chrome:local": "node tools/b05-chrome-local-qa.mjs",
+    "qa:chrome:headless": "node tools/b05-chrome-local-qa.mjs --headless",
+    "qa:chrome:self-test": "node tools/b05-chrome-local-qa.mjs --self-test",
     "verify:offline": "tsc -p tsconfig.preview.json && node tools/copy-preview.mjs && node --test tests/core.test.mjs",
     "preview": "vite preview --host 127.0.0.1"
   },
@@ -23,6 +26,7 @@
     "@types/react-dom": "19.1.6",
     "@vitejs/plugin-react": "4.7.0",
     "phaser": "^3.90.0",
+    "playwright": "1.65.0",
     "typescript": "5.9.2",
     "vite": "^6.4.5"
   },
